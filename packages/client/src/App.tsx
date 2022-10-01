@@ -1,7 +1,7 @@
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
-// import './App.scss';
+import './App.scss';
 import Login from './pages/login/login';
 
 function App() {

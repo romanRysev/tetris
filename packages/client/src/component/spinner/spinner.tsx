@@ -1,8 +1,7 @@
-import React, { ElementType, forwardRef, HTMLAttributes } from 'react';
-import PropTypes from 'prop-types';
+import React, { ElementType, forwardRef } from 'react';
 import classNames from 'classnames';
 
-export interface SpinnerProps extends HTMLAttributes<HTMLDivElement | HTMLSpanElement> {
+export interface SpinnerProps {
   className?: string;
   color?: string;
   component?: string | ElementType;
@@ -11,7 +10,9 @@ export interface SpinnerProps extends HTMLAttributes<HTMLDivElement | HTMLSpanEl
   visuallyHiddenLabel?: string;
 }
 
-export const Spinner = forwardRef<HTMLDivElement | HTMLSpanElement, SpinnerProps>(
+type Ref = HTMLDivElement | HTMLSpanElement;
+
+export const Spinner = forwardRef<Ref, SpinnerProps>(
   (
     {
       className,
@@ -38,14 +39,5 @@ export const Spinner = forwardRef<HTMLDivElement | HTMLSpanElement, SpinnerProps
     );
   },
 );
-
-Spinner.propTypes = {
-  className: PropTypes.string,
-  color: PropTypes.string,
-  component: PropTypes.string,
-  size: PropTypes.oneOf(['sm']),
-  variant: PropTypes.oneOf(['border', 'grow']),
-  visuallyHiddenLabel: PropTypes.string,
-};
 
 Spinner.displayName = 'Spinner';
