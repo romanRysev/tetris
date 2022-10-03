@@ -1,0 +1,30 @@
+@import 'button';
+
+.button {
+  border: none;
+  height: 40px;
+  border-radius: 8px;
+  width: 100%;
+  cursor: pointer;
+
+  &_theme_light {
+    background-color: $button-light-background-color;
+    color: $button-light-text-color;
+  }
+
+  &_theme_dark {
+    background-color: $button-dark-background-color;
+    color: $button-dark-text-color;
+  }
+
+  &_transparent {
+    background-color: rgb(128 128 128 / 0%);
+    color: $button-transparent-text-color;
+  }
+
+  &_disabled {
+    background-color: $button-disabled-background-color;
+    color: $button-disabled-text-color;
+    cursor: default;
+  }
+}
