@@ -1,5 +1,5 @@
 import React from 'react'
-import './Button.scss'
+import './index.scss'
 
 interface Props {
   className?: string
@@ -8,19 +8,20 @@ interface Props {
   disabled?: boolean
 }
 
-const Button: React.FC<Props> = ({
+const button: React.FC<Props> = ({
   className,
   content,
   onClick,
   disabled = false,
 }) => {
-
-  
   return (
-    <button onClick={onClick} className={`button button_theme_light ${className}`} disabled={disabled}>
+    <button
+      onClick={onClick}
+      className={`button button_theme_light ${className}`}
+      disabled={disabled}>
       {content}
     </button>
   )
 }
 
-export default Button
+export const Button = button
