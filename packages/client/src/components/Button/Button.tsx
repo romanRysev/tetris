@@ -1,22 +1,15 @@
 import React from 'react'
+import './Button.scss'
 
 interface Props {
-  style?: React.CSSProperties
+  className?: string
   content: React.ReactNode | string
   onClick?: () => void
   disabled?: boolean
 }
 
 const Button: React.FC<Props> = ({
-   style = {
-    border: 'none',
-    backgroundColor: '#3369F3',
-    color: 'white',
-    height: '40px',
-    borderRadius: '8px',
-    width: '200px',
-    cursor: 'pointer'
-  },
+  className,
   content,
   onClick,
   disabled = false,
@@ -24,7 +17,7 @@ const Button: React.FC<Props> = ({
 
   
   return (
-    <button onClick={onClick} style={style} disabled={disabled}>
+    <button onClick={onClick} className={`button button_theme_light ${className}`} disabled={disabled}>
       {content}
     </button>
   )
