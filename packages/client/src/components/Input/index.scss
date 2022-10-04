@@ -1,15 +1,23 @@
 @import 'input';
 
-.input-container {
+.input {
   display: flex;
   flex-direction: column;
   width: 100%;
-}
 
-.input {
-  border: none;
-  border-bottom: solid 1px $input-underline-color;
-  margin: 8px 0;
+  &__field {
+    border: none;
+    border-bottom: solid 1px $input-underline-color;
+    margin: 8px 0;
+
+    &_theme_light {
+      background-color: $input-light-background-color;
+    }
+
+    &_theme_dark {
+      background-color: $input-dark-background-color;
+    }
+  }
 
   &__label {
     display: flex;
@@ -20,14 +28,6 @@
     font-size: 14px;
     line-height: 14px;
     color: $input-title-color;
-  }
-
-  &_theme_light {
-    background-color: $input-light-background-color;
-  }
-
-  &_theme_dark {
-    background-color: $input-dark-background-color;
   }
 
   &__error {

@@ -25,11 +25,11 @@ const input: React.FC<Props> = ({
   onBlur,
 }) => {
   return (
-    <div className="input-container">
+    <div className="input">
       <label className="input__label">
         <span className="input__title">{label}</span>
         <input
-          className={`input input_theme_light ${className}`}
+          className={`input__field input__field_theme_light ${className}`}
           value={value}
           type={type}
           placeholder={placeholder}

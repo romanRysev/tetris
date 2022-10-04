@@ -1,5 +1,5 @@
 import React from 'react';
-import './button.scss';
+import './index.scss';
 
 interface Props {
   className?: string;
