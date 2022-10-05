@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 import defaultAvatar from '../../assets/avatar.svg';
 
-import './style.scss';
+import './avatar.scss';
 
 type AvatarProps = {
   avatarPath?: string;
