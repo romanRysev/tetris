@@ -1,35 +1,20 @@
 import React from 'react';
-import './index.scss';
+import './input.scss';
 
-interface Props {
-  className?: string;
-  value?: string | undefined;
-  disabled?: boolean;
-  type?: React.HTMLInputTypeAttribute;
-  placeholder?: string;
+interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   errorText?: string;
-  onChange?: React.ChangeEventHandler<HTMLInputElement>;
-  onBlur?: React.FocusEventHandler<HTMLInputElement>;
 }
 
-const input: React.FC<Props> = ({
-  className = '',
-  disabled,
-  value,
-  type,
-  placeholder,
-  label,
-  errorText,
-  onChange,
-  onBlur,
-}) => {
+export function Input(props: Props) {
+  const { label, errorText, ...inputProps } = props;
+  const { className, disabled, value, type, placeholder, onChange, onBlur } = inputProps;
   return (
     <div className="input">
       <label className="input__label">
         <span className="input__title">{label}</span>
         <input
-          className={`input__field input__field_theme_light ${className}`}
+          className={classNames('input__field', 'input__field_theme_light', className)}
           value={value}
           type={type}
           placeholder={placeholder}
@@ -41,6 +26,4 @@ const input: React.FC<Props> = ({
       </label>
     </div>
   );
-};
-
-export const Input = input;
+}
