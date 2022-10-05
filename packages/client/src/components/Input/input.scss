@@ -1,0 +1,38 @@
+@import 'variables';
+
+.input {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+
+  &__field {
+    border: none;
+    border-bottom: solid 1px $input-underline-color;
+    margin: 8px 0;
+
+    &_theme_light {
+      background-color: $input-light-background-color;
+    }
+
+    &_theme_dark {
+      background-color: $input-dark-background-color;
+    }
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__title {
+    font-size: 14px;
+    line-height: 14px;
+    color: $input-title-color;
+  }
+
+  &__error {
+    color: $input-error-color;
+    font-size: 12px;
+    line-height: 12px;
+  }
+}
