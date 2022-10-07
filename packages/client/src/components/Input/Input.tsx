@@ -9,7 +9,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
 
 export function Input(props: Props) {
   const { label, errorText, ...inputProps } = props;
-  const { className, disabled, value, type, placeholder, onChange, onBlur } = inputProps;
+  const { className, disabled, value, type, placeholder, onChange, onBlur, name } = inputProps;
   return (
     <div className="input">
       <label className="input__label">
@@ -22,6 +22,7 @@ export function Input(props: Props) {
           disabled={disabled}
           onChange={onChange}
           onBlur={onBlur}
+          name={name}
         />
         <span className="input__error">{errorText}</span>
       </label>

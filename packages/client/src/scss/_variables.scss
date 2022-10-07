@@ -1,0 +1,343 @@
+// Color system
+
+$white:     #fff    !default;
+$gray-base: #999    !default;
+$gray-100:  #ededed !default;
+$gray-200:  #cbcbcb !default;
+$gray-300:  #a9a9a9 !default;
+$gray-400:  #999    !default;
+$gray-500:  #7e7e7e !default;
+$gray-600:  #636363 !default;
+$gray-700:  #4a4a4a !default;
+$gray-800:  #333    !default;
+$gray-900:  #1e1e1e !default;
+$black:     #000015 !default;
+
+$grays: (
+        "100": $gray-100,
+        "200": $gray-200,
+        "300": $gray-300,
+        "400": $gray-400,
+        "500": $gray-500,
+        "600": $gray-600,
+        "700": $gray-700,
+        "800": $gray-800,
+        "900": $gray-900
+) !default;
+
+$primary-dark:  #1f1498 !default;
+$primary-base:  #3369F3 !default;
+$primary-50:    #988fed !default;
+$primary-25:    #E4EDFD !default;
+
+$secondary-dark:  #212233 !default;
+$secondary-base:  #9da5b1 !default;
+$secondary-50:    #9da5b1 !default;
+$secondary-25:    #ced2d8 !default;
+
+$success-dark:  #1b9e3e !default;
+$success-base:  #2eb85c !default;
+$success-50:    #96dbad !default;
+$success-25:    #cbedd6 !default;
+
+$info-dark:  #2982cc !default;
+$info-base:  #39f !default;
+$info-50:    #80c6ff !default;
+$info-25:    #c0e6ff !default;
+
+$warning-dark:  #f6960b !default;
+$warning-base:  #f9b115 !default;
+$warning-50:    #fcd88a !default;
+$warning-25:    #feecc5 !default;
+
+$danger-dark:  #d93737 !default;
+$danger-base:  #e55353 !default;
+$danger-50:    #f2a9a9 !default;
+$danger-25:    #f9d4d4 !default;
+
+$light-dark:     $gray-100 !default;
+$light-base:     $gray-100 !default;
+$light-50:       shift-color($light-base, -70) !default;
+$light-25:       shift-color($light-base, -80) !default;
+
+$dark-dark:      $gray-900 !default;
+$dark-base:      $gray-900 !default;
+$dark-50:        shift-color($dark-base, -70) !default;
+$dark-25:        shift-color($dark-base, -80) !default;
+
+// theme-color-variables
+$primary:       $primary-base !default;
+$secondary:     $secondary-base !default;
+$success:       $success-base !default;
+$info:          $info-base !default;
+$warning:       $warning-base !default;
+$danger:        $danger-base !default;
+$light:         $light-base !default;
+$dark:          $dark-base !default;
+// theme-color-variables
+
+// theme-colors-map
+$theme-colors: (
+        "primary":    $primary,
+        "secondary":  $secondary,
+        "success":    $success,
+        "info":       $info,
+        "warning":    $warning,
+        "danger":     $danger,
+        "light":      $light,
+        "dark":       $dark
+) !default;
+// theme-colors-map
+
+// theme-colors-rgb
+$theme-colors-rgb: map-loop($theme-colors, to-rgb, "$value") !default;
+// theme-colors-rgb
+
+$high-emphasis:            rgba(shift-color($gray-base, +26), .95) !default;
+$medium-emphasis:          rgba(shift-color($gray-base, +26), .681) !default;
+$disabled:                 rgba(shift-color($gray-base, +26), .38) !default;
+
+$high-emphasis-inverse:    rgba($white, .87) !default;
+$medium-emphasis-inverse:  rgba($white, .6) !default;
+$disabled-inverse:         rgba($white, .38) !default;
+
+$blue:    #3369f3 !default;
+$indigo:  #6610f2 !default;
+$purple:  #6f42c1 !default;
+$pink:    #ee82ee !default;
+$red:     #f00    !default;
+$orange:  #ffa500 !default;
+$yellow:  #ff0    !default;
+$green:   #008000 !default;
+$teal:    #20c997 !default;
+$cyan:    #0dcaf0 !default;
+
+$colors: (
+        "blue":       $blue,
+        "indigo":     $indigo,
+        "purple":     $purple,
+        "pink":       $pink,
+        "red":        $red,
+        "orange":     $orange,
+        "yellow":     $yellow,
+        "green":      $green,
+        "teal":       $teal,
+        "cyan":       $cyan,
+        "black":      $black,
+        "white":      $white,
+        "gray":       $gray-600,
+        "gray-dark":  $gray-800
+) !default;
+
+// Typography
+//
+
+$font-family-sans-serif:      Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+$font-family-monospace:       SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !default;
+
+$font-family-base:            var(--font-sans-serif) !default;
+$font-family-code:            var(--font-monospace) !default;
+
+$font-size-root:              null !default;
+$font-size-base:              1rem !default; // Предполагается, что у браузера установлен по умолчанию, 16 пикселей
+$font-size-sm:                $font-size-base * .875 !default;
+$font-size-lg:                $font-size-base * 1.25 !default;
+
+$font-weight-lighter:         lighter !default;
+$font-weight-light:           300 !default;
+$font-weight-normal:          400 !default;
+$font-weight-medium:          500 !default;
+$font-weight-semibold:        600 !default;
+$font-weight-bold:            700 !default;
+$font-weight-bolder:          bolder !default;
+
+$font-weight-base:            $font-weight-normal !default;
+
+$line-height-base:            1.5 !default;
+$line-height-sm:              1.25 !default;
+$line-height-lg:              2 !default;
+
+$h1-font-size:                $font-size-base * 2.5 !default;
+$h2-font-size:                $font-size-base * 2 !default;
+$h3-font-size:                $font-size-base * 1.75 !default;
+$h4-font-size:                $font-size-base * 1.5 !default;
+$h5-font-size:                $font-size-base * 1.25 !default;
+$h6-font-size:                $font-size-base !default;
+
+$font-sizes: (
+        1: $h1-font-size,
+        2: $h2-font-size,
+        3: $h3-font-size,
+        4: $h4-font-size,
+        5: $h5-font-size,
+        6: $h6-font-size
+) !default;
+
+// Body
+//
+
+$body-bg:                   $white !default;
+$body-color:                $high-emphasis !default;
+$body-text-align:           null !default;
+
+$spacer: 1rem !default;
+$spacers: (
+        0: 0,
+        1: $spacer * .25,
+        2: $spacer * .5,
+        3: $spacer,
+        4: $spacer * 1.5,
+        5: $spacer * 3,
+) !default;
+
+$border-width:                1px !default;
+$border-widths: (
+        1: 1px,
+        2: 2px,
+        3: 3px,
+        4: 4px,
+        5: 5px
+) !default;
+
+$hr-border-color:             null !default;
+$hr-border-width:             $border-width !default;
+$hr-opacity:                  .25 !default;
+
+$hr-margin-y:                 $spacer !default;
+$hr-color:                    inherit !default;
+
+$headings-margin-bottom:      $spacer * .5 !default;
+$headings-font-family:        null !default;
+$headings-font-style:         null !default;
+$headings-font-weight:        500 !default;
+$headings-line-height:        1.2 !default;
+$headings-color:              unset !default;
+
+$lead-font-size:                $font-size-base * 1.25 !default;
+$lead-font-weight:              300 !default;
+
+$small-font-size:               .875em !default;
+
+$sub-sup-font-size:             .75em !default;
+
+$text-high-emphasis:            $high-emphasis !default;
+$text-medium-emphasis:          $medium-emphasis !default;
+$text-disabled:                 $disabled !default;
+$text-muted:                    $disabled !default;
+
+$text-high-emphasis-inverse:    $high-emphasis-inverse !default;
+$text-medium-emphasis-inverse:  $medium-emphasis-inverse !default;
+$text-disabled-inverse:         $disabled-inverse !default;
+
+$initialism-font-size:          $small-font-size !default;
+
+$blockquote-margin-y:           $spacer !default;
+$blockquote-font-size:          $font-size-base * 1.25 !default;
+$blockquote-footer-color:       $gray-600 !default;
+$blockquote-footer-font-size:   $small-font-size !default;
+
+$hr-margin-y:                 $spacer !default;
+$hr-color:                    inherit !default;
+
+$legend-margin-bottom:        .5rem !default;
+$legend-font-size:            1.5rem !default;
+$legend-font-weight:          null !default;
+
+$paragraph-margin-bottom:   1rem !default;
+
+$dt-font-weight:              $font-weight-bold !default;
+
+$mark-padding:                .1875em !default;
+
+// border-radius-variables
+$border-radius:               .375rem !default;
+$border-radius-sm:            .25rem !default;
+$border-radius-lg:            .5rem !default;
+$border-radius-xl:            1rem !default;
+$border-radius-2xl:           2rem !default;
+$border-radius-pill:          50rem !default;
+// scss-docs-end border-radius-variables
+
+// Links
+//
+
+$link-color:                              $primary !default;
+$link-decoration:                         underline !default;
+$link-shade-percentage:                   20% !default;
+$link-hover-color:                        shift-color($link-color, $link-shade-percentage) !default;
+$link-hover-decoration:                   null !default;
+
+$stretched-link-pseudo-element:           after !default;
+$stretched-link-z-index:                  1 !default;
+
+// Tables
+//
+
+$table-cell-padding-y:        .5rem !default;
+$table-cell-padding-x:        .5rem !default;
+$table-cell-padding-y-sm:     .25rem !default;
+$table-cell-padding-x-sm:     .25rem !default;
+
+$table-cell-vertical-align:   top !default;
+
+$table-color:                 var(--body-color) !default;
+$table-bg:                    transparent !default;
+$table-accent-bg:             transparent !default;
+
+$table-th-font-weight:        600 !default;
+
+$table-striped-color:         $table-color !default;
+$table-striped-bg-factor:     .05 !default;
+$table-striped-bg:            rgba($black, $table-striped-bg-factor) !default;
+
+$table-active-color:          $table-color !default;
+$table-active-bg-factor:      .1 !default;
+$table-active-bg:             rgba($black, $table-active-bg-factor) !default;
+
+$table-hover-color:           $table-color !default;
+$table-hover-bg-factor:       .075 !default;
+$table-hover-bg:              rgba($black, $table-hover-bg-factor) !default;
+
+$table-border-factor:         .1 !default;
+$table-border-width:          $border-width !default;
+$table-border-color:          var(--border-color) !default;
+
+$table-striped-order:         odd !default;
+$table-striped-columns-order: even !default;
+
+$table-group-separator-color: currentColor !default;
+
+$table-caption-color:         $text-muted !default;
+
+$table-bg-scale:              -80% !default;
+
+$table-variants: (
+        "primary":    shift-color($primary, $table-bg-scale),
+        "secondary":  shift-color($secondary, $table-bg-scale),
+        "success":    shift-color($success, $table-bg-scale),
+        "info":       shift-color($info, $table-bg-scale),
+        "warning":    shift-color($warning, $table-bg-scale),
+        "danger":     shift-color($danger, $table-bg-scale),
+        "light":      $light,
+        "dark":       $dark,
+) !default;
+
+$enable-button-pointers:      true !default;
+$enable-ltr:                  true !default;
+$enable-rtl:                  false !default;
+$enable-smooth-scroll:        true !default;
+$enable-rounded:              true !default;
+
+// Code
+
+$code-font-size:                    $small-font-size !default;
+$code-color:                        $pink !default;
+
+$kbd-padding-y:                     .1875rem !default;
+$kbd-padding-x:                     .375rem !default;
+$kbd-font-size:                     $code-font-size !default;
+$kbd-color:                         var(--body-bg) !default;
+$kbd-bg:                            var(--body-color) !default;
+$nested-kbd-font-weight:            null !default;
+
+$pre-color:                         unset !default;

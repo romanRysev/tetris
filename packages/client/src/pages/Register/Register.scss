@@ -1,0 +1,39 @@
+.register__wrapper {
+  min-height: 100vh !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.register__content {
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  border-radius: 12px;
+  padding: 30px;
+  width: 340px;
+}
+
+.register__form {
+  display: flex;
+  flex-direction: column;
+  row-gap: 16px;
+}
+
+.register__form > p {
+  padding-top: 20px;
+  padding-bottom: 24px;
+}
+
+.register__title {
+  text-align: center;
+  margin: 0;
+  font-weight: 500;
+  font-size: 1.25rem;
+  color: #1E1E1E;
+}
+
+.register__buttons {
+  margin-top: 30px;
+  display: flex;
+  flex-direction: column;
+}
+

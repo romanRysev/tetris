@@ -6,9 +6,10 @@
   width: 100%;
 
   &__field {
-    border: none;
+    border: 0;
     border-bottom: solid 1px $input-underline-color;
     margin: 8px 0;
+    outline: 0;
 
     &_theme_light {
       background-color: $input-light-background-color;
@@ -25,14 +26,12 @@
   }
 
   &__title {
-    font-size: 14px;
-    line-height: 14px;
     color: $input-title-color;
+    font-size: .563rem;
   }
 
   &__error {
     color: $input-error-color;
-    font-size: 12px;
-    line-height: 12px;
+    font-size: .75rem;
   }
 }

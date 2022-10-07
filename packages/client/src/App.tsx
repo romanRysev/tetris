@@ -1,9 +1,10 @@
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 
-import './App.scss';
-import Login from './pages/login/login';
+import './scss/index.scss';
 
+const Login = React.lazy(() => import('./pages/Login/Login'));
+const Register = React.lazy(() => import('./pages/Register/Register'));
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
@@ -19,7 +20,8 @@ function App() {
     <HashRouter>
       <Suspense>
         <Routes>
-          <Route path={'*'} element={<Login />} />
+          <Route path="*" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </Suspense>
     </HashRouter>
