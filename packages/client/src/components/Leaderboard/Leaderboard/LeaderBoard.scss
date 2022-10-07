@@ -1,0 +1,34 @@
+@import './../../../styles/variables';
+
+.leaderboard-wrapper {
+  width: 100%;
+  text-align: center;
+  color: $color-messages;
+
+  &_theme_light {
+    @extend .leaderboard-wrapper;
+  }
+
+  &_theme_dark {
+    @extend .leaderboard-wrapper;
+    color: $color-text-dark_theme;
+  }
+}
+
+.leaderboard__top,
+.leaderboard__leaders {
+  display: block;
+  width: 670px;
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.leaderboard-top-list {
+  list-style: none;
+  margin-bottom: 50px;
+}
+
+.leaderboard-list {
+  list-style: none;
+}

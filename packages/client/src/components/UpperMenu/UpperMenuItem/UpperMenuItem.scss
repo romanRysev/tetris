@@ -1,0 +1,26 @@
+@import './../../../styles/variables';
+
+.menu-list__item {
+  display: inline-block;
+  margin: 0px 10px;
+  cursor: pointer;
+}
+
+.upper-menu__link {
+  font-weight: bold;
+  color: $color-messages;
+  text-decoration: none;
+
+  &_theme_light {
+    @extend .upper-menu__link;
+  }
+
+  &_theme_dark {
+    @extend .upper-menu__link;
+    color: $color-text-dark_theme;
+  }
+}
+
+.upper-menu__link.active {
+  text-decoration: underline;
+}

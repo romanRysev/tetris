@@ -1,0 +1,26 @@
+@import './../../../styles/variables';
+
+.upper-menu {
+  display: block;
+  width: 100%;
+  background-color: $color-backgrnd-gray;
+
+  &_theme_light {
+    @extend .upper-menu;
+  }
+
+  &_theme_dark {
+    @extend .upper-menu;
+    background-color: $color-backgrnd-gray-dark-theme;
+  }
+}
+
+.menu-list-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.menu-list {
+  display: inline-block;
+  list-style: none;
+}
