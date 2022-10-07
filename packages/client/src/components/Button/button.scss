@@ -38,12 +38,9 @@
   font-size: .813rem;
   font-weight: 500;
   margin: 0;
-  padding: 12px 0;
-}
 
-.button__text_opacity {
-  background-color: var(--white);
-  color: var(--blue);
-  margin: 0;
-  padding: 0;
+  &_opacity {
+    background-color: var(--white);
+    color: var(--blue);
+  }
 }
