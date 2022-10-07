@@ -4,7 +4,7 @@
   display: inline-block;
 }
 
-.user-avatar {
+.user-info__avatar {
   display: inline-block;
   vertical-align: middle;
   overflow: hidden;
@@ -15,16 +15,16 @@
   background-color: $color-midgray;
 
   &_theme_light {
-    @extend .user-avatar;
+    @extend .user-info__avatar;
   }
 
   &_theme_dark {
-    @extend .user-avatar;
+    @extend .user-info__avatar;
     box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.25);
   }
 }
 
-.user-name {
+.user-info__name {
   display: inline-block;
   vertical-align: middle;
   color: #000;
@@ -32,11 +32,11 @@
   cursor: pointer;
 
   &_theme_light {
-    @extend .user-name;
+    @extend .user-info__name;
   }
 
   &_theme_dark {
-    @extend .user-name;
+    @extend .user-info__name;
     color: $color-text-dark_theme;
   }
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { defaulAvatar } from '../../consts/prefix';
 import './UserAvatar.scss';
 
@@ -10,16 +10,16 @@ type UserAvatarProps = {
   text?: string;
 };
 
-export const UserAvatar: React.FC<UserAvatarProps> = (props) => {
+export const UserAvatar: FC<UserAvatarProps> = (props) => {
   const { username, avatarPath, onClick, classname, text } = props;
   return (
-    <div className={classname ? classname : 'user-avatar_theme_light'} onClick={onClick}>
+    <div className={classname ? classname : 'avatar'} onClick={onClick}>
       <img
-        className="user-avatar__img"
+        className="avatar__img"
         src={avatarPath ? avatarPath : defaulAvatar}
         alt={username ? username : 'Аватарка'}
       />
-      {text && <div className="user-avatar__text">{text}</div>}
+      {text && <div className="avatar__text">{text}</div>}
     </div>
   );
 };

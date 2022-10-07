@@ -17,19 +17,19 @@
   }
 }
 
-.leaderboard-top-list .leader-list__item_theme_light:nth-child(even) {
+.leaderboard__top-list .leader-list__item_theme_light:nth-child(even) {
   background-color: $color-back-gray;
 }
 
-.leaderboard-top-list .leader-list__item_dark_theme:nth-child(even) {
+.leaderboard__top-list .leader-list__item_dark_theme:nth-child(even) {
   background-color: $color-dark-theme-mid-gray;
 }
 
-.leaderboard-list .leader-list__item_theme_light:nth-child(odd) {
+.leaderboard__list .leader-list__item_theme_light:nth-child(odd) {
   background-color: $color-back-gray;
 }
 
-.leaderboard-list .leader-list__item_dark_theme:nth-child(odd) {
+.leaderboard__list .leader-list__item_dark_theme:nth-child(odd) {
   background-color: $color-dark-theme-mid-gray;
 }
 

@@ -23,8 +23,8 @@ export const MenuUserInfo: FC<UserProps> = (props) => {
 
   return (
     <div className="user-info">
-      <UserAvatar avatarPath={avatarUrl} />
-      <div className="user-name_theme_light" onClick={() => console.log('ТУТ ДОЛЖЕН БЫТЬ ПЕРЕХОД НА ПРОФИЛЬ')}>
+      <UserAvatar avatarPath={avatarUrl} classname="user-info__avatar" />
+      <div className="user-info__name_theme_light" onClick={() => console.log('ТУТ ДОЛЖЕН БЫТЬ ПЕРЕХОД НА ПРОФИЛЬ')}>
         {name}
       </div>
     </div>

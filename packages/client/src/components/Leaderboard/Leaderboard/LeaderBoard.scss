@@ -6,11 +6,11 @@
   color: $color-messages;
 
   &_theme_light {
-    @extend .leaderboard-wrapper;
+    @extend .leaderboard__wrapper;
   }
 
   &_theme_dark {
-    @extend .leaderboard-wrapper;
+    @extend .leaderboard__wrapper;
     color: $color-text-dark_theme;
   }
 }
