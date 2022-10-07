@@ -1,14 +1,17 @@
+@import "./variables";
+
 body {
     margin: 0;
-    color: #000;
+    color: $color-messages;
     font-family: "Open Sans", sans-serif;
     box-sizing: border-box;
     font-size: 13px;
     font-weight: 500;
-}
 
-h3 {
-    font-size: 20px;
+    &_theme_dark {
+        @extend body;
+        color: $color-text-dark_theme;
+    }
 }
 
 #root {
@@ -16,8 +19,4 @@ h3 {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-}
-
-.hidden {
-    display: none;
 }

@@ -1,19 +1,18 @@
-import React, { ReactNode } from 'react';
+import React, { FC, ReactNode } from 'react';
 import { UpperMenu } from '../UpperMenu/UpperMenu/UpperMenu';
 import { LeftPanel } from './LeftPanel/LeftPanel';
 import './StaticLayout.scss';
 
 type StaticLayoutProps = {
-  content: ReactNode;
+  children: ReactNode;
 };
 
-export const StaticLayout: React.FC<StaticLayoutProps> = (props) => {
-  const { content } = props;
+export const StaticLayout: FC<StaticLayoutProps> = ({ children }) => {
   return (
-    <div className="main-wrapper">
+    <div className="main__wrapper">
       <LeftPanel />
       <UpperMenu />
-      {content}
+      {children}
     </div>
   );
 };

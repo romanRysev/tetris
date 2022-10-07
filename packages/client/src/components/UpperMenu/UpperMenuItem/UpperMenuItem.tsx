@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React, { FC, MouseEventHandler } from 'react';
 import { NavLink } from 'react-router-dom';
 import './UpperMenuItem.scss';
 
@@ -9,7 +9,7 @@ export type MenuItemProps = {
   title?: string;
 };
 
-export const UpperMenuItem: React.FC<MenuItemProps> = (props) => {
+export const UpperMenuItem: FC<MenuItemProps> = (props) => {
   const { text, link, title, onClick } = props;
   const item = link ? (
     <NavLink to={link} className="upper-menu__link_theme_light">

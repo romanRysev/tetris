@@ -16,19 +16,19 @@
   }
 }
 
-.avatar__img {
+.user-avatar__img {
   width: 100%;
 }
 
-.avatar__text {
+.user-avatar__text {
   color: $color-messages;
 
   &_theme_light {
-    @extend .avatar__text;
+    @extend .user-avatar__text;
   }
 
   &_theme_dark {
-    @extend .avatar__text;
+    @extend .user-avatar__text;
     color: $color-text-dark_theme;
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { FC, useState } from 'react';
 
 import { MenuItemProps, UpperMenuItem } from '../UpperMenuItem/UpperMenuItem';
 import './UpperMenu.scss';
@@ -56,13 +56,13 @@ const dummyUser: UserProps = {
   avatar: '',
 };
 
-export const UpperMenu: React.FC = () => {
+export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);
   return (
     <div className="upper-menu_theme_light">
       <MenuUserInfo {...dummyUser} />
 
-      <div className="menu-list-wrapper">
+      <div className="menu-list__wrapper">
         <ul className="menu-list">
           {menuLinks.map((item, index) => (
             <UpperMenuItem text={item.text} link={item.link} key={index} />

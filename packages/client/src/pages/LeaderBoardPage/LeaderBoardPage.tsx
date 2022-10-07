@@ -3,5 +3,5 @@ import { LeaderBoard } from '../../components/Leaderboard/Leaderboard/LeaderBoar
 import { StaticLayout } from '../../components/StaticLayout/StaticLayout';
 
 export const LeaderBoardPage = () => {
-  return <StaticLayout content={<LeaderBoard />} />;
+  return <StaticLayout>{<LeaderBoard />}</StaticLayout>;
 };

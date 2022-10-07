@@ -15,11 +15,11 @@ export const UserAvatar: React.FC<UserAvatarProps> = (props) => {
   return (
     <div className={classname ? classname : 'user-avatar_theme_light'} onClick={onClick}>
       <img
-        className="avatar__img"
+        className="user-avatar__img"
         src={avatarPath ? avatarPath : defaulAvatar}
         alt={username ? username : 'Аватарка'}
       />
-      {text && <div className="avatar__text">{text}</div>}
+      {text && <div className="user-avatar__text">{text}</div>}
     </div>
   );
 };

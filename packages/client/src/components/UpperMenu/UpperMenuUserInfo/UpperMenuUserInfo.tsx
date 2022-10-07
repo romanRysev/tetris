@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { defaulAvatar, filePrefix } from '../../../consts/prefix';
 import { UserAvatar } from '../../UserAvatar/UserAvatar';
 import './UpperMenuUserInfo.scss';
@@ -14,7 +14,7 @@ export type UserProps = {
   avatar: string;
 };
 
-export const MenuUserInfo: React.FC<UserProps> = (props) => {
+export const MenuUserInfo: FC<UserProps> = (props) => {
   // eslint-disable-next-line camelcase
   const { avatar, first_name, second_name, display_name } = props;
   const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaulAvatar;

@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Button } from '../../Button/Button';
 import './LeftPanel.scss';
 
-export const LeftPanel = () => {
+export const LeftPanel: FC = () => {
   return (
     <div className="link-to-game_theme_light">
       <Button
