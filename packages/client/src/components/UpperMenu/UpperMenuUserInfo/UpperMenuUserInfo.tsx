@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import React, { FC } from 'react';
 import { defaulAvatar, filePrefix } from '../../../consts/prefix';
 import { UserAvatar } from '../../UserAvatar/UserAvatar';
@@ -14,11 +15,8 @@ export type UserProps = {
   avatar: string;
 };
 
-export const MenuUserInfo: FC<UserProps> = (props) => {
-  // eslint-disable-next-line camelcase
-  const { avatar, first_name, second_name, display_name } = props;
+export const MenuUserInfo: FC<UserProps> = ({ first_name, second_name, display_name, avatar }) => {
   const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaulAvatar;
-  // eslint-disable-next-line camelcase
   const name = display_name ? display_name : `${first_name} ${second_name}`;
 
   return (

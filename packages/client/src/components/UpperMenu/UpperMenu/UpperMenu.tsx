@@ -67,7 +67,7 @@ export const UpperMenu: FC = () => {
           {menuLinks.map((item, index) => (
             <UpperMenuItem text={item.text} link={item.link} key={index} />
           ))}
-          {!isNight && <UpperMenuItem text="Ночная тема" onClick={() => setIsNight(true)} key="night" />}
+          {!isNight && <UpperMenuItem text="Ночная тема" onClick={() => setIsNight(true)} key="day" />}
           {!!isNight && <UpperMenuItem text="Дневная тема" onClick={() => setIsNight(false)} key="night" />}
           <UpperMenuItem text="Выйти" onClick={handleLogout} key="logout" />
         </ul>

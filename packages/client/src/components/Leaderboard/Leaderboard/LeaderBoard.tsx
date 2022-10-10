@@ -45,7 +45,7 @@ export type LeaderBoardProps = {
 
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   return (
-    <div className="leaderboard__wrapper_theme_light">
+    <div className="leaderboard-wrapper">
       <h3 className="leaderboard__section-header">{title}</h3>
       <div className="leaderboard__top">
         <ul className="leaderboard__top-list">

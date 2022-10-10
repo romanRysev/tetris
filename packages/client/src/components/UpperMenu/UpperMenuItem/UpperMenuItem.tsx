@@ -9,8 +9,7 @@ export type MenuItemProps = {
   title?: string;
 };
 
-export const UpperMenuItem: FC<MenuItemProps> = (props) => {
-  const { text, link, title, onClick } = props;
+export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick }) => {
   const item = link ? (
     <NavLink to={link} className="upper-menu__link_theme_light">
       {text}
@@ -20,7 +19,7 @@ export const UpperMenuItem: FC<MenuItemProps> = (props) => {
   );
 
   return (
-    <li className="menu-list__item" onClick={onClick} title={title ? title : text}>
+    <li className="menu-list__item" onClick={onClick} title={title ?? text}>
       {item}
     </li>
   );
