@@ -1,9 +1,8 @@
 import React, { FC, useState } from 'react';
-
-import { MenuItemProps, UpperMenuItem } from '../UpperMenuItem/UpperMenuItem';
 import './UpperMenu.scss';
-import { APIurls } from '../../../consts/prefix';
-import { MenuUserInfo, UserProps } from '../UpperMenuUserInfo/UpperMenuUserInfo';
+import { UserInfo, UserProps } from '../UserInfo/UserInfo';
+import { APIurls } from '../../helpers/prefix';
+import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 
 async function logout() {
   const response = await fetch(APIurls.LOGOUT, {
@@ -60,7 +59,7 @@ export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);
   return (
     <div className="upper-menu_theme_light">
-      <MenuUserInfo {...dummyUser} />
+      <UserInfo {...dummyUser} />
 
       <div className="menu-list__wrapper">
         <ul className="menu-list">

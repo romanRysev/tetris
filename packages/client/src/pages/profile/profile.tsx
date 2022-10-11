@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { Avatar } from '../../components/Avatar/Avatar';
 import { Popup } from '../../components/Popup/Popup';
-import { BackgroundBlur } from '../../components/BacckgroundBlur/BackgroundBlur';
+import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 
 import './profile.scss';
 

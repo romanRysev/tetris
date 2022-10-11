@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { defaulAvatar } from '../../../consts/prefix';
-import { UserAvatar } from '../../UserAvatar/UserAvatar';
+import { defaulAvatar } from '../../helpers/prefix';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
 import './LeaderItem.scss';
 
 export type LeaderProps = {
