@@ -1,3 +1,9 @@
-@import 'spinner';
+// Configuration
+@import 'functions';
+@import 'variables';
+@import 'mixins';
 
-@import 'mixins/visually-hidden';
+// Layout
+@import 'root';
+@import 'reboot';
+@import 'fonts';

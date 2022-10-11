@@ -1,0 +1,56 @@
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+// Colors
+@function to-rgb($value) {
+  @return red($value), green($value), blue($value);
+}
+
+// stylelint-disable scss/dollar-variable-pattern
+@function rgba-css-var($identifier, $target) {
+  @if $identifier == "body" and $target == "bg" {
+    @return rgba(var(--#{$identifier}-bg-rgb), var(--#{$target}-opacity));
+  } @if $identifier == "body" and $target == "text" {
+  @return rgba(var(--#{$identifier}-color-rgb), var(--#{$target}-opacity));
+} @else {
+  @return rgba(var(--#{$identifier}-rgb), var(--#{$target}-opacity));
+}
+}
+
+@function map-loop($map, $func, $args...) {
+  $_map: ();
+
+  @each $key, $value in $map {
+    // allow to pass the $key and $value of the map as an function argument
+    $_args: ();
+    @each $arg in $args {
+      $_args: append($_args, if($arg == "$key", $key, if($arg == "$value", $value, $arg)));
+    }
+
+    $_map: map-merge($_map, ($key: call(get-function($func), $_args...)));
+  }
+
+  @return $_map;
+}
+
+// Tint a color: mix a color with white
+@function tint-color($color, $weight) {
+  @return mix(white, $color, $weight);
+}
+
+// Shade a color: mix a color with black
+@function shade-color($color, $weight) {
+  @return mix(black, $color, $weight);
+}
+
+// Shade the color if the weight is positive, else tint it
+@function shift-color($color, $weight) {
+  @return if($weight > 0, shade-color($color, $weight), tint-color($color, -$weight));
+}

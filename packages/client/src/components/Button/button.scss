@@ -27,4 +27,20 @@
     color: $button-disabled-text-color;
     cursor: default;
   }
+
+  &_opacity {
+    background-color: transparent;
+    border: 0;
+  }
+}
+
+.button__text {
+  font-size: .813rem;
+  font-weight: 500;
+  margin: 0;
+
+  &_opacity {
+    background-color: var(--white);
+    color: var(--blue);
+  }
 }

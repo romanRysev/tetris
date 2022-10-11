@@ -8,14 +8,26 @@ interface Props {
   children: React.ReactNode | string;
   onClick?: () => void;
   disabled?: boolean;
+  backgroundOpacity?: boolean;
+  type?: 'button' | 'reset' | 'submit';
 }
 
-const button: React.FC<Props> = ({ className, children, onClick, disabled = false }) => {
+export const Button: React.FC<Props> = ({
+  className,
+  backgroundOpacity = false,
+  children,
+  onClick,
+  disabled = false,
+  type = 'button',
+}) => {
   return (
-    <button onClick={onClick} className={classNames('button', 'button_theme_light', className)} disabled={disabled}>
-      {children}
+    <button
+      type={type}
+      onClick={onClick}
+      className={classNames('button', 'button_theme_light', backgroundOpacity ? 'button_opacity' : '', className)}
+      disabled={disabled}
+    >
+      <p className={classNames('button__text', backgroundOpacity ? 'button__text_opacity' : '')}>{children}</p>
     </button>
   );
 };
-
-export const Button = button;
