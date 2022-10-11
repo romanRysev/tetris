@@ -1,5 +1,3 @@
-@import './../../../styles/variables';
-
 .user-info {
   display: inline-block;
 }
@@ -12,7 +10,7 @@
   width: 50px;
   border-radius: 50%;
   margin-right: 20px;
-  background-color: $color-midgray;
+  background-color: var(--color-midgray);
 
   &_theme_light {
     @extend .user-info__avatar;
@@ -37,6 +35,6 @@
 
   &_theme_dark {
     @extend .user-info__name;
-    color: $color-text-dark_theme;
+    color: var(--color-text-dark_theme);
   }
 }

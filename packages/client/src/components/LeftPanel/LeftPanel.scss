@@ -1,11 +1,9 @@
-@import './../../scss/variables';
-
 .link-to-game {
   height: 720px;
   background-color: #fbfbfb;
   width: 64px;
   float: left;
-  border-right: 1px solid $color-moregrey;
+  border-right: 1px solid var(--color-moregrey);
 
   &_theme_light {
     @extend .link-to-game;
@@ -13,7 +11,7 @@
 
   &_theme_dark {
     @extend .link-to-game;
-    background-color: $color-backgrnd-gray-dark-theme;
+    background-color: var(--color-backgrnd-gray-dark-theme);
   }
 }
 
@@ -43,6 +41,6 @@
 
   &_theme_dark {
     @extend .link-to-game__button;
-    background-color: $color-dark-theme-links;
+    background-color: var(--color-dark-theme-links);
   }
 }

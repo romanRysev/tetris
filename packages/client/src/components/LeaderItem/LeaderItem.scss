@@ -1,10 +1,8 @@
-@import './../../scss/variables';
-
 .leader-list__item {
   display: block;
   width: 670px;
   height: 46px;
-  background-color: $color-back-blue;
+  background-color: var(--color-back-blue);
   text-align: justify;
 
   &_theme_light {
@@ -13,24 +11,24 @@
 
   &_theme_dark {
     @extend .leader-list__item;
-    background-color: $color-dark-theme-dark-gray;
+    background-color: var(--color-dark-theme-dark-gray);
   }
 }
 
 .leaderboard__top-list .leader-list__item_theme_light:nth-child(even) {
-  background-color: $color-back-gray;
+  background-color: var(--color-back-gray);
 }
 
 .leaderboard__top-list .leader-list__item_dark_theme:nth-child(even) {
-  background-color: $color-dark-theme-mid-gray;
+  background-color: var(--color-dark-theme-mid-gray);
 }
 
 .leaderboard__list .leader-list__item_theme_light:nth-child(odd) {
-  background-color: $color-back-gray;
+  background-color: var(--color-back-gray);
 }
 
 .leaderboard__list .leader-list__item_dark_theme:nth-child(odd) {
-  background-color: $color-dark-theme-mid-gray;
+  background-color: var(--color-dark-theme-mid-gray);
 }
 
 .avatar {
@@ -67,7 +65,7 @@
 
   &_theme_dark {
     @extend .name;
-    color: $color-text-dark_theme;
+    color: var(--color-text-dark_theme);
   }
 }
 
@@ -84,6 +82,6 @@
 
   &_theme_dark {
     @extend .score;
-    color: $color-text-dark_theme;
+    color: var(--color-text-dark_theme);
   }
 }

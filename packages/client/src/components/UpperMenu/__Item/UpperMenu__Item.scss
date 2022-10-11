@@ -1,5 +1,3 @@
-@import './../../../scss/variables';
-
 .menu-list__item {
   display: inline-block;
   margin: 0px 10px;
@@ -8,7 +6,7 @@
 
 .upper-menu__link {
   font-weight: bold;
-  color: $color-messages;
+  color: var(--color-messages);
   text-decoration: none;
 
   &_theme_light {
@@ -17,7 +15,7 @@
 
   &_theme_dark {
     @extend .upper-menu__link;
-    color: $color-text-dark_theme;
+    color: var (--color-text-dark_theme);
   }
 }
 

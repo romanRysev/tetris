@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
 
 import './scss/index.scss';
 
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="*" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/leaderboard" element={<LeaderBoardPage />} />
         </Routes>
       </Suspense>
     </HashRouter>
