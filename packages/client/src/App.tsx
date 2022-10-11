@@ -1,11 +1,7 @@
-import React, { Suspense, useEffect } from 'react';
-import { HashRouter, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
 
-import './scss/index.scss';
-
-const Login = React.lazy(() => import('./pages/Login/Login'));
-const Register = React.lazy(() => import('./pages/Register/Register'));
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
@@ -18,16 +14,27 @@ function App() {
     fetchServerData();
   }, []);
   return (
-    <HashRouter>
-      <Suspense>
-        <Routes>
-          <Route path="*" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/leaderboard" element={<LeaderBoardPage />} />
-        </Routes>
-      </Suspense>
-    </HashRouter>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/leaderboard" element={<LeaderBoardPage />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
 export default App;
+
+{
+  /* <Routes>
+<Route path="/" >
+  <LeaderPage />
+  </Route> 
+  <Route path="/phorum" >
+  <PhorumMainPage />
+  </Route> 
+  <Route path="/leaderboard" >
+  <LeaderPage />
+  </Route> 
+
+</Routes> */
+}

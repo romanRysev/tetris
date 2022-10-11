@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { defaulAvatar } from '../../helpers/prefix';
+import { defaulAvatar, filePrefix } from '../../helpers/prefix';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
 import './LeaderItem.scss';
 
@@ -11,14 +11,19 @@ export type LeaderProps = {
 };
 
 export const LeaderItem: FC<LeaderProps> = ({
-  avatar = defaulAvatar,
+  avatar,
   name,
   onClick = () => console.log('ТУТ БУДЕТ ССЫЛКА НА ПРОФИЛЬ'),
   score,
 }) => {
   return (
     <li className="leader-list__item">
-      <UserAvatar username={name} avatarPath={avatar} classname="avatar" onClick={onClick} />
+      <UserAvatar
+        username={name}
+        avatarPath={avatar ? filePrefix + avatar : defaulAvatar}
+        classname="avatar"
+        onClick={onClick}
+      />
       <div className="name" onClick={onClick}>
         {name}
       </div>
