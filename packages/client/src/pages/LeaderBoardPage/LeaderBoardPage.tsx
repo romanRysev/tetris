@@ -1,5 +1,5 @@
 import React from 'react';
-import { LeaderBoard } from '../../components/Leaderboard/Leaderboard/LeaderBoard';
+import { LeaderBoard } from '../../components/Leaderboard/LeaderBoard';
 import { StaticLayout } from '../../components/StaticLayout/StaticLayout';
 
 export const LeaderBoardPage = () => {
