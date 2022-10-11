@@ -1,5 +1,5 @@
-.login__wrapper {
-  min-height: 100vh !important;
+.login {
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -18,17 +18,14 @@
   row-gap: 16px;
 }
 
-.login__form > p {
-  padding-top: 20px;
-  padding-bottom: 24px;
-}
-
 .login__title {
   text-align: center;
   margin: 0;
   font-weight: 500;
   font-size: 1.25rem;
   color: #1E1E1E;
+  padding-top: 20px;
+  padding-bottom: 24px;
 }
 
 .login__buttons {
