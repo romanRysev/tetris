@@ -1,8 +1,9 @@
 /* eslint-disable camelcase */
 import React, { FC } from 'react';
-import { defaulAvatar, filePrefix } from '../../../consts/prefix';
-import { UserAvatar } from '../../UserAvatar/UserAvatar';
-import './UpperMenuUserInfo.scss';
+import { defaulAvatar, filePrefix } from '../../helpers/prefix';
+import { UserAvatar } from '../UserAvatar/UserAvatar';
+
+import './UserInfo.scss';
 
 export type UserProps = {
   id: number;
@@ -15,7 +16,7 @@ export type UserProps = {
   avatar: string;
 };
 
-export const MenuUserInfo: FC<UserProps> = ({ first_name, second_name, display_name, avatar }) => {
+export const UserInfo: FC<UserProps> = ({ first_name, second_name, display_name, avatar }) => {
   const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaulAvatar;
   const name = display_name ? display_name : `${first_name} ${second_name}`;
 

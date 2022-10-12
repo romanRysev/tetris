@@ -1,9 +1,7 @@
-@import './../../../styles/variables';
-
 .leaderboard-wrapper {
   width: 100%;
   text-align: center;
-  color: $color-messages;
+  color: var(--color-messages);
 
   &_theme_light {
     @extend .leaderboard-wrapper;
@@ -11,7 +9,7 @@
 
   &_theme_dark {
     @extend .leaderboard-wrapper;
-    color: $color-text-dark_theme;
+    color: var(--color-text-dark_theme);
   }
 }
 

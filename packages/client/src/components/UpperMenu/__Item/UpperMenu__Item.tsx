@@ -1,6 +1,6 @@
 import React, { FC, MouseEventHandler } from 'react';
 import { NavLink } from 'react-router-dom';
-import './UpperMenuItem.scss';
+import './UpperMenu__Item.scss';
 
 export type MenuItemProps = {
   text: string;

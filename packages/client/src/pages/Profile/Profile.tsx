@@ -3,9 +3,9 @@ import classNames from 'classnames';
 
 import { Avatar } from '../../components/Avatar/Avatar';
 import { Popup } from '../../components/Popup/Popup';
-import { BackgroundBlur } from '../../components/BacckgroundBlur/BackgroundBlur';
+import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 
-import './profile.scss';
+import './Profile.scss';
 
 export const ProfilePage: FC = () => {
   const [title, setTitle] = useState('Загрузите файл');
