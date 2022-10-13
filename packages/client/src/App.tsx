@@ -8,6 +8,7 @@ import './scss/index.scss';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
+const Error = React.lazy(() => import('./pages/Error/Error'));
 
 function App() {
   useEffect(() => {
@@ -26,10 +27,12 @@ function App() {
       <HashRouter>
         <Suspense>
           <Routes>
-            <Route path="*" element={<Login />} />
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/leaderboard" element={<LeaderBoardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
+            <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
           </Routes>
         </Suspense>
       </HashRouter>
