@@ -2,12 +2,8 @@
   display: inline-block;
 
   &__avatar {
-    display: inline-block;
-    vertical-align: middle;
-    overflow: hidden;
-    height: 50px;
-    width: 50px;
-    border-radius: 50%;
+    height: 30px;
+    width: 30px;
     margin-right: 20px;
     background-color: var(--color-midgray);
   

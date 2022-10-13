@@ -8,28 +8,13 @@
 @import 'reboot';
 @import 'fonts';
 
-
-body {
-    margin: 0;
-    color: var(--color-messages);
-    font-family: "Open Sans", sans-serif;
-    box-sizing: border-box;
-    font-size: 13px;
-    font-weight: 500;
-
-    &_theme_dark {
-        color: var(--color-text-dark_theme);
-
-    }
-}
-
 #root {
-    max-width: 1280px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: center;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
 
-    &_theme_dark {
-        background-color: var(--color-messages);
-    }
+  &_theme_dark {
+    background-color: var(--color-messages);
+  }
 }

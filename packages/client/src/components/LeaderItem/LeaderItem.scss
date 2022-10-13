@@ -1,7 +1,7 @@
 .leaderboard-item {
   display: block;
   width: 670px;
-  height: 46px;
+  height: 66px;
   background-color: var(--color-back-blue);
   text-align: justify;
 
@@ -24,13 +24,6 @@
   }
 
   &__avatar {
-    display: inline-block;
-    vertical-align: middle;
-    overflow: hidden;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background-color: grey;
     margin: 8px;
     cursor: pointer;
 
