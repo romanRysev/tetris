@@ -1,4 +1,5 @@
-import React, { Suspense, useEffect } from 'react';
+import * as React from 'react';
+import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { LeaderBoardPage } from './pages/LeaderBoard/LeaderBoard';
 import { ProfilePage } from './pages/Profile/Profile';
@@ -7,6 +8,7 @@ import './scss/index.scss';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
+
 function App() {
   useEffect(() => {
     const fetchServerData = async () => {
@@ -19,16 +21,19 @@ function App() {
     fetchServerData();
   }, []);
   return (
-    <HashRouter>
-      <Suspense>
-        <Routes>
-          <Route path="*" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/leaderboard" element={<LeaderBoardPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Routes>
-      </Suspense>
-    </HashRouter>
+    <>
+      <div style={{ display: 'none' }}>Вот тут будет жить ваше приложение :)</div>
+      <HashRouter>
+        <Suspense>
+          <Routes>
+            <Route path="*" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/leaderboard" element={<LeaderBoardPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </Suspense>
+      </HashRouter>
+    </>
   );
 }
 
