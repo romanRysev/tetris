@@ -48,13 +48,13 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
     <div className="leaderboard">
       <h3 className="leaderboard__header">{title}</h3>
 
-      <ul className="leaderboard-list leaderboard-list_top">
+      <ul className="leaderboard__list leaderboard__list_top">
         {dummyLeaders.slice(0, 3).map((leader, index) => (
           <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} top={true} key={'top' + index} />
         ))}
       </ul>
 
-      <ul className="leaderboard-list">
+      <ul className="leaderboard__list">
         {dummyLeaders.slice(3, 10).map((leader, index) => (
           <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} key={'leader' + index} />
         ))}
