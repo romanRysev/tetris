@@ -1,7 +1,8 @@
 import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { LeaderBoardPage } from './pages/LeaderBoard/LeaderBoard';
+import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
+
 import { ProfilePage } from './pages/Profile/Profile';
 
 import './scss/index.scss';
