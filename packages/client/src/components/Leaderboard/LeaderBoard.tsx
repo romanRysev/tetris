@@ -45,22 +45,20 @@ export type LeaderBoardProps = {
 
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   return (
-    <div className="leaderboard-wrapper">
-      <h3 className="leaderboard__section-header">{title}</h3>
-      <div className="leaderboard__top">
-        <ul className="leaderboard__top-list">
-          {dummyLeaders.slice(0, 3).map((leader, index) => (
-            <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} key={'top' + index} />
-          ))}
-        </ul>
-      </div>
-      <div className="leaderboard__leaders">
-        <ul className="leaderboard__list">
-          {dummyLeaders.slice(3, 10).map((leader, index) => (
-            <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} key={'leader' + index} />
-          ))}
-        </ul>
-      </div>
+    <div className="leaderboard">
+      <h3 className="leaderboard__header">{title}</h3>
+
+      <ul className="leaderboard-list leaderboard-list_top">
+        {dummyLeaders.slice(0, 3).map((leader, index) => (
+          <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} top={true} key={'top' + index} />
+        ))}
+      </ul>
+
+      <ul className="leaderboard-list">
+        {dummyLeaders.slice(3, 10).map((leader, index) => (
+          <LeaderItem avatar={leader.avatar} name={leader.name} score={leader.score} key={'leader' + index} />
+        ))}
+      </ul>
     </div>
   );
 };

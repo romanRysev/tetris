@@ -1,36 +1,26 @@
-.leaderboard-wrapper {
+.leaderboard {
   width: 100%;
   text-align: center;
   color: var(--color-messages);
 
-  &_theme_light {
-    @extend .leaderboard-wrapper;
-  }
-
   &_theme_dark {
-    @extend .leaderboard-wrapper;
     color: var(--color-text-dark_theme);
   }
+
+  &__header {
+    font-size: 20px;
+  }
 }
 
-.leaderboard__section-header {
-  font-size: 20px;
-}
-
-.leaderboard__top,
-.leaderboard__leaders {
+.leaderboard-list {
   display: block;
   width: 670px;
   text-align: center;
   margin-left: auto;
   margin-right: auto;
-}
-
-.leaderboard__top-list {
   list-style: none;
-  margin-bottom: 50px;
-}
 
-.leaderboard__list {
-  list-style: none;
+  &_top {
+    margin-bottom: 50px;
+  }
 }

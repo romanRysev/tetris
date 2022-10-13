@@ -5,7 +5,7 @@ import './StaticLayout.scss';
 
 export const StaticLayout = ({ children }: PropsWithChildren) => {
   return (
-    <div className="main__wrapper">
+    <div className="main">
       <LeftPanel />
       <UpperMenu />
       {children}

@@ -11,7 +11,7 @@ export type MenuItemProps = {
 
 export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick }) => {
   const item = link ? (
-    <NavLink to={link} className="upper-menu__link_theme_light">
+    <NavLink to={link} className="upper-menu__link">
       {text}
     </NavLink>
   ) : (
@@ -19,7 +19,7 @@ export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick })
   );
 
   return (
-    <li className="menu-list__item" onClick={onClick} title={title ?? text}>
+    <li className="upper-menu__item" onClick={onClick} title={title ?? text}>
       {item}
     </li>
   );

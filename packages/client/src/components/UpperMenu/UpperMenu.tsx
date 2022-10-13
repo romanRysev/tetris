@@ -58,11 +58,11 @@ const dummyUser: UserProps = {
 export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);
   return (
-    <div className="upper-menu_theme_light">
+    <div className="upper-menu">
       <UserInfo {...dummyUser} />
 
-      <div className="menu-list__wrapper">
-        <ul className="menu-list">
+      <nav className="upper-menu__nav">
+        <ul className="upper-menu__list">
           {menuLinks.map((item, index) => (
             <UpperMenuItem text={item.text} link={item.link} key={index} />
           ))}
@@ -70,7 +70,7 @@ export const UpperMenu: FC = () => {
           {!!isNight && <UpperMenuItem text="Дневная тема" onClick={() => setIsNight(false)} key="night" />}
           <UpperMenuItem text="Выйти" onClick={handleLogout} key="logout" />
         </ul>
-      </div>
+      </nav>
     </div>
   );
 };
