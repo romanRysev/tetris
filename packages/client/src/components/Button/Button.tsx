@@ -12,13 +12,13 @@ interface Props {
   type?: 'button' | 'reset' | 'submit';
 }
 
-export const Button: React.FC<Props> = ({
+const Button: React.FC<Props> = ({
   className,
   backgroundOpacity = false,
   children,
   onClick,
   disabled = false,
-  type = 'button',
+  type,
 }) => {
   return (
     <button
@@ -31,3 +31,5 @@ export const Button: React.FC<Props> = ({
     </button>
   );
 };
+
+export default React.memo(Button);

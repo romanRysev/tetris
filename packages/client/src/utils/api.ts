@@ -7,16 +7,16 @@ const headers = {
 
 export const postLogout = async (token: string) =>
   await fetch(APIurls.LOGOUT, {
-    method: 'POST',
-    headers: headers.post,
+    method: 'GET',
+    headers: headers.get,
     body: JSON.stringify({ token }),
   });
 
-export const postRegisterRequest = async (token: string) =>
+export const postRegisterRequest = async (data: any) =>
   await fetch(APIurls.SIGNUP, {
     method: 'POST',
     headers: headers.post,
-    body: JSON.stringify({ token }),
+    body: JSON.stringify({ ...data }),
   });
 
 export const postLoginRequest = async (data: any) =>

@@ -1,36 +1,65 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { fetchUser } from '../actions/singActions';
+import { login, logout, register } from '../actions/singActions';
 
 interface IUserSlice {
-  user: [];
-  isLoading: boolean;
-  error: string;
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  user: {};
+  isAuthorized: boolean;
+  isFetching: boolean;
+  fetchingFailed: boolean;
+  error: string | null;
 }
 
 const initialState: IUserSlice = {
-  user: [],
-  isLoading: false,
-  error: '',
+  user: {},
+  isAuthorized: false,
+  isFetching: false,
+  fetchingFailed: false,
+  error: null,
 };
 
-export const userSlice = createSlice({
-  name: 'user',
+export const authSlice = createSlice({
+  name: 'auth',
   initialState,
   reducers: {},
   extraReducers: {
-    [fetchUser.fulfilled.type]: (state, action) => {
-      state.isLoading = false;
-      state.error = '';
+    [register.fulfilled.type]: (state, action) => {
+      state.fetchingFailed = false;
+      state.isAuthorized = true;
       state.user = action.payload;
+      state.isFetching = false;
     },
-    [fetchUser.pending.type]: (state) => {
-      state.isLoading = true;
+    [register.pending.type]: (state) => {
+      state.fetchingFailed = true;
+      state.isAuthorized = false;
+      state.isFetching = true;
     },
-    [fetchUser.rejected.type]: (state, action) => {
-      state.isLoading = false;
-      state.error = action.payload;
+    [register.rejected.type]: (state, action) => {
+      state.fetchingFailed = true;
+      state.isAuthorized = false;
+      state.isFetching = false;
+    },
+    [login.fulfilled.type]: (state, action) => {
+      state.fetchingFailed = false;
+      state.isAuthorized = true;
+      state.user = action.payload;
+      state.isFetching = false;
+    },
+    [login.pending.type]: (state) => {
+      state.fetchingFailed = true;
+      state.isAuthorized = false;
+      state.isFetching = true;
+    },
+    [login.rejected.type]: (state) => {
+      state.fetchingFailed = true;
+      state.isAuthorized = false;
+      state.isFetching = false;
+    },
+    [logout.fulfilled.type]: (state) => {
+      state.isAuthorized = false;
+      state.user = '';
     },
   },
 });
 
-export default userSlice;
+export default authSlice;

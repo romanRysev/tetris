@@ -7,7 +7,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   errorText?: string;
 }
 
-export function Input(props: Props) {
+const Input = (props: Props) => {
   const { label, errorText, ...inputProps } = props;
   const { className, disabled, value, type, placeholder, onChange, onBlur, name } = inputProps;
   return (
@@ -28,4 +28,6 @@ export function Input(props: Props) {
       </label>
     </div>
   );
-}
+};
+
+export default React.memo(Input);
