@@ -1,0 +1,32 @@
+@import '_variables';
+
+.popup {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 340px;
+  background: $popup-light-background-color;
+  border-radius: 12px;
+  margin: 230px auto 0;
+  padding: 40px 30px 30px;
+
+  &__title {
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color: $popup-light-text-color;
+    margin: 0;
+  }
+
+  &__button {
+    margin-bottom: 10px;
+    font-size: 13px;
+  }
+
+  &__validation-text {
+    color: $popup-light-error-color;
+    font-size: 11px;
+    text-align: center;
+    margin: 0;
+  }
+}
