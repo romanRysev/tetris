@@ -22,8 +22,8 @@ export const UserInfo: FC<UserProps> = ({ first_name, second_name, display_name,
 
   return (
     <div className="user-info">
-      <UserAvatar avatarPath={avatarUrl} classname="user-info__avatar" />
-      <div className="user-info__name_theme_light" onClick={() => console.log('ТУТ ДОЛЖЕН БЫТЬ ПЕРЕХОД НА ПРОФИЛЬ')}>
+      <UserAvatar avatarPath={avatarUrl} className="user-info__avatar" />
+      <div className="user-info__name" onClick={() => console.log('ТУТ ДОЛЖЕН БЫТЬ ПЕРЕХОД НА ПРОФИЛЬ')}>
         {name}
       </div>
     </div>

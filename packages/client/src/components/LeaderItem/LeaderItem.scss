@@ -1,87 +1,58 @@
-.leader-list__item {
+.leaderboard-item {
   display: block;
   width: 670px;
-  height: 46px;
+  height: 66px;
   background-color: var(--color-back-blue);
   text-align: justify;
 
-  &_theme_light {
-    @extend .leader-list__item;
+  &:nth-child(odd) {
+    background-color: var(--color-back-gray);
+  }
+
+  &_top {
+    &:nth-child(odd) {
+      background-color: var(--color-back-blue);
+    }
+  
+    &:nth-child(even) {
+      background-color: var(--color-back-gray);
+    }
   }
 
   &_theme_dark {
-    @extend .leader-list__item;
     background-color: var(--color-dark-theme-dark-gray);
   }
-}
 
-.leaderboard__top-list .leader-list__item_theme_light:nth-child(even) {
-  background-color: var(--color-back-gray);
-}
+  &__avatar {
+    margin: 8px;
+    cursor: pointer;
 
-.leaderboard__top-list .leader-list__item_dark_theme:nth-child(even) {
-  background-color: var(--color-dark-theme-mid-gray);
-}
-
-.leaderboard__list .leader-list__item_theme_light:nth-child(odd) {
-  background-color: var(--color-back-gray);
-}
-
-.leaderboard__list .leader-list__item_dark_theme:nth-child(odd) {
-  background-color: var(--color-dark-theme-mid-gray);
-}
-
-.avatar {
-  display: inline-block;
-  vertical-align: middle;
-  overflow: hidden;
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background-color: grey;
-  margin: 8px;
-  cursor: pointer;
-
-  &_theme_light {
-    @extend .avatar;
+    &_theme_dark {
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.25);
+    }
   }
 
-  &_theme_dark {
-    @extend .avatar;
-    box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.25);
-  }
-}
-
-.name {
-  display: inline-block;
-  vertical-align: middle;
-  width: 470px;
-  font-size: 20px;
-  cursor: pointer;
-
-  &_theme_light {
-    @extend .name;
+  &__name {
+    display: inline-block;
+    vertical-align: middle;
+    width: 470px;
+    font-size: 20px;
+    cursor: pointer;
+  
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
   }
 
-  &_theme_dark {
-    @extend .name;
-    color: var(--color-text-dark_theme);
-  }
-}
-
-.score {
-  display: inline-block;
-  vertical-align: middle;
-  width: 100px;
-  text-align: end;
-  font-size: 20px;
-
-  &_theme_light {
-    @extend .score;
-  }
-
-  &_theme_dark {
-    @extend .score;
-    color: var(--color-text-dark_theme);
+  &__score {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100px;
+    text-align: end;
+    font-size: 20px;
+    
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
   }
 }

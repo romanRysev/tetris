@@ -3,22 +3,16 @@
   width: 100%;
   background-color: var(--color-backgrnd-gray);
 
-  &_theme_light {
-    @extend .upper-menu;
-  }
-
   &_theme_dark {
-    @extend .upper-menu;
     background-color: var(color-backgrnd-gray-dark-theme);
   }
-}
 
-.menu-list__wrapper {
-  display: inline-block;
-  vertical-align: middle;
-}
+  &__nav {
+    display: inline-block;
+  }
 
-.menu-list {
-  display: inline-block;
-  list-style: none;
+  &__list {
+    display: inline-block;
+    list-style: none;
+  }
 }

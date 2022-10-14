@@ -4,9 +4,9 @@ import './LeftPanel.scss';
 
 export const LeftPanel: FC = () => {
   return (
-    <div className="link-to-game_theme_light">
+    <div className="left-panel">
       <Button
-        className="link-to-game__button"
+        className="left-panel__button"
         onClick={() => {
           console.log('CLICK');
         }}
