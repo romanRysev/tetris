@@ -2,6 +2,7 @@
 
 $color-messages: #000 !default;
 $color-links: #3369F3 !default;
+$color-white: #FFF !default;
 $color-lightgray: #eee !default;
 $color-back-gray: #f8f8f8 !default;
 $color-back-blue: #e4edfd !default;
@@ -12,13 +13,16 @@ $color-moregrey: #eaeaea !default;
 $color-backgrnd-gray: #fbfbfb !default;
 $color-text-dark_theme: #aaa !default;
 $color-backgrnd-gray-dark-theme: #333 !default;
+$color-danger: #e55353 !default;
 $color-dark-theme-dark-gray: #222 !default;
 $color-dark-theme-mid-gray: #444 !default;
 $color-dark-theme-links: #1D31AC !default;
+$color-dark-theme-danger: #d93737 !default;
 
 $codinsk: (
         "color-messages": $color-messages,
         "color-links": $color-links,
+        "color-lightgray": $color-lightgray,
         "color-back-gray": $color-back-gray,
         "color-back-blue": $color-back-blue,
         "color-midgray": $color-midgray,
@@ -26,13 +30,14 @@ $codinsk: (
         "color-lightergrey":$color-lightergrey,
         "color-moregrey": $color-moregrey,
         "color-backgrnd-gray": $color-backgrnd-gray,
+        "color-danger": $color-danger,
+        "color-white": $color-white,
         "color-text-dark_theme": $color-text-dark_theme,
         "color-backgrnd-gray-dark-theme": $color-backgrnd-gray-dark-theme,
         "color-dark-theme-dark-gray": $color-dark-theme-dark-gray,
         "color-dark-theme-mid-gray": $color-dark-theme-mid-gray,
-        "color-dark-theme-links": $color-dark-theme-links
-
-
+        "color-dark-theme-links": $color-dark-theme-links,
+        "color-dark-theme-danger": $color-dark-theme-danger,
 ) !default;
 
 // Color system

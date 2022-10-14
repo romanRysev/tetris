@@ -1,13 +1,41 @@
 import React, { BaseSyntheticEvent, useCallback, useState, FC, useRef, useEffect } from 'react';
 import classNames from 'classnames';
 
-import { Avatar } from '../../components/Avatar/Avatar';
+import { AvatarLg } from '../../components/AvatarLg/AvatarLg';
 import { Popup } from '../../components/Popup/Popup';
 import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 
 import './Profile.scss';
+import { Link } from '../../components/Link/Link';
+import { Table, TableCell, TableRow } from '../../components/Table/Table';
+import { BackButton } from '../../components/BackButton/BackButton';
 
-export const ProfilePage: FC = () => {
+interface ProfilePageProps {
+  profileData?: {
+    firstName: string;
+    lastName: string;
+    login: string;
+    email: string;
+    phone: string;
+    displayName: string;
+    avatarPath: string;
+  };
+}
+
+// TODO: брать из стора
+const data = {
+  firstName: 'Иван',
+  lastName: 'Иванов',
+  login: 'ivanivanov',
+  email: 'pochta@yandex.ru',
+  phone: '+7 (909) 967 30 30 ',
+  displayName: 'Иван',
+  avatarPath: '',
+};
+
+export const Profile: FC<ProfilePageProps> = ({ profileData }) => {
+  profileData = data; // TODO: брать из стора
+  const { firstName, lastName, login, email, phone, displayName, avatarPath } = profileData;
   const [title, setTitle] = useState('Загрузите файл');
   const [labelText, setLabelText] = useState('Выбрать файл на компьютере');
   const [file, setFile] = useState<File | undefined>(undefined);
@@ -57,7 +85,8 @@ export const ProfilePage: FC = () => {
 
   return (
     <div className="profile-page">
-      <Avatar avatarPath="" onClick={handleAvatarClick} />
+      <BackButton to="/" />
+      <AvatarLg avatarPath={avatarPath} onClick={handleAvatarClick} name={firstName} className="profile-page__avatar" />
       {popupVisible && (
         <BackgroundBlur onClick={handleScreenClick}>
           <Popup
@@ -78,6 +107,59 @@ export const ProfilePage: FC = () => {
           </Popup>
         </BackgroundBlur>
       )}
+
+      <Table className="profile-page__table">
+        <TableRow>
+          <TableCell> Почта </TableCell>
+          <TableCell> {email} </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell> Логин </TableCell>
+          <TableCell> {login} </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell> Имя </TableCell>
+          <TableCell>{firstName}</TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell> Фамилия </TableCell>
+          <TableCell> {lastName} </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell> Имя в чате </TableCell>
+          <TableCell> {displayName} </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell> Телефон </TableCell>
+          <TableCell> {phone} </TableCell>
+        </TableRow>
+      </Table>
+
+      <Table className="profile-page__table">
+        <TableRow>
+          <TableCell>
+            <Link to="/" color="blue">
+              Изменить данные
+            </Link>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Link to="/" color="blue">
+              Изменить пароль
+            </Link>
+          </TableCell>
+        </TableRow>
+        <TableRow>
+          <TableCell>
+            <Link to="/" color="red">
+              Выйти
+            </Link>
+          </TableCell>
+        </TableRow>
+      </Table>
     </div>
   );
 };
+
+export default Profile;
