@@ -19,6 +19,7 @@ const Button: React.FC<Props> = ({
   onClick,
   disabled = false,
   type,
+  ...rest
 }) => {
   return (
     <button
@@ -26,6 +27,7 @@ const Button: React.FC<Props> = ({
       onClick={onClick}
       className={classNames('button', 'button_theme_light', backgroundOpacity ? 'button_opacity' : '', className)}
       disabled={disabled}
+      {...rest}
     >
       <p className={classNames('button__text', backgroundOpacity ? 'button__text_opacity' : '')}>{children}</p>
     </button>

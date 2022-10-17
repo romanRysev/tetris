@@ -34,7 +34,7 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.isFetching = true;
     },
-    [register.rejected.type]: (state, action) => {
+    [register.rejected.type]: (state) => {
       state.fetchingFailed = true;
       state.isAuthorized = false;
       state.isFetching = false;
@@ -61,5 +61,3 @@ export const authSlice = createSlice({
     },
   },
 });
-
-export default authSlice;

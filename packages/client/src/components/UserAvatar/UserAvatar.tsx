@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
-import { defaulAvatar } from '../../consts/prefix';
 import './UserAvatar.scss';
+import { defaulAvatar } from '../../utils/constants';
 
 type UserAvatarProps = {
   username?: string;

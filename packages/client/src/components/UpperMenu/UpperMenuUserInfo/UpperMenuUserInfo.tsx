@@ -1,8 +1,8 @@
 /* eslint-disable camelcase */
 import React, { FC } from 'react';
-import { defaulAvatar, filePrefix } from '../../../consts/prefix';
 import { UserAvatar } from '../../UserAvatar/UserAvatar';
 import './UpperMenuUserInfo.scss';
+import { defaulAvatar, filePrefix } from '../../../utils/constants';
 
 export type UserProps = {
   id: number;
