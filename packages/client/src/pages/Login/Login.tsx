@@ -5,8 +5,8 @@ import './Login.scss';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../../redux/actions/singActions';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
+import { Button } from '../../components/Button/Button';
+import { Input } from '../../components/Input/Input';
 
 const Login = () => {
   const dispatch = useAppDispatch();

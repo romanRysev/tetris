@@ -1,0 +1,26 @@
+.table {
+  width: 100%;
+  padding: 0 100px;
+  font-size: 15px;
+
+  &__row {
+    display: flex;
+    margin: 0;
+    border-bottom: 1px solid var(--color-lightgray);
+  }
+
+  &__row:last-child {
+    border-bottom: none;
+  }
+
+  &__cell {
+    padding: 10px 0;
+    width: 50%;
+    color: var(--color-messages);
+  }
+
+  &__cell:nth-child(even) {
+    text-align: right;
+    color: var(--color-midgray);
+  }
+}

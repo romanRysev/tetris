@@ -1,0 +1,36 @@
+.left-panel {
+  height: 720px;
+  background-color: var(--color-backgrnd-gray);
+  width: 64px;
+  float: left;
+  border-right: 1px solid var(--color-moregrey);
+
+  &_theme_dark {
+    background-color: var(--color-backgrnd-gray-dark-theme);
+  }
+
+  &::before {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+  }
+
+  &__button {
+    height: 28px;
+    width: 28px;
+    border-radius: 50%;
+    background-image: url('./../../assets/arrow-right-solid.png');
+    background-repeat: no-repeat;
+    background-position-x: center;
+    background-position-y: center;
+    border: 0;
+    transform: rotate(180deg);
+    display: inline-block;
+    vertical-align: middle;
+  
+    &_theme_dark {
+      background-color: var(--color-dark-theme-links);
+    }
+  }
+}

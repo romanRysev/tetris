@@ -1,0 +1,28 @@
+.leaderboard {
+  width: 100%;
+  text-align: center;
+  color: var(--color-messages);
+
+  &_theme_dark {
+    color: var(--color-text-dark_theme);
+  }
+
+  &__header {
+    font-size: 20px;
+    padding: 20px;
+  }
+
+  &__list {
+    display: block;
+    width: 670px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    list-style: none;
+  
+    &_top {
+      margin-bottom: 50px;
+    }
+  }
+}
+

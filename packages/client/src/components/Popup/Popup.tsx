@@ -1,19 +1,18 @@
-import React, { FC } from 'react';
+import React, { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';
 import classNames from 'classnames';
 
 import './popup.scss';
 
-type PopupProps = {
+interface PopupProps extends PropsWithChildren {
   popupRef: React.MutableRefObject<HTMLInputElement>;
   title: string;
   buttonText: string;
   onClick: () => void;
-  children?: React.ReactNode | string;
   showValidation: boolean;
   validationText: string;
   className?: string;
-};
+}
 
 export const Popup: FC<PopupProps> = ({
   popupRef,

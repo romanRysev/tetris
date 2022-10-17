@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 
 import './Register.scss';
 import { Link } from 'react-router-dom';
-import Input from '../../components/Input/Input';
-import Button from '../../components/Button/Button';
 import { useAppDispatch } from '../../redux/hooks';
 import { register } from '../../redux/actions/singActions';
 import {
@@ -15,6 +13,8 @@ import {
   validSecondName,
   validSecondPassword,
 } from '../../helpers/validator';
+import { Input } from '../../components/Input/Input';
+import { Button } from '../../components/Button/Button';
 
 const Register = () => {
   const dispatch = useAppDispatch();

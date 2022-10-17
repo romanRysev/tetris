@@ -1,0 +1,18 @@
+.link {
+  display: block;
+  font-size: 13px;
+  text-decoration: none;
+  cursor: pointer;
+
+  &_blue {
+    color: var(--color-links);
+  }
+
+  &_black {
+    color: var(--color-messages);
+  }
+
+  &_red {
+    color: var(--color-danger);
+  }
+}

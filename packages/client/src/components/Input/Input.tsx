@@ -7,7 +7,7 @@ interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
   errorText?: string;
 }
 
-const Input = (props: Props) => {
+export const Input = (props: Props) => {
   const { label, errorText, ...inputProps } = props;
   const { className, disabled, value, type, placeholder, onChange, onBlur, name } = inputProps;
   return (
@@ -29,5 +29,3 @@ const Input = (props: Props) => {
     </div>
   );
 };
-
-export default Input;
