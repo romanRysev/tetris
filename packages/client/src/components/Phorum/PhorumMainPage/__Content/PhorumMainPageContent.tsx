@@ -3,6 +3,7 @@ import { dummyUser } from '../../../../consts/dummyData';
 import { makeUserNameFromUser } from '../../../../utils/makeUserProps';
 import { Popup } from '../../../Popup/Popup';
 import { MainListHeader } from '../__MainListHeader/PhorumMainListHeader';
+// import { MainListHeader } from './../__MainListHeader/PhorumMainListHeader';
 import { ThreadList } from '../__ThreadList/PhorumThreadList';
 import { ThreadListItemProps } from '../__ThreadListItem/PhorumThreadListItem';
 import './PhorumMainPageContent.scss';
