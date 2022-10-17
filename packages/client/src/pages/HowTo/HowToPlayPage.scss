@@ -1,0 +1,11 @@
+.rules {
+    color: var(--color-messages);
+
+    &__text {
+        margin-left: 64px;
+        text-align: left;
+        padding: 10px;
+        max-height: 623px;
+        overflow-y: auto;
+    }
+}
