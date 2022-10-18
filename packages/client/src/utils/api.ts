@@ -2,7 +2,7 @@ import { APIurls } from './constants';
 
 const headers = {
   post: { 'Content-Type': 'application/json' },
-  get: {},
+  get: { 'Content-Type': 'application/json' },
 };
 
 export const postLogout = async (token: string) =>
@@ -10,6 +10,7 @@ export const postLogout = async (token: string) =>
     method: 'GET',
     headers: headers.get,
     body: JSON.stringify({ token }),
+    credentials: 'include',
   });
 
 export const postRegisterRequest = async (data: any) =>
@@ -17,6 +18,7 @@ export const postRegisterRequest = async (data: any) =>
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify({ ...data }),
+    credentials: 'include',
   });
 
 export const postLoginRequest = async (data: any) =>
@@ -24,10 +26,12 @@ export const postLoginRequest = async (data: any) =>
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify({ ...data }),
+    credentials: 'include',
   });
 
-export const getProfileRequest = async (cookie: string) =>
+export const getProfileRequest = async () =>
   await fetch(APIurls.GETUSER, {
     method: 'GET',
-    headers: { ...headers.get, cookie },
+    headers: { ...headers.get },
+    credentials: 'include',
   });

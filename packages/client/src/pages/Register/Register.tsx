@@ -4,7 +4,15 @@ import './Register.scss';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { register } from '../../redux/actions/singActions';
-import { valid, validationRules, validSecondPassword } from '../../helpers/validator';
+import {
+  loginRule,
+  nameRule,
+  passwordRule,
+  phoneRule,
+  valid,
+  validation,
+  validationRules,
+} from '../../helpers/validator';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 
@@ -38,27 +46,29 @@ const Register = () => {
   };
 
   const checkLogin = (e) => {
-    valid(e, validationRules.login, setErrorLogin);
+    // Можно также использовать validation(e, [rule1, rule2]).errorMessages для отображения ошибок переданных правил валидации
+    // Правил можно в одно поле передать несколько => ошибок тоже может быть больше одной...
+    setErrorLogin(validation(e, [loginRule]).isValid);
   };
 
   const checkFirstName = (e) => {
-    valid(e, validationRules.name, setErrorFirstName);
+    setErrorFirstName(validation(e, [nameRule]).isValid);
   };
 
   const checkSecondName = (e) => {
-    valid(e, validationRules.name, setErrorSecondName);
+    setErrorSecondName(validation(e, [nameRule]).isValid);
   };
 
   const checkPhone = (e) => {
-    valid(e, validationRules.phone, setErrorPhone);
+    setErrorPhone(validation(e, [phoneRule]).isValid);
   };
 
   const checkPassword = (e) => {
-    valid(e, validationRules.password, setErrorPassword);
+    setErrorPassword(validation(e, [passwordRule]).isValid);
   };
 
   const checkSecordPassword = (e) => {
-    validSecondPassword(e.target.value, form.password, secondPassword, setErrorSecondPassword);
+    setErrorSecondPassword(validation(e, [passwordRule]).isValid);
   };
 
   const checkError = errorEmail

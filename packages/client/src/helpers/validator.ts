@@ -57,6 +57,38 @@ export const maxLengthRule = (length: number) => {
   };
 };
 
+export const loginRule = (value: unknown) => {
+  if (typeof value !== 'string') return 'Ошибка типа данных';
+  if (!value) return true;
+  const login = /^[0-9a-zA-Z\-_]{3,20}/;
+  return login.test(value) || 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание';
+};
+
+export const nameRule = (value: unknown) => {
+  if (typeof value !== 'string') return 'Ошибка типа данных';
+  if (!value) return true;
+  const name = /^[A-ZА-ЯЁ][а-яА-ЯёЁa-zA-Z-]+$/;
+  return name.test(value) || 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание';
+};
+
+export const phoneRule = (value: unknown) => {
+  if (typeof value !== 'string') return 'Ошибка типа данных';
+  if (!value) return true;
+  const phone = /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s./0-9]*$/;
+  return phone.test(value) || 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание';
+};
+
+export const passwordRule = (value: unknown) => {
+  if (typeof value !== 'string') return 'Ошибка типа данных';
+  if (!value) return true;
+  const phone = /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,40}$/;
+  return phone.test(value) || 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание';
+};
+
+export const comparePasswordsRules = (firstPassword: string, secondPassword: string) => {
+  return firstPassword === secondPassword || 'Пароли отличаются';
+};
+
 export const validationRules = {
   login: /^[0-9a-zA-Z\-_]{3,20}/,
   email: /^[0-9a-zA-Z\-_]{3,20}$/,
