@@ -5,7 +5,7 @@
     margin: 15px 0;
 
     &_theme_dark {
-        color: var(--color-text-dark_theme);
+      color: var(--color-text-dark_theme);
     }
   }
 
@@ -17,75 +17,70 @@
 }
 
 .thread-list__header {
-    font-size: 20px;
+  font-size: 20px;
 
-    &_theme_dark {
-        color: var(--color-text-dark_theme);
-    }
+  &_theme_dark {
+    color: var(--color-text-dark_theme);
+  }
 }
 
 .new-thread-wrapper {
-    display: block;
-    width: 100%;
-    height: 50px;
-    text-align: left;
-    padding-left: 20px;
+  display: block;
+  width: 100%;
+  height: 50px;
+  text-align: left;
+  padding-left: 20px;
+}
 
+.new-thread {
+  display: flex;
+  width: 80%;
+  height: 50px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+
+  &__link {
+    display: flex;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 10px 10px 8px 0;
   }
 
-  .new-thread {
+  &__input-wrapper {
     display: flex;
-    width: 80%;
-    height: 50px;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-end;
-
-    &__link {
-      display: flex;
-      font-weight: bold;
-      text-decoration: underline;
-      cursor: pointer;
-      margin: 10px 10px 8px 0;
-    }
-
-    &__input-wrapper {
-      display: flex;
-      width: 300px;
-      margin-right: 20px;
+    width: 300px;
+    margin-right: 20px;
   }
 
   &__button-wrapper {
     display: flex;
     margin-right: 20px;
-}
+  }
 
-&__button {
-  height: 30px;
-  margin-bottom: 10px;
-}
+  &__button {
+    height: 30px;
+    margin-bottom: 10px;
+  }
 
-&__popup {
-  margin: 200px auto 100px;
-  height: fit-content;
-  z-index: 1060;
-  position: absolute;
-  top: 0;
-  left: calc((100vw - 400px)/2);
+  &__popup {
+    margin: 200px auto 100px;
+    height: fit-content;
+    z-index: 1060;
+    position: absolute;
+    top: 0;
+    left: calc((100vw - 400px) / 2);
+  }
 
-  .input__label {
-    text-align: start;
+  &__textarea {
+    border: 1px solid var(--color-lightgray);
+    height: 100px;
+    margin-bottom: 10px;
+    color: var(--color-midgray);
+    font-style: italic;
   }
 }
-
-&__textarea {
-  border: 1px solid var(--color-lightgray);
-  height: 100px;
-  margin-bottom: 10px;
-  color: var(--color-midgray);
-  font-style: italic;
-}
-  }
 
 .phorum__thread-list {
   list-style: none;
@@ -100,5 +95,5 @@
   position: absolute;
   top: 0px;
   z-index: 1050;
-  background-color: rgba(0, 0, 0, .2);
+  background-color: rgba(0, 0, 0, 0.2);
 }

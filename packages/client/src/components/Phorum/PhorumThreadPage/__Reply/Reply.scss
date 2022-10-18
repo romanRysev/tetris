@@ -22,19 +22,19 @@
       flex-direction: row;
       justify-content: flex-end;
       align-items: flex-end;
-
-      .input {
-        width: 60px;
-      }
-
-      .input__label {
-        width: 30px;
-        height: 30px;
-        background-image: url('./../../../../assets/paperclip-solid.png');
-        background-size: contain;
-        cursor: pointer;
-      }
     }
+  }
+}
+
+.input {
+  width: 60px;
+
+  &__label {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../../../assets/paperclip-solid.png');
+    background-size: contain;
+    cursor: pointer;
   }
 }
 
