@@ -57,49 +57,21 @@ export const maxLengthRule = (length: number) => {
   };
 };
 
-export const validEmail = (e: { target: { value: string } }, setError: (arg0: boolean) => void) => {
-  if (e.target.value) {
-    setError(/^[^\s@]+@[^\s@]+\.[\S]{2,}$/.test(e.target.value));
-  } else {
-    setError(false);
-  }
+export const validationRules = {
+  login: /^[0-9a-zA-Z\-_]{3,20}/,
+  email: /^[0-9a-zA-Z\-_]{3,20}$/,
+  name: /^[A-ZА-ЯЁ][а-яА-ЯёЁa-zA-Z-]+$/,
+  phone: /^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s./0-9]*$/,
+  password: /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,40}$/,
 };
 
-export const validLogin = (e: { target: { value: string } }, setError: (arg0: boolean) => void) => {
+export const valid = (
+  e: { target: { value: string } },
+  rule: { test: (arg0: string) => boolean },
+  setError: (arg0: boolean) => void,
+) => {
   if (e.target.value) {
-    setError(/^[0-9a-zA-Z\-_]{3,20}$/.test(e.target.value));
-  } else {
-    setError(false);
-  }
-};
-
-export const validFirstName = (e: { target: { value: string } }, setError: (arg0: boolean) => void) => {
-  if (e.target.value) {
-    setError(/^[A-ZА-ЯЁ][а-яА-ЯёЁa-zA-Z-]+$/.test(e.target.value));
-  } else {
-    setError(false);
-  }
-};
-
-export const validSecondName = (e: { target: { value: string } }, setError: (arg0: boolean) => void) => {
-  if (e.target.value) {
-    setError(/^[A-ZА-ЯЁ][а-яА-ЯёЁa-zA-Z-]+$/.test(e.target.value));
-  } else {
-    setError(false);
-  }
-};
-
-export const validPhone = (e: { target: { value: string } }, setError: (arg0: boolean) => void) => {
-  if (e.target.value) {
-    setError(/^[+]*[(]{0,1}[0-9]{1,3}[)]{0,1}[-\s./0-9]*$/.test(e.target.value));
-  } else {
-    setError(false);
-  }
-};
-
-export const validPassword = (e, setError: (arg0: boolean) => void) => {
-  if (e.target.value) {
-    setError(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,40}$/.test(e.target.value));
+    setError(rule.test(e.target.value));
   } else {
     setError(false);
   }

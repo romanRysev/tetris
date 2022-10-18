@@ -26,8 +26,8 @@ export const postLoginRequest = async (data: any) =>
     body: JSON.stringify({ ...data }),
   });
 
-export const getProfileRequest = async (token: string) =>
+export const getProfileRequest = async (cookie: string) =>
   await fetch(APIurls.GETUSER, {
     method: 'GET',
-    headers: { ...headers.get, authorization: `Bearer ${token}` },
+    headers: { ...headers.get, cookie },
   });

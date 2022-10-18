@@ -4,15 +4,7 @@ import './Register.scss';
 import { Link } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { register } from '../../redux/actions/singActions';
-import {
-  validEmail,
-  validFirstName,
-  validLogin,
-  validPassword,
-  validPhone,
-  validSecondName,
-  validSecondPassword,
-} from '../../helpers/validator';
+import { valid, validationRules, validSecondPassword } from '../../helpers/validator';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 
@@ -42,46 +34,46 @@ const Register = () => {
   };
 
   const checkEmail = (e) => {
-    validEmail(e, setErrorEmail);
+    valid(e, validationRules.email, setErrorEmail);
   };
 
   const checkLogin = (e) => {
-    validLogin(e, setErrorLogin);
+    valid(e, validationRules.login, setErrorLogin);
   };
 
   const checkFirstName = (e) => {
-    validFirstName(e, setErrorFirstName);
+    valid(e, validationRules.name, setErrorFirstName);
   };
 
   const checkSecondName = (e) => {
-    validSecondName(e, setErrorSecondName);
+    valid(e, validationRules.name, setErrorSecondName);
   };
 
   const checkPhone = (e) => {
-    validPhone(e, setErrorPhone);
+    valid(e, validationRules.phone, setErrorPhone);
   };
 
   const checkPassword = (e) => {
-    validPassword(e, setErrorPassword);
+    valid(e, validationRules.password, setErrorPassword);
   };
 
   const checkSecordPassword = (e) => {
-    validSecondPassword(e.target.value, form?.password, secondPassword, setErrorSecondPassword);
+    validSecondPassword(e.target.value, form.password, secondPassword, setErrorSecondPassword);
   };
 
-  const checkError = !errorEmail
+  const checkError = errorEmail
     ? true
-    : !errorLogin
+    : errorLogin
     ? true
-    : !errorFirstName
+    : errorFirstName
     ? true
-    : !errorSecondName
+    : errorSecondName
     ? true
-    : !errorPhone
+    : errorPhone
     ? true
-    : !errorPassword
+    : errorPassword
     ? true
-    : !errorSecondPassword;
+    : errorSecondPassword;
 
   return (
     <div className="register">
@@ -95,7 +87,7 @@ const Register = () => {
             onChange={onFieldChange}
             value={form.email}
             onBlur={checkEmail}
-            errorText={!errorEmail && 'латиница, цифры и спецсимволы'}
+            errorText={errorEmail && 'латиница, цифры и спецсимволы'}
           />
           <Input
             label="Логин"
@@ -104,7 +96,7 @@ const Register = () => {
             onChange={onFieldChange}
             value={form.login}
             onBlur={checkLogin}
-            errorText={!errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
+            errorText={errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
           />
           <Input
             label="Имя"
@@ -114,7 +106,7 @@ const Register = () => {
             value={form.first_name}
             onBlur={checkFirstName}
             errorText={
-              !errorFirstName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
+              errorFirstName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
             }
           />
           <Input
@@ -125,7 +117,7 @@ const Register = () => {
             value={form.second_name}
             onBlur={checkSecondName}
             errorText={
-              !errorSecondName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
+              errorSecondName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
             }
           />
           <Input
@@ -135,7 +127,7 @@ const Register = () => {
             onChange={onFieldChange}
             value={form.phone}
             onBlur={checkPhone}
-            errorText={!errorPhone && 'от 10 до 15 символов, состоит из цифр, может начинается с плюса'}
+            errorText={errorPhone && 'от 10 до 15 символов, состоит из цифр, может начинается с плюса'}
           />
           <Input
             label="Пароль"
@@ -144,7 +136,9 @@ const Register = () => {
             onChange={onFieldChange}
             value={form.password}
             onBlur={checkPassword}
-            errorText={!errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква и цифра'}
+            errorText={
+              errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква, цифра и спецсимвол'
+            }
           />
           <Input
             label="Пароль еще раз"
@@ -153,7 +147,7 @@ const Register = () => {
             value={secondPassword}
             onChange={(e) => setSecondPassword(e.target.value)}
             onBlur={checkSecordPassword}
-            errorText={!errorSecondPassword && 'пароли не совпадают'}
+            errorText={errorSecondPassword && 'пароли не совпадают'}
           />
           <div className="register__buttons" style={checkError ? { cursor: 'not-allowed' } : null}>
             <Button style={checkError ? { backgroundColor: '#a51212', pointerEvents: 'none' } : null}>
@@ -161,7 +155,7 @@ const Register = () => {
             </Button>
           </div>
         </form>
-        <Link to="/">
+        <Link to="/login">
           <Button backgroundOpacity={true}>Войти</Button>
         </Link>
       </div>

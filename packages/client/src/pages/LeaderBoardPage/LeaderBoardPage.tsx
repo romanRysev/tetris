@@ -3,6 +3,8 @@ import { LeaderBoard } from '../../components/Leaderboard/LeaderBoard';
 import { StaticLayout } from '../../components/StaticLayout/StaticLayout';
 import './../../scss/index.scss';
 
-export const LeaderBoardPage = () => {
+const LeaderBoardPage = () => {
   return <StaticLayout>{<LeaderBoard />}</StaticLayout>;
 };
+
+export default LeaderBoardPage;
