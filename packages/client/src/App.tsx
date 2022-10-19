@@ -1,5 +1,6 @@
 import React, { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Game } from './pages/game/game';
 
 import './scss/index.scss';
 
@@ -22,6 +23,7 @@ function App() {
         <Routes>
           <Route path="*" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/game" element={<Game />} />
         </Routes>
       </Suspense>
     </HashRouter>
