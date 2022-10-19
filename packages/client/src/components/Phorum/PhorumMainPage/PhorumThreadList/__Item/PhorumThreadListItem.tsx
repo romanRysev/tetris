@@ -1,6 +1,6 @@
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { PageCounter } from '../../../__PageCount/PhorumPageCount';
+import { PageCounter } from '../__PageCount/PhorumPageCount';
 import './PhorumThreadListItem.scss';
 
 export interface ThreadListItemProps {
