@@ -1,10 +1,11 @@
 import React, { FC } from 'react';
-import { PhorumThreadListItem, ThreadListItemProps } from '../__ThreadListItem/PhorumThreadListItem';
+import { PhorumThreadListItem, ThreadListItemProps } from './__Item/PhorumThreadListItem';
+import './PhorumThreadList.scss';
 
 export const ThreadList: FC<ThreadListItemProps[]> = (list: ThreadListItemProps[]) => {
   const postList = Object.values(list);
   return (
-    <ul className="thread-list__list">
+    <ul className="phorum-thread-list">
       {postList.map((item, index) => (
         <PhorumThreadListItem
           thread={item.thread}

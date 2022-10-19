@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhorumThreadContent } from '../../../components/Phorum/PhorumThreadPage/__Content/PhorumThreadPageContent';
+import { PhorumThreadContent } from '../../../components/Phorum/PhorumThreadPage/PhorumThreadPageContent/PhorumThreadPageContent';
 import { StaticLayout } from '../../../components/StaticLayout/StaticLayout';
 import './PhorumThreadPage.scss';
 

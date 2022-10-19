@@ -1,0 +1,55 @@
+.phorum-post {
+  display: grid;
+  grid-template-columns: 1fr 5fr;
+  background-color: var(--color-back-gray);
+  border-bottom: 1px solid var(--white);
+
+  &:nth-child(even) {
+    background-color: var(--color-back-blue);
+  }
+
+  &__userinfo {
+    border-right: 1px solid var(--white);
+    text-align: center;
+    padding: 10px;
+  }
+
+  &__avatar {
+    max-width: 100px;
+    max-height: 100px;
+    cursor: pointer;
+  }
+
+  &__username {
+    font-weight: bold;
+    cursor: pointer;
+  }
+
+  &__text-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+  }
+
+  &__text {
+    text-align: start;
+    font-weight: 400;
+  }
+
+  &__info {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  &__reactions {
+    display: inline-block;
+  }
+
+  &__date {
+    display: inline-block;
+    text-align: end;
+    color: var(--color-midgray);
+  }
+}

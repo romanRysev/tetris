@@ -1,5 +1,6 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { defaulAvatar } from '../../../../consts/prefix';
 import './PhorumPost.scss';
 
@@ -22,26 +23,22 @@ export const PhorumPost: FC<PhorumPostProps> = ({
 }) => {
   const cleanText = text.replace(/(<([^>]+)>)/gm, ' ');
   const date = postDate.toLocaleString('ru');
+  const navigate = useNavigate();
   return (
-    <li className={classNames('post', className)} id={'#' + id}>
-      <div className="post__userinfo">
+    <li className={classNames('phorum-post', className)} id={'#' + id}>
+      <div className="phorum-post__userinfo">
         <figure>
-          <img
-            className="post__avatar"
-            src={userAvatar}
-            alt={userName}
-            onClick={() => console.log('ЗДЕСЬ БУДЕТ ПЕРЕХОД НА ПРОФИЛЬ')}
-          />
-          <figcaption className="post__username" onClick={() => console.log('И ЗДЕСЬ БУДЕТ ПЕРЕХОД НА ПРОФИЛЬ')}>
+          <img className="phorum-post__avatar" src={userAvatar} alt={userName} onClick={() => navigate('/profile')} />
+          <figcaption className="phorum-post__username" onClick={() => navigate('/profile')}>
             {userName}
           </figcaption>
         </figure>
       </div>
-      <div className="post__text-wrapper">
-        <div className="post__text">{cleanText}</div>
-        <div className="post__info">
-          <div className="post_reactions"></div>
-          <div className="post__date">{date}</div>
+      <div className="phorum-post__text-wrapper">
+        <div className="phorum-post__text">{cleanText}</div>
+        <div className="phorum-post__info">
+          <div className="phorum-post__reactions"></div>
+          <div className="phorum-post__date">{date}</div>
         </div>
       </div>
     </li>

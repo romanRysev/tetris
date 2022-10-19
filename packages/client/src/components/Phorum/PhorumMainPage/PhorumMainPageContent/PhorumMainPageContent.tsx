@@ -2,10 +2,9 @@ import React, { FC, useRef, useState } from 'react';
 import { dummyUser } from '../../../../consts/dummyData';
 import { makeUserNameFromUser } from '../../../../utils/makeUserProps';
 import { Popup } from '../../../Popup/Popup';
-import { MainListHeader } from '../__MainListHeader/PhorumMainListHeader';
-// import { MainListHeader } from './../__MainListHeader/PhorumMainListHeader';
-import { ThreadList } from '../__ThreadList/PhorumThreadList';
-import { ThreadListItemProps } from '../__ThreadListItem/PhorumThreadListItem';
+import { MainListHeader } from '../PhorumMainListHeader/PhorumMainListHeader';
+import { ThreadList } from '../PhorumThreadList/PhorumThreadList';
+import { ThreadListItemProps } from '../PhorumThreadList/__Item/PhorumThreadListItem';
 import './PhorumMainPageContent.scss';
 
 type PhorumThreadListProps = {
@@ -50,21 +49,15 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
   const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
   const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   return (
-    <div className="thread-list">
-      <h3 className="thread-list__header">{title}</h3>
-      <div className="new-thread-wrapper">
-        <div className="new-thread">
-          <div className="new-thread__link" onClick={() => (isNew ? setIsNew(false) : setIsNew(true))}>
-            Новая тема
-          </div>{' '}
-        </div>
+    <div className="phorum-main-page-content">
+      <h3 className="phorum-main-page-content__header">{title}</h3>
+      <div className="new-thread">
+        <div className="new-thread__link" onClick={() => (isNew ? setIsNew(false) : setIsNew(true))}>
+          Новая тема
+        </div>{' '}
       </div>
-      <div className="thread-list__list-header">
-        <MainListHeader />
-        <div className="thread-list__list">
-          <ThreadList {...list} />
-        </div>
-      </div>
+      <MainListHeader />
+      <ThreadList {...list} />
 
       {!!isNew && (
         <Popup

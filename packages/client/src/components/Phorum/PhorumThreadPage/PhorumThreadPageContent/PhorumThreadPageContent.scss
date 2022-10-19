@@ -1,7 +1,8 @@
 
-.thread {
+.phorum-thread-page-content {
     padding-right: 20px;
     color: var(--color-messages);
+    max-width: 1280px;
 
     &__header {
         font-size: 20px;

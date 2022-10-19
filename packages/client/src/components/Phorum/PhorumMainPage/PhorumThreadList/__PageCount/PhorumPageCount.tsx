@@ -19,7 +19,7 @@ export const PageCounter: React.FC<PageCounterProps> = (props) => {
     <span>
       {pagesArray.map((page, index) => (
         <span
-          className="pagecount"
+          className="thread__pagecount"
           onClick={() => {
             goToPage(page, pages);
           }}

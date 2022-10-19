@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { Button } from '../../../Button/Button';
 import { Input } from '../../../Input/Input';
-import './Reply.scss';
+import './PhorumReply.scss';
 
 type ReplyProps = {
   buttonContent?: string;
@@ -12,10 +12,10 @@ type ReplyProps = {
 export const Reply: FC<ReplyProps> = ({ buttonContent = 'Отправить', InputPlaceholder = 'Ваш ответ...' }) => {
   // TODO: поставить проверку на нал. сообщения и только тогда включать кнопку
   return (
-    <div className="reply-wrapper">
+    <div className="phorum-reply">
       <div className="placeholder"></div>
-      <form className="reply">
-        <div className="reply__reply">
+      <form className="form phorum-reply__form">
+        <div className="reply">
           <textarea className="reply__textarea" placeholder={InputPlaceholder}></textarea>
         </div>
         <div className="reply__button_area">
