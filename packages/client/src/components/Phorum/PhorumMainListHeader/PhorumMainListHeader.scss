@@ -1,0 +1,14 @@
+.phorum-main-list-header {
+  display: grid;
+  grid-template-columns: 6fr 2fr 4fr;
+  background-color: var(--color-back-blue);
+  line-height: 30px;
+  font-weight: bold;
+  margin-top: 10px;
+  border-bottom: 1px solid var(--white);
+
+  &__thread,
+  &__replies {
+    border-right: 1px solid var(--white);
+  }
+}

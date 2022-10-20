@@ -1,7 +1,10 @@
 import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { HowToPlay } from './pages/HowTo/HowToPlayPage';
 import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
+import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
+import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPage';
 
 import './scss/index.scss';
 
@@ -35,10 +38,16 @@ function App() {
             <Route path="/register" element={<Register />} />
             <Route path="/leaderboard" element={<LeaderBoardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/phorum" element={<PhorumMainPage />} />
+            <Route
+              path="/phorum/thread"
+              element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
+            />
+            <Route path="/howto" element={<HowToPlay />} />
             <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
             <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
-            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
             <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
+            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
           </Routes>
         </Suspense>
       </HashRouter>

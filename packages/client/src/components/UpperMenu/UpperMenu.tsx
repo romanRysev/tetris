@@ -1,8 +1,9 @@
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
-import { UserInfo, UserProps } from '../UserInfo/UserInfo';
+import { UserInfo } from '../UserInfo/UserInfo';
 import { APIurls } from '../../helpers/prefix';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
+import { dummyUser } from '../../consts/dummyData';
 
 async function logout() {
   const response = await fetch(APIurls.LOGOUT, {
@@ -35,25 +36,10 @@ const menuLinks: MenuItemProps[] = [
     link: '/leaderboard',
   },
   {
-    text: 'Настройки',
-    link: '/settings',
-  },
-  {
     text: 'Как играть',
     link: '/howto',
   },
 ];
-
-const dummyUser: UserProps = {
-  id: 1,
-  first_name: 'Phil',
-  second_name: 'Punxatawny',
-  display_name: '',
-  login: 'phil',
-  email: 'phil@punxatawny.com',
-  phone: '0192837462',
-  avatar: '',
-};
 
 export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);

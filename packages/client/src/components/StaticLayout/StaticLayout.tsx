@@ -1,12 +1,12 @@
 import React, { PropsWithChildren } from 'react';
-import { LeftPanel } from '../LeftPanel/LeftPanel';
+import { BackButton } from '../BackButton/BackButton';
 import { UpperMenu } from '../UpperMenu/UpperMenu';
 import './StaticLayout.scss';
 
 export const StaticLayout = ({ children }: PropsWithChildren) => {
   return (
     <div className="main">
-      <LeftPanel />
+      <BackButton to="/" />
       <UpperMenu />
       {children}
     </div>
