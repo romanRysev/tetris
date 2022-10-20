@@ -1,5 +1,5 @@
 import React from 'react';
-import { PhorumThreadContent } from '../../../components/Phorum/PhorumThreadPage/PhorumThreadPageContent/PhorumThreadPageContent';
+import { PhorumThreadPageContent } from '../../../components/Phorum/PhorumThreadPageContent/PhorumThreadPageContent';
 import { StaticLayout } from '../../../components/StaticLayout/StaticLayout';
 import './PhorumThreadPage.scss';
 
@@ -10,7 +10,7 @@ interface PhorumThreadPageProps {
 export const PhorumThreadPage: React.FC<PhorumThreadPageProps> = ({ title }) => {
   return (
     <StaticLayout>
-      <PhorumThreadContent title={title} />
+      <PhorumThreadPageContent title={title} />
     </StaticLayout>
   );
 };

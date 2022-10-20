@@ -1,7 +1,7 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defaulAvatar } from '../../../../consts/prefix';
+import { defaulAvatar } from '../../../consts/prefix';
 import './PhorumPost.scss';
 
 export type PhorumPostProps = {

@@ -1,10 +1,10 @@
 import React, { FC, useRef, useState } from 'react';
-import { dummyUser } from '../../../../consts/dummyData';
-import { makeUserNameFromUser } from '../../../../utils/makeUserProps';
-import { Popup } from '../../../Popup/Popup';
-import { MainListHeader } from '../PhorumMainListHeader/PhorumMainListHeader';
-import { ThreadList } from '../PhorumThreadList/PhorumThreadList';
-import { ThreadListItemProps } from '../PhorumThreadList/__Item/PhorumThreadListItem';
+import { dummyUser } from '../../../consts/dummyData';
+import { makeUserNameFromUser } from '../../../utils/makeUserProps';
+import { Popup } from '../../Popup/Popup';
+import { PhorumMainListHeader } from '../PhorumMainListHeader/PhorumMainListHeader';
+import { PhorumThreadList } from '../PhorumThreadList/PhorumThreadList';
+import { ThreadListItemProps } from '../PhorumThreadList/__Item/PhorumThreadList__Item';
 import './PhorumMainPageContent.scss';
 
 type PhorumThreadListProps = {
@@ -56,8 +56,8 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
           Новая тема
         </div>{' '}
       </div>
-      <MainListHeader />
-      <ThreadList {...list} />
+      <PhorumMainListHeader />
+      <PhorumThreadList {...list} />
 
       {!!isNew && (
         <Popup

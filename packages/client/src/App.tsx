@@ -8,7 +8,7 @@ import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPa
 
 import './scss/index.scss';
 
-// const Login = React.lazy(() => import('./pages/Login/Login'));
+const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
 const Error = React.lazy(() => import('./pages/Error/Error'));
 const ProfilePage = React.lazy(() => import('./pages/Profile/Profile'));
@@ -30,7 +30,7 @@ function App() {
       <HashRouter>
         <Suspense>
           <Routes>
-            <Route path="/" element={<PhorumMainPage />} />
+            <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
             <Route path="/leaderboard" element={<LeaderBoardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
@@ -40,8 +40,8 @@ function App() {
               element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
             />
             <Route path="/howto" element={<HowToPlay />} />
-            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
             <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
+            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
           </Routes>
         </Suspense>
       </HashRouter>

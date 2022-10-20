@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import './PhorumMainListHeader.scss';
 
-export const MainListHeader: FC = () => {
+export const PhorumMainListHeader: FC = () => {
   return (
     <div className="phorum-main-list-header">
       <div className="phorum-main-list-header__thread">Тема</div>

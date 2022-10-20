@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
-import { Reply } from '../PhorumReply/PhorumReply';
+import { PhorumReply } from '../PhorumReply/PhorumReply';
 import './PhorumThreadPageContent.scss';
 
 const dummyPosts: PhorumPostProps[] = [
@@ -28,18 +28,18 @@ const dummyPosts: PhorumPostProps[] = [
   },
 ];
 
-export type PhorumThreadContentProps = {
+export type PhorumThreadPageContentProps = {
   title: string;
 };
 
-export const PhorumThreadContent: FC<PhorumThreadContentProps> = ({ title }) => {
+export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ title }) => {
   return (
     <div className="phorum-thread-page-content">
       <h3 className="phorum-thread-page-content__header">{title}</h3>
       <div className="phorum-thread-page-content__thread">
         <PhorumPostList {...dummyPosts} />
       </div>
-      <Reply />
+      <PhorumReply />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import { Button } from '../../../Button/Button';
-import { Input } from '../../../Input/Input';
+import { Button } from '../../Button/Button';
+import { Input } from '../../Input/Input';
 import './PhorumReply.scss';
 
 type ReplyProps = {
@@ -9,7 +9,7 @@ type ReplyProps = {
   InputErrorText?: string;
 };
 
-export const Reply: FC<ReplyProps> = ({ buttonContent = 'Отправить', InputPlaceholder = 'Ваш ответ...' }) => {
+export const PhorumReply: FC<ReplyProps> = ({ buttonContent = 'Отправить', InputPlaceholder = 'Ваш ответ...' }) => {
   // TODO: поставить проверку на нал. сообщения и только тогда включать кнопку
   return (
     <div className="phorum-reply">
