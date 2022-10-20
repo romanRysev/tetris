@@ -3,7 +3,7 @@ import { NavLink } from 'react-router-dom';
 
 import arrowLeft from '../../assets/arrow-left.svg';
 
-import './backButton.scss';
+import './BackButton.scss';
 
 interface Props {
   to: string;

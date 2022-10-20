@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import defaultAvatar from '../../assets/avatar.svg';
 
-import './avatarLg.scss';
+import './AvatarLg.scss';
 
 interface AvatarLgProps extends PropsWithChildren {
   avatarPath?: string;

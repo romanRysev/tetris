@@ -1,7 +1,7 @@
 import React, { FC, PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
-import './table.scss';
+import './Table.scss';
 
 interface TableProps extends PropsWithChildren {
   className?: string;
