@@ -1,6 +1,6 @@
 import React, { BaseSyntheticEvent, FC, PropsWithChildren } from 'react';
 
-import './background-blur.scss';
+import './BackgroundBlur.scss';
 
 interface PopupProps extends PropsWithChildren {
   onClick: (event: BaseSyntheticEvent) => void;

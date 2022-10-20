@@ -1,7 +1,7 @@
 import React, { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
-import './button.scss';
+import './Button.scss';
 
 interface Props extends PropsWithChildren {
   className?: string;

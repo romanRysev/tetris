@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { Button } from '../Button/Button';
 import classNames from 'classnames';
 
-import './popup.scss';
+import './Popup.scss';
 
 interface PopupProps extends PropsWithChildren {
   popupRef: React.MutableRefObject<HTMLInputElement>;
