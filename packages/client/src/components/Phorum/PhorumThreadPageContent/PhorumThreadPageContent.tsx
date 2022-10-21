@@ -1,4 +1,5 @@
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -33,6 +34,8 @@ export type PhorumThreadPageContentProps = {
 };
 
 export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ title }) => {
+  const location = useLocation();
+  const threadId = location.pathname;
   const [postList, setPostList] = useState(dummyPosts);
   // eslint-disable-next-line no-unused-vars
   const [newPost, setNewPost] = useState('');
@@ -58,7 +61,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       id: id,
     });
     setPostList(postList);
-    localStorage.removeItem('saved-message');
+    localStorage.removeItem(`${threadId}-saved-message`);
     setIsNewPost(true);
   };
 

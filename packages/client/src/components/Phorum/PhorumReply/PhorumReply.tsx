@@ -1,4 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Button } from '../../Button/Button';
 import { Input } from '../../Input/Input';
 import './PhorumReply.scss';
@@ -15,8 +16,10 @@ export const PhorumReply: FC<ReplyProps> = ({
   InputPlaceholder = 'Ваш ответ...',
   getDataUp,
 }) => {
+  const location = useLocation();
+  const threadId = location.pathname;
   const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-  const savedMessage = localStorage.getItem('saved-message');
+  const savedMessage = localStorage.getItem(`${threadId}-saved-message`);
   const [isFilled, setFilled] = useState(savedMessage ? true : false);
   const checkFilled = () => {
     if (!textAreaElem.current.value && !!isFilled) {
@@ -39,7 +42,7 @@ export const PhorumReply: FC<ReplyProps> = ({
               checkFilled();
             }}
             onBlur={() => {
-              localStorage.setItem('saved-message', textAreaElem.current.value);
+              localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current.value);
             }}
           ></textarea>
         </div>
