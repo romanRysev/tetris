@@ -40,7 +40,7 @@ function App() {
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/phorum" element={<PhorumMainPage />} />
             <Route
-              path="/phorum/thread"
+              path="/phorum/thread/:id"
               element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
             />
             <Route path="/howto" element={<HowToPlay />} />

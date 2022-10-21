@@ -19,7 +19,7 @@ export const PhorumThreadListItem: FC<ThreadListItemProps> = (props) => {
   const navigate = useNavigate();
   const handleThreadClick = useCallback(() => {
     // TODO: отправить данные
-    navigate('/phorum/thread');
+    navigate('/phorum/thread/1');
   }, [navigate]);
   return (
     <li className="phorum-thread-list__item">

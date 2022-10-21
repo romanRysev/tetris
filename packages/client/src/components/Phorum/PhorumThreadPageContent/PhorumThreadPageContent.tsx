@@ -1,4 +1,4 @@
-import React, { FC } from 'react';
+import React, { FC, useState } from 'react';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -33,13 +33,33 @@ export type PhorumThreadPageContentProps = {
 };
 
 export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ title }) => {
+  const [postList, setPostList] = useState(dummyPosts);
+  // eslint-disable-next-line no-unused-vars
+  const [newPost, setNewPost] = useState('');
+  // почему-то без setNewPost не работает, но newPost не нужен
+
+  const getNewPost = (text: string) => {
+    setNewPost(text);
+    const id = dummyPosts[dummyPosts.length - 1].id + 1;
+    const cleanText = text.replace(/(<([^>]+)>)/gm, ' ').replace(/\r\n|\r|\n/g, '<br />');
+    postList.push({
+      userAvatar: 'https://www.fillmurray.com/200/300',
+      userName: 'Я',
+      text: cleanText,
+      postDate: new Date(),
+      id: id,
+    });
+    setPostList(postList);
+    localStorage.removeItem('saved-message');
+  };
+
   return (
     <div className="phorum-thread-page-content">
       <h3 className="phorum-thread-page-content__header">{title}</h3>
       <div className="phorum-thread-page-content__thread">
-        <PhorumPostList {...dummyPosts} />
+        <PhorumPostList {...postList} />
       </div>
-      <PhorumReply />
+      <PhorumReply getDataUp={getNewPost} />
     </div>
   );
 };
