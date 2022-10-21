@@ -1,7 +1,7 @@
 import React from 'react';
 import classNames from 'classnames';
 
-import './button.scss';
+import './Button.scss';
 
 interface Props {
   className?: string;

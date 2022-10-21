@@ -2,7 +2,7 @@ import React, { FC, PropsWithChildren } from 'react';
 import { NavLink } from 'react-router-dom';
 import classNames from 'classnames';
 
-import './link.scss';
+import './Link.scss';
 
 interface LinkProps extends PropsWithChildren {
   to: string;
