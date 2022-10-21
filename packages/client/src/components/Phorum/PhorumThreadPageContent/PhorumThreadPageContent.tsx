@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useRef, useState } from 'react';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -37,6 +37,14 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   // eslint-disable-next-line no-unused-vars
   const [newPost, setNewPost] = useState('');
   // почему-то без setNewPost не работает, но newPost не нужен
+  const endRef = useRef<null | HTMLDivElement>(null);
+  const [isNewPost, setIsNewPost] = useState(false);
+
+  useEffect(() => {
+    if (isNewPost) {
+      endRef.current?.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
 
   const getNewPost = (text: string) => {
     setNewPost(text);
@@ -51,6 +59,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
     });
     setPostList(postList);
     localStorage.removeItem('saved-message');
+    setIsNewPost(true);
   };
 
   return (
@@ -58,6 +67,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       <h3 className="phorum-thread-page-content__header">{title}</h3>
       <div className="phorum-thread-page-content__thread">
         <PhorumPostList {...postList} />
+        <div ref={endRef} />
       </div>
       <PhorumReply getDataUp={getNewPost} />
     </div>
