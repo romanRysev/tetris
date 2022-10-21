@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './Login.scss';
 
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../../redux/actions/singActions';
 import { Button } from '../../components/Button/Button';
@@ -16,15 +16,21 @@ const Login = () => {
   const [errorLogin, setErrorLogin] = useState(false);
   const [errorPassword, setErrorPassword] = useState(false);
 
+  const navigate = useNavigate();
+
   const onFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, type, cheked } = e.target;
     const value = type === 'checkbox' ? cheked : e.target.value;
     setForm((prev) => ({ ...prev, [fieldName]: value }));
   };
 
-  const onSubmit = (e) => {
-    dispatch(login(form));
+  const onSubmit = async (e) => {
     e.preventDefault();
+    const res = await dispatch(login(form));
+
+    if (res.payload.ok) {
+      navigate('/');
+    }
   };
 
   const checkLogin = (e) => {
@@ -45,7 +51,6 @@ const Login = () => {
             type="text"
             name="login"
             onChange={onFieldChange}
-            value={form.login}
             onBlur={checkLogin}
             errorText={errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
           />
@@ -54,7 +59,6 @@ const Login = () => {
             type="password"
             name="password"
             onChange={onFieldChange}
-            value={form.password}
             onBlur={checkPassword}
             errorText={
               errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква, цифра и спецсимвол'

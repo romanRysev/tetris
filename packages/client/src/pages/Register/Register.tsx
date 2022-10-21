@@ -37,8 +37,12 @@ const Register = () => {
   };
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    dispatch(register(form));
     e.preventDefault();
+    const res = dispatch(register(form));
+
+    if (res.payload.ok) {
+      navigate('/');
+    }
   };
 
   const checkEmail = (e) => {
@@ -95,7 +99,6 @@ const Register = () => {
             type="text"
             name="email"
             onChange={onFieldChange}
-            value={form.email}
             onBlur={checkEmail}
             errorText={errorEmail && 'латиница, цифры и спецсимволы'}
           />
@@ -104,7 +107,6 @@ const Register = () => {
             type="text"
             name="login"
             onChange={onFieldChange}
-            value={form.login}
             onBlur={checkLogin}
             errorText={errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
           />
@@ -113,7 +115,6 @@ const Register = () => {
             type="text"
             name="first_name"
             onChange={onFieldChange}
-            value={form.first_name}
             onBlur={checkFirstName}
             errorText={
               errorFirstName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
@@ -124,7 +125,6 @@ const Register = () => {
             type="text"
             name="second_name"
             onChange={onFieldChange}
-            value={form.second_name}
             onBlur={checkSecondName}
             errorText={
               errorSecondName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
@@ -135,7 +135,6 @@ const Register = () => {
             type="text"
             name="phone"
             onChange={onFieldChange}
-            value={form.phone}
             onBlur={checkPhone}
             errorText={errorPhone && 'от 10 до 15 символов, состоит из цифр, может начинается с плюса'}
           />
@@ -144,7 +143,6 @@ const Register = () => {
             type="password"
             name="password"
             onChange={onFieldChange}
-            value={form.password}
             onBlur={checkPassword}
             errorText={
               errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква, цифра и спецсимвол'
@@ -154,7 +152,6 @@ const Register = () => {
             label="Пароль еще раз"
             type="password"
             name="second_password"
-            value={secondPassword}
             onChange={(e) => setSecondPassword(e.target.value)}
             onBlur={checkSecordPassword}
             errorText={errorSecondPassword && 'пароли не совпадают'}

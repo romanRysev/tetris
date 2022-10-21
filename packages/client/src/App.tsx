@@ -2,12 +2,15 @@ import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { HowToPlay } from './pages/HowTo/HowToPlayPage';
-import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
+
 import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
 import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPage';
 
 import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { checkLogin } from './redux/actions/singActions';
+import LeaderBoardPage from './pages/LeaderBoardPage/LeaderBoardPage';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
@@ -19,41 +22,45 @@ const ProfileChangePasswordPage = React.lazy(
 );
 
 function App() {
-  useEffect(() => {
-    const fetchServerData = async () => {
-      const url = `http://localhost:${__SERVER_PORT__}`;
-      const response = await fetch(url);
-      const data = await response.json();
-      console.log(data);
-    };
+  const dispatch = useAppDispatch();
+  const [isLoaded, setIsLoaded] = React.useState(false);
 
-    fetchServerData();
+  useEffect(() => {
+    (async () => {
+      await dispatch(checkLogin());
+      setIsLoaded(true);
+    })();
   }, []);
+
   return (
     <>
-      <div style={{ display: 'none' }}>Вот тут будет жить ваше приложение :)</div>
-      <HashRouter>
-        <Suspense>
-          <Routes>
-            <Route element={<ProtectedRoute />}>
-              <Route path="/profile" element={<ProfilePage />} />
-            </Route>
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/leaderboard" element={<LeaderBoardPage />} />
-            <Route path="/phorum" element={<PhorumMainPage />} />
-            <Route
-              path="/phorum/thread"
-              element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
-            />
-            <Route path="/howto" element={<HowToPlay />} />
-            <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
-            <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
-            <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
-            <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
-          </Routes>
-        </Suspense>
-      </HashRouter>
+      {isLoaded && (
+        <HashRouter>
+          <Suspense>
+            <Routes>
+              <Route element={<ProtectedRoute />}>
+                <Route path="/" element={<ProfilePage />} />
+                <Route path="/profile" element={<ProfilePage />} />
+                <Route path="/leaderboard" element={<LeaderBoardPage />} />
+                <Route path="/phorum" element={<PhorumMainPage />} />
+                <Route
+                  path="/phorum/thread"
+                  element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
+                />
+                <Route path="/howto" element={<HowToPlay />} />
+                <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
+                <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
+              </Route>
+
+              <Route path="/login" element={<Login />} />
+              <Route path="/register" element={<Register />} />
+
+              <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
+              <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
+            </Routes>
+          </Suspense>
+        </HashRouter>
+      )}
     </>
   );
 }
