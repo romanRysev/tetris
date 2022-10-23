@@ -108,7 +108,6 @@ export const Game: React.FC = () => {
           <p>Линии</p>
         </div>
       </div>
-      {isPaused && <div className="test" />}
     </div>
   );
 };
