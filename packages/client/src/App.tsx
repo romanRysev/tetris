@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Game } from './pages/game/game';
 import { HowToPlay } from './pages/HowTo/HowToPlayPage';
 
 import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
@@ -47,6 +48,11 @@ function App() {
                   path="/phorum/thread"
                   element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
                 />
+                <Route
+                  path="/phorum/thread/:id"
+                  element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
+                />
+                <Route path="/game" element={<Game />} />
                 <Route path="/howto" element={<HowToPlay />} />
                 <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
                 <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />

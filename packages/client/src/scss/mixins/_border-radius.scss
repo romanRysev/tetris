@@ -17,8 +17,7 @@
 @mixin border-radius($radius: $border-radius, $fallback-border-radius: false) {
   @if $enable-rounded {
     border-radius: valid-radius($radius);
-  }
-  @else if $fallback-border-radius != false {
+  } @else if $fallback-border-radius != false {
     border-radius: $fallback-border-radius;
   }
 }
@@ -32,8 +31,8 @@
 
 @mixin border-end-radius($radius: $border-radius) {
   @if $enable-rounded {
-    @include ltr-rtl("border-top-right-radius", valid-radius($radius));
-    @include ltr-rtl("border-bottom-right-radius", valid-radius($radius));
+    @include ltr-rtl('border-top-right-radius', valid-radius($radius));
+    @include ltr-rtl('border-bottom-right-radius', valid-radius($radius));
   }
 }
 
@@ -46,8 +45,8 @@
 
 @mixin border-start-radius($radius: $border-radius) {
   @if $enable-rounded {
-    @include ltr-rtl("border-top-left-radius", valid-radius($radius));
-    @include ltr-rtl("border-bottom-left-radius", valid-radius($radius));
+    @include ltr-rtl('border-top-left-radius', valid-radius($radius));
+    @include ltr-rtl('border-bottom-left-radius', valid-radius($radius));
   }
 }
 
@@ -59,19 +58,19 @@
 
 @mixin border-top-end-radius($radius: $border-radius) {
   @if $enable-rounded {
-    @include ltr-rtl("border-top-right-radius", valid-radius($radius));
+    @include ltr-rtl('border-top-right-radius', valid-radius($radius));
   }
 }
 
 @mixin border-bottom-end-radius($radius: $border-radius) {
   @if $enable-rounded {
-    @include ltr-rtl("border-bottom-right-radius", valid-radius($radius));
+    @include ltr-rtl('border-bottom-right-radius', valid-radius($radius));
   }
 }
 
 @mixin border-bottom-start-radius($radius: $border-radius) {
   @if $enable-rounded {
-    @include ltr-rtl("border-bottom-left-radius", valid-radius($radius));
+    @include ltr-rtl('border-bottom-left-radius', valid-radius($radius));
   }
 }
 // scss-docs-end border-radius-mixins
