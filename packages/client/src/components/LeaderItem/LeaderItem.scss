@@ -1,0 +1,58 @@
+.leaderboard-item {
+  display: block;
+  width: 670px;
+  height: 66px;
+  background-color: var(--color-back-blue);
+  text-align: justify;
+
+  &:nth-child(odd) {
+    background-color: var(--color-back-gray);
+  }
+
+  &_top {
+    &:nth-child(odd) {
+      background-color: var(--color-back-blue);
+    }
+  
+    &:nth-child(even) {
+      background-color: var(--color-back-gray);
+    }
+  }
+
+  &_theme_dark {
+    background-color: var(--color-dark-theme-dark-gray);
+  }
+
+  &__avatar {
+    margin: 8px;
+    cursor: pointer;
+
+    &_theme_dark {
+      box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.25);
+    }
+  }
+
+  &__name {
+    display: inline-block;
+    vertical-align: middle;
+    width: 470px;
+    font-size: 20px;
+    cursor: pointer;
+  
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
+  }
+
+  &__score {
+    display: inline-block;
+    vertical-align: middle;
+    width: 100px;
+    text-align: end;
+    font-size: 20px;
+    
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
+  }
+}

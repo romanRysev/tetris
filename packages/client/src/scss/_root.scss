@@ -19,6 +19,10 @@
     --#{$color}-rgb: #{$value};
   }
 
+  @each $color, $value in $codinsk {
+    --#{$color}: #{$value};
+  }
+
   // Fonts
 
   --font-sans-serif: #{inspect($font-family-sans-serif)};

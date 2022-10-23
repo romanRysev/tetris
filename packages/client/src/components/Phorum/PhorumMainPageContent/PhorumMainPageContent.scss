@@ -1,0 +1,82 @@
+.phorum-main-page-content {
+  color: var(--color-messages);
+  max-width: 1280px;
+
+  &__header {
+    font-size: 20px;
+    margin: 15px 0;
+
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
+  }
+
+  &__list {
+    overflow-y: auto;
+    list-style: none;
+    padding: 0;
+  }
+}
+
+.new-thread {
+  display: flex;
+  width: 80%;
+  height: 50px;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-end;
+
+  &__link {
+    display: flex;
+    font-weight: bold;
+    text-decoration: underline;
+    cursor: pointer;
+    margin: 10px 10px 8px 0;
+  }
+
+  &__input-wrapper {
+    display: flex;
+    width: 300px;
+    margin-right: 20px;
+  }
+
+  &__button-wrapper {
+    display: flex;
+    margin-right: 20px;
+  }
+
+  &__button {
+    height: 30px;
+    margin-bottom: 10px;
+  }
+
+  &__popup {
+    margin: 200px auto 100px;
+    height: fit-content;
+    z-index: 1060;
+    position: absolute;
+    top: 0;
+    left: calc((100vw - 400px) / 2);
+  }
+
+  &__textarea {
+    border: 1px solid var(--color-lightgray);
+    height: 100px;
+    margin-bottom: 10px;
+    color: var(--color-midgray);
+    font-style: italic;
+  }
+}
+
+.popup-background {
+  display: flex;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+
+  position: absolute;
+  top: 0px;
+  left: 0;
+  z-index: 1050;
+  background-color: rgba(0, 0, 0, 0.2);
+}

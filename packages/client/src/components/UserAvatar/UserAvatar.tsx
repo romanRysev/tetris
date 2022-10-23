@@ -1,21 +1,21 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
-import { defaulAvatar } from '../../consts/prefix';
+import { defaulAvatar } from '../../helpers/prefix';
 import './UserAvatar.scss';
 
 type UserAvatarProps = {
   username?: string;
   avatarPath?: string;
   onClick?: () => void;
-  classname?: string;
+  className?: string;
   text?: string;
 };
 
-export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarPath = defaulAvatar, onClick, classname, text }) => {
+export const UserAvatar: FC<UserAvatarProps> = ({ username, avatarPath, onClick, className, text }) => {
   return (
-    <div className={classNames('avatar', 'user-avatar', { classname })} onClick={onClick}>
-      <img className="avatar__img" src={avatarPath} alt={username ?? 'Аватарка'} />
-      {text && <div className="avatar__text">{text}</div>}
+    <div className={classNames('user-avatar', className)} onClick={onClick}>
+      <img className="user-avatar__img" src={avatarPath ?? defaulAvatar} alt={username ?? 'Аватарка'} />
+      {text && <div className="user-avatar__text">{text}</div>}
     </div>
   );
 };

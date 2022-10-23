@@ -1,0 +1,32 @@
+.profile-layout {
+
+  &__avatar {
+    margin-top: 60px;
+  }
+
+  &__label {
+    margin: 10px auto;
+    text-align: center;
+    font-size: 12px;
+    width: 120px;
+    height: 88px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &_blue {
+      color: var(--color-links);
+      text-decoration: underline;
+    }
+
+    &_grey {
+      color: var(--color-midgray);
+      text-decoration: none;
+      width: 250px;
+    }
+  }
+
+  &__input_file {
+    display: none;
+  }
+}

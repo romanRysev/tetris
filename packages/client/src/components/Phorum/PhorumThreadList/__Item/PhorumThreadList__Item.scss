@@ -1,0 +1,58 @@
+.phorum-thread-list__item {
+  display: grid;
+  grid-template-columns: 6fr 2fr 4fr;
+  background-color: var(--color-back-blue);
+
+  &:nth-child(even) {
+    background-color: var(--color-back-gray);
+  }
+}
+
+// .phorum-thread-list__item:nth-child(even) {
+//   background-color: var(--color-back-gray);
+// }
+
+.thread {
+  text-align: left;
+  border-right: 1px solid var(--white);
+  border-bottom: 1px solid var(--white);
+  padding: 15px;
+
+  &__info {
+    color: var(--color-midgray);
+    margin-top: 10px;
+  }
+
+  &__text {
+    cursor: pointer;
+  }
+}
+
+.replies {
+  text-align: left;
+  border-right: 1px solid var(--white);
+  border-bottom: 1px solid var(--white);
+  padding: 15px;
+}
+
+.last-reply {
+  text-align: left;
+  border-bottom: 1px solid var(--white);
+  padding: 15px;
+
+  &__user {
+    text-decoration: underline;
+    cursor: pointer;
+  
+    &_theme_dark {
+      color: var(--color-text-dark_theme);
+    }
+  }
+
+  &__date {
+    color: var(--color-midgray);
+    text-decoration: underline;
+    margin-top: 10px;
+    cursor: pointer;
+  }
+}

@@ -1,0 +1,18 @@
+.upper-menu {
+  display: block;
+  width: 100%;
+  background-color: var(--color-backgrnd-gray);
+
+  &_theme_dark {
+    background-color: var(color-backgrnd-gray-dark-theme);
+  }
+
+  &__nav {
+    display: inline-block;
+  }
+
+  &__list {
+    display: inline-block;
+    list-style: none;
+  }
+}

@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import classNames from 'classnames';
 
-import './button.scss';
+import './Button.scss';
 
-interface Props {
+interface Props extends PropsWithChildren {
   className?: string;
-  children: React.ReactNode | string;
   onClick?: () => void;
   disabled?: boolean;
   backgroundOpacity?: boolean;
