@@ -1,3 +1,45 @@
+//Codinsk-team palette
+
+$color-messages: #000 !default;
+$color-links: #3369F3 !default;
+$color-white: #FFF !default;
+$color-lightgray: #eee !default;
+$color-back-gray: #f8f8f8 !default;
+$color-back-blue: #e4edfd !default;
+$color-midgray: #999999 !default;
+$color-darkgray: #1E1E1E !default;
+$color-lightergrey: #efefef !default;
+$color-moregrey: #eaeaea !default;
+$color-backgrnd-gray: #fbfbfb !default;
+$color-text-dark_theme: #aaa !default;
+$color-backgrnd-gray-dark-theme: #333 !default;
+$color-danger: #e55353 !default;
+$color-dark-theme-dark-gray: #222 !default;
+$color-dark-theme-mid-gray: #444 !default;
+$color-dark-theme-links: #1D31AC !default;
+$color-dark-theme-danger: #d93737 !default;
+
+$codinsk: (
+        "color-messages": $color-messages,
+        "color-links": $color-links,
+        "color-lightgray": $color-lightgray,
+        "color-back-gray": $color-back-gray,
+        "color-back-blue": $color-back-blue,
+        "color-midgray": $color-midgray,
+        "color-darkgray": $color-darkgray,
+        "color-lightergrey":$color-lightergrey,
+        "color-moregrey": $color-moregrey,
+        "color-backgrnd-gray": $color-backgrnd-gray,
+        "color-danger": $color-danger,
+        "color-white": $color-white,
+        "color-text-dark_theme": $color-text-dark_theme,
+        "color-backgrnd-gray-dark-theme": $color-backgrnd-gray-dark-theme,
+        "color-dark-theme-dark-gray": $color-dark-theme-dark-gray,
+        "color-dark-theme-mid-gray": $color-dark-theme-mid-gray,
+        "color-dark-theme-links": $color-dark-theme-links,
+        "color-dark-theme-danger": $color-dark-theme-danger,
+) !default;
+
 // Color system
 
 $white: #fff !default;
@@ -139,10 +181,12 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mon
 $font-family-base: var(--font-sans-serif) !default;
 $font-family-code: var(--font-monospace) !default;
 
-$font-size-root: null !default;
-$font-size-base: 1rem !default; // Предполагается, что у браузера установлен по умолчанию, 16 пикселей
-$font-size-sm: $font-size-base * 0.875 !default;
-$font-size-lg: $font-size-base * 1.25 !default;
+$font-size-root:              null !default;
+$font-size-base:              13px !default;
+// $font-size-base:              1rem !default; 
+// Предполагается, что у браузера установлен по умолчанию, 16 пикселей
+$font-size-sm:                $font-size-base * .875 !default;
+$font-size-lg:                $font-size-base * 1.25 !default;
 
 $font-weight-lighter: lighter !default;
 $font-weight-light: 300 !default;
@@ -152,7 +196,7 @@ $font-weight-semibold: 600 !default;
 $font-weight-bold: 700 !default;
 $font-weight-bolder: bolder !default;
 
-$font-weight-base: $font-weight-normal !default;
+$font-weight-base:            $font-weight-medium !default;
 
 $line-height-base: 1.5 !default;
 $line-height-sm: 1.25 !default;
