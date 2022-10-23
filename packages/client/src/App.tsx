@@ -3,7 +3,7 @@ import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { Game } from './pages/game/game';
 import { HowToPlay } from './pages/HowTo/HowToPlayPage';
-
+import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
 import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
 import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPage';
 
@@ -11,7 +11,6 @@ import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
-import LeaderBoardPage from './pages/LeaderBoardPage/LeaderBoardPage';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));

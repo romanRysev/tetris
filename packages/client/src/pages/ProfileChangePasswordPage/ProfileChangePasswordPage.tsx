@@ -8,7 +8,6 @@ import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 
 import './ProfileChangePasswordPage.scss';
-import { StaticLayout } from '../../components/StaticLayout/StaticLayout';
 
 interface ProfileChangePasswordPageProps {
   profileData?: {
@@ -30,39 +29,33 @@ export const ProfileChangePasswordPage: FC<ProfileChangePasswordPageProps> = ({ 
   }, [navigate]);
 
   return (
-    <StaticLayout>
-      <ProfileLayout
-        avatarPath={profileData.avatarPath}
-        navBackPath="/profile"
-        className="profile-change-password-page"
-      >
-        <form onSubmit={handleButtonSubmit}>
-          <Table className="profile-change-password-page__table">
-            <TableRow>
-              <TableCell> Старый пароль </TableCell>
-              <TableCell>
-                <Input type="password" className="profile-change-password-page__input" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell> Новый пароль </TableCell>
-              <TableCell>
-                <Input type="password" className="profile-change-password-page__input" />
-              </TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell> Повторите новый пароль </TableCell>
-              <TableCell>
-                <Input type="password" className="profile-change-password-page__input" />
-              </TableCell>
-            </TableRow>
-          </Table>
-          <Button className="profile-change-password-page__button" type="submit">
-            Сохранить
-          </Button>
-        </form>
-      </ProfileLayout>
-    </StaticLayout>
+    <ProfileLayout avatarPath={profileData.avatarPath} navBackPath="/profile" className="profile-change-password-page">
+      <form onSubmit={handleButtonSubmit}>
+        <Table className="profile-change-password-page__table">
+          <TableRow>
+            <TableCell> Старый пароль </TableCell>
+            <TableCell>
+              <Input type="password" className="profile-change-password-page__input" />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell> Новый пароль </TableCell>
+            <TableCell>
+              <Input type="password" className="profile-change-password-page__input" />
+            </TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell> Повторите новый пароль </TableCell>
+            <TableCell>
+              <Input type="password" className="profile-change-password-page__input" />
+            </TableCell>
+          </TableRow>
+        </Table>
+        <Button className="profile-change-password-page__button" type="submit">
+          Сохранить
+        </Button>
+      </form>
+    </ProfileLayout>
   );
 };
 

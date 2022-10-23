@@ -1,10 +1,9 @@
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
-
+import { APIurls } from '../../consts/prefix';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 import { dummyUser } from '../../consts/dummyData';
-import { APIurls } from '../../consts/prefix';
 
 async function logout() {
   const response = await fetch(APIurls.LOGOUT, {
