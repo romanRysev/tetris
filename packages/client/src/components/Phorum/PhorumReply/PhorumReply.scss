@@ -13,6 +13,27 @@
     box-sizing: border-box;
   }
 
+  &__input {
+    width: 60px;
+
+    &_hidden {
+      display: inline-block;
+      width: 0.1px;
+      height: 0.1px;
+      opacity: 0;
+      position: absolute;
+      z-index: -10;
+    }
+  }
+
+  &__label {
+    width: 30px;
+    height: 30px;
+    background-image: url('./../../../assets/paperclip-solid.png');
+    background-size: contain;
+    cursor: pointer;
+  }
+
   &__button {
     width: 200px;
     height: 40px;
@@ -23,26 +44,9 @@
       justify-content: flex-end;
       align-items: flex-end;
     }
+
+    &:disabled {
+      background-color: lightgrey;
+    }
   }
-}
-
-.input {
-  width: 60px;
-
-  &__label {
-    width: 30px;
-    height: 30px;
-    background-image: url('./../../../../assets/paperclip-solid.png');
-    background-size: contain;
-    cursor: pointer;
-  }
-}
-
-.reply__input_hidden {
-  display: inline-block;
-  width: 0.1px;
-  height: 0.1px;
-  opacity: 0;
-  position: absolute;
-  z-index: -10;
 }

@@ -21,7 +21,6 @@ export const PhorumPost: FC<PhorumPostProps> = ({
   id,
   className,
 }) => {
-  const cleanText = text.replace(/(<([^>]+)>)/gm, ' ');
   const date = postDate.toLocaleString('ru');
   const navigate = useNavigate();
   return (
@@ -35,7 +34,7 @@ export const PhorumPost: FC<PhorumPostProps> = ({
         </figure>
       </div>
       <div className="phorum-post__text-wrapper">
-        <div className="phorum-post__text">{cleanText}</div>
+        <div className="phorum-post__text">{text}</div>
         <div className="phorum-post__info">
           <div className="phorum-post__reactions"></div>
           <div className="phorum-post__date">{date}</div>
