@@ -1,3 +1,5 @@
+import { LoginForm } from '../pages/Login/Login';
+import { RegisterForm } from '../pages/Register/Register';
 import { APIurls } from './constants';
 
 const headers = {
@@ -5,15 +7,14 @@ const headers = {
   get: { 'Content-Type': 'application/json' },
 };
 
-export const postLogout = async (token: string) =>
+export const postLogout = async () =>
   await fetch(APIurls.LOGOUT, {
-    method: 'GET',
+    method: 'POST',
     headers: headers.get,
-    body: JSON.stringify({ token }),
     credentials: 'include',
   });
 
-export const postRegisterRequest = async (data: any) =>
+export const postRegisterRequest = async (data: RegisterForm) =>
   await fetch(APIurls.SIGNUP, {
     method: 'POST',
     headers: headers.post,
@@ -21,7 +22,7 @@ export const postRegisterRequest = async (data: any) =>
     credentials: 'include',
   });
 
-export const postLoginRequest = async (data: any) =>
+export const postLoginRequest = async (data: LoginForm) =>
   await fetch(APIurls.LOGIN, {
     method: 'POST',
     headers: headers.post,

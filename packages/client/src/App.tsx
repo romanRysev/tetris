@@ -8,7 +8,7 @@ import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPa
 
 import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import { useAppDispatch, useAppSelector } from './redux/hooks';
+import { useAppDispatch } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import LeaderBoardPage from './pages/LeaderBoardPage/LeaderBoardPage';
 
@@ -51,7 +51,6 @@ function App() {
                 <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
                 <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
               </Route>
-
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
 

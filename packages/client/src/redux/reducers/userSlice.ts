@@ -2,8 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import { login, logout, register, checkLogin } from '../actions/singActions';
 
 interface IUserSlice {
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  user: {};
+  user: Record<string, unknown>;
   isAuthorized: boolean;
   isFetching: boolean;
   fetchingFailed: boolean;
@@ -56,8 +55,6 @@ export const authSlice = createSlice({
       state.isFetching = false;
     },
     [checkLogin.fulfilled.type]: (state, action) => {
-      console.log(1);
-
       state.fetchingFailed = false;
       state.isAuthorized = !!action.payload.id;
       state.user = action.payload;
@@ -75,7 +72,7 @@ export const authSlice = createSlice({
     },
     [logout.fulfilled.type]: (state) => {
       state.isAuthorized = false;
-      state.user = '';
+      state.user = {};
     },
   },
 });

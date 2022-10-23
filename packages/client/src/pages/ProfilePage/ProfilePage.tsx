@@ -5,6 +5,9 @@ import { Table, TableCell, TableRow } from '../../components/Table/Table';
 import { ProfileLayout } from '../../components/ProfileLayout/ProfileLayout';
 
 import './ProfilePage.scss';
+import { useAppDispatch } from '../../redux/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../redux/actions/singActions';
 
 interface ProfilePageProps {
   profileData?: {
@@ -31,6 +34,15 @@ const data = {
 export const ProfilePage: FC<ProfilePageProps> = ({ profileData }) => {
   profileData = data; // TODO: брать из стора
   const { firstName, lastName, login, email, phone, displayName, avatarPath } = profileData;
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const onLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
 
   return (
     <ProfileLayout firstName={firstName} avatarPath={avatarPath} className="profile-page">
@@ -77,9 +89,9 @@ export const ProfilePage: FC<ProfilePageProps> = ({ profileData }) => {
         </TableRow>
         <TableRow>
           <TableCell>
-            <Link to="/" color="red">
+            <p className="link link_blue" onClick={onLogout}>
               Выйти
-            </Link>
+            </p>
           </TableCell>
         </TableRow>
       </Table>

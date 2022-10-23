@@ -28,8 +28,11 @@
   padding-bottom: 24px;
 }
 
-.login__buttons {
+.login__button {
   margin-top: 140px;
-  display: flex;
-  flex-direction: column;
+}
+
+.login__button_disabled {
+  background-color: #a51212;
+  cursor: default;
 }

@@ -7,39 +7,45 @@ import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../../redux/actions/singActions';
 import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
-import { valid, validationRules } from '../../helpers/validator';
+import { loginRule, passwordRule, validation } from '../../helpers/validator';
+
+export type LoginForm = {
+  login: string;
+  password: string;
+};
 
 const Login = () => {
   const dispatch = useAppDispatch();
 
-  const [form, setForm] = useState('');
-  const [errorLogin, setErrorLogin] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
+  const [form, setForm] = useState<LoginForm>({ login: ' ', password: '' });
+  const [errorLogin, setErrorLogin] = useState(' ');
+  const [errorPassword, setErrorPassword] = useState(' ');
 
   const navigate = useNavigate();
 
   const onFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name: fieldName, type, cheked } = e.target;
-    const value = type === 'checkbox' ? cheked : e.target.value;
+    const { name: fieldName, type, checked } = e.target;
+    const value = type === 'checkbox' ? checked : e.target.value;
     setForm((prev) => ({ ...prev, [fieldName]: value }));
   };
 
-  const onSubmit = async (e) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await dispatch(login(form));
-
-    if (res.payload.ok) {
+    if (res.meta.requestStatus === 'fulfilled') {
       navigate('/');
     }
   };
 
-  const checkLogin = (e) => {
-    valid(e, validationRules.login, setErrorLogin);
+  const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorLogin(validation(e.target.value, [loginRule]).errorMessages[0] ?? '');
   };
 
-  const checkPassword = (e) => {
-    valid(e, validationRules.password, setErrorPassword);
+  const checkPassword = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorPassword(validation(e.target.value, [passwordRule]).errorMessages[0] ?? '');
   };
+
+  const checkError = errorLogin ? true : !!errorPassword;
 
   return (
     <div className="login">
@@ -52,7 +58,7 @@ const Login = () => {
             name="login"
             onChange={onFieldChange}
             onBlur={checkLogin}
-            errorText={errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
+            errorText={errorLogin}
           />
           <Input
             label="Пароль"
@@ -60,12 +66,12 @@ const Login = () => {
             name="password"
             onChange={onFieldChange}
             onBlur={checkPassword}
-            errorText={
-              errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква, цифра и спецсимвол'
-            }
+            errorText={errorPassword}
           />
           <div className="login__buttons">
-            <Button>Авторизоваться</Button>
+            <Button className={`login__button ${checkError ? 'login__button_disabled' : ''}`} disabled={checkError}>
+              Авторизоваться
+            </Button>
           </div>
         </form>
         <Link to="/register">

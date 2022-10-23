@@ -1,34 +1,54 @@
 import React, { useState } from 'react';
 
 import './Register.scss';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { register } from '../../redux/actions/singActions';
 import {
+  comparePasswordsRules,
+  emailRule,
   loginRule,
   nameRule,
   passwordRule,
   phoneRule,
-  valid,
+  requiredRule,
   validation,
-  validationRules,
 } from '../../helpers/validator';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 
+export type RegisterForm = {
+  login: string;
+  password: string;
+  email: string;
+  firstName: string;
+  secondName: string;
+  phone: string;
+};
+
 const Register = () => {
   const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const [form, setForm] = useState('');
-  const [secondPassword, setSecondPassword] = useState('');
+  const [form, setForm] = useState<RegisterForm>({
+    login: '',
+    password: '',
+    email: '',
+    firstName: '',
+    secondName: '',
+    phone: '',
+  });
 
-  const [errorEmail, setErrorEmail] = useState(false);
-  const [errorLogin, setErrorLogin] = useState(false);
-  const [errorFirstName, setErrorFirstName] = useState(false);
-  const [errorSecondName, setErrorSecondName] = useState(false);
-  const [errorPhone, setErrorPhone] = useState(false);
-  const [errorPassword, setErrorPassword] = useState(false);
-  const [errorSecondPassword, setErrorSecondPassword] = useState(false);
+  /** Запишем сразу невидимые ошибки в обязательные поля, чтобы по-умолчанию форма была невалидна */
+  const [errorEmail, setErrorEmail] = useState(' ');
+  const [errorLogin, setErrorLogin] = useState(' ');
+  const [errorFirstName, setErrorFirstName] = useState(' ');
+  const [errorSecondName, setErrorSecondName] = useState(' ');
+  const [errorPhone, setErrorPhone] = useState(' ');
+  const [errorPassword, setErrorPassword] = useState(' ');
+  const [errorSecondPassword, setErrorSecondPassword] = useState(' ');
+  const [secondPassword, setSecondPassword] = useState(' ');
+  const [passwordsCompareError, setPasswordsCompareError] = useState(' ');
 
   const onFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, type, checked } = e.target;
@@ -36,43 +56,51 @@ const Register = () => {
     setForm((prev) => ({ ...prev, [fieldName]: value }));
   };
 
-  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const res = dispatch(register(form));
+    const res = await dispatch(register(form));
 
-    if (res.payload.ok) {
+    if (res.meta.requestStatus === 'fulfilled') {
       navigate('/');
     }
   };
 
-  const checkEmail = (e) => {
-    valid(e, validationRules.email, setErrorEmail);
+  const onSecondPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSecondPassword(e.target.value);
   };
 
-  const checkLogin = (e) => {
-    // Можно также использовать validation(e, [rule1, rule2]).errorMessages для отображения ошибок переданных правил валидации
-    // Правил можно в одно поле передать несколько => ошибок тоже может быть больше одной...
-    setErrorLogin(validation(e, [loginRule]).isValid);
+  const checkEmail = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorEmail(validation(e.target.value, [emailRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkFirstName = (e) => {
-    setErrorFirstName(validation(e, [nameRule]).isValid);
+  const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorLogin(validation(e.target.value, [loginRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkSecondName = (e) => {
-    setErrorSecondName(validation(e, [nameRule]).isValid);
+  const checkFirstName = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorFirstName(validation(e.target.value, [nameRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkPhone = (e) => {
-    setErrorPhone(validation(e, [phoneRule]).isValid);
+  const checkSecondName = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorSecondName(validation(e.target.value, [nameRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkPassword = (e) => {
-    setErrorPassword(validation(e, [passwordRule]).isValid);
+  const checkPhone = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorPhone(validation(e.target.value, [phoneRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkSecordPassword = (e) => {
-    setErrorSecondPassword(validation(e, [passwordRule]).isValid);
+  const checkPassword = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorPassword(validation(e.target.value, [passwordRule, requiredRule]).errorMessages.join('\n') ?? '');
+    setPasswordsCompareError(
+      validation(e.target.value, [comparePasswordsRules(form.password, secondPassword)]).errorMessages.join('\n') ?? '',
+    );
+  };
+
+  const checkSecondPassword = (e: React.FocusEvent<HTMLInputElement>) => {
+    setErrorSecondPassword(validation(e.target.value, [passwordRule, requiredRule]).errorMessages.join('\n') ?? '');
+    setPasswordsCompareError(
+      validation(e.target.value, [comparePasswordsRules(form.password, secondPassword)]).errorMessages.join('\n') ?? '',
+    );
   };
 
   const checkError = errorEmail
@@ -87,7 +115,9 @@ const Register = () => {
     ? true
     : errorPassword
     ? true
-    : errorSecondPassword;
+    : errorSecondPassword
+    ? true
+    : !!passwordsCompareError;
 
   return (
     <div className="register">
@@ -95,72 +125,65 @@ const Register = () => {
         <form className="register__form" onSubmit={onSubmit}>
           <p className="register__title">Регистрация</p>
           <Input
-            label="Почта"
+            label="Почта*"
             type="text"
             name="email"
             onChange={onFieldChange}
             onBlur={checkEmail}
-            errorText={errorEmail && 'латиница, цифры и спецсимволы'}
+            errorText={errorEmail}
           />
           <Input
-            label="Логин"
+            label="Логин*"
             type="text"
             name="login"
             onChange={onFieldChange}
             onBlur={checkLogin}
-            errorText={errorLogin && 'от 3 до 20 символов, латиница, цифры, допустимы дефис и нижнее подчёркивание'}
+            errorText={errorLogin}
           />
           <Input
-            label="Имя"
+            label="Имя*"
             type="text"
             name="first_name"
             onChange={onFieldChange}
             onBlur={checkFirstName}
-            errorText={
-              errorFirstName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
-            }
+            errorText={errorFirstName}
           />
           <Input
-            label="Фамилия"
+            label="Фамилия*"
             type="text"
             name="second_name"
             onChange={onFieldChange}
             onBlur={checkSecondName}
-            errorText={
-              errorSecondName && 'первая буква должна быть заглавной, без пробелов и без цифр, нет спецсимволов'
-            }
+            errorText={errorSecondName}
           />
           <Input
-            label="Телефон"
+            label="Телефон*"
             type="text"
             name="phone"
             onChange={onFieldChange}
             onBlur={checkPhone}
-            errorText={errorPhone && 'от 10 до 15 символов, состоит из цифр, может начинается с плюса'}
+            errorText={errorPhone}
           />
           <Input
-            label="Пароль"
+            label="Пароль*"
             type="password"
             name="password"
             onChange={onFieldChange}
             onBlur={checkPassword}
-            errorText={
-              errorPassword && 'от 8 до 40 символов, обязательно хотя бы одна заглавная буква, цифра и спецсимвол'
-            }
+            errorText={errorPassword}
           />
           <Input
-            label="Пароль еще раз"
+            label="Пароль еще раз*"
             type="password"
             name="second_password"
-            onChange={(e) => setSecondPassword(e.target.value)}
-            onBlur={checkSecordPassword}
-            errorText={errorSecondPassword && 'пароли не совпадают'}
+            onChange={onSecondPasswordChange}
+            onBlur={checkSecondPassword}
+            errorText={errorSecondPassword}
           />
-          <div className="register__buttons" style={checkError ? { cursor: 'not-allowed' } : null}>
-            <Button style={checkError ? { backgroundColor: '#a51212', pointerEvents: 'none' } : null}>
-              Зарегистрироваться
-            </Button>
-          </div>
+          <p className="register__password-compare-error">{passwordsCompareError}</p>
+          <Button className={`register__button ${checkError ? 'register__button_disabled' : ''}`} disabled={checkError}>
+            Зарегистрироваться
+          </Button>
         </form>
         <Link to="/login">
           <Button backgroundOpacity={true}>Войти</Button>
