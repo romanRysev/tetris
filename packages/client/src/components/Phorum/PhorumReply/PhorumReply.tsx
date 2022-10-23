@@ -21,12 +21,8 @@ export const PhorumReply: FC<ReplyProps> = ({
   const savedMessage = localStorage.getItem(`${threadId}-saved-message`);
   const [isFilled, setFilled] = useState(savedMessage ? true : false);
   const checkFilled = useCallback(() => {
-    if (!textAreaElem.current.value && !!isFilled) {
-      setFilled(false);
-    } else if (!!textAreaElem.current.value && !isFilled) {
-      setFilled(true);
-    }
-  }, [isFilled]);
+    setFilled(textAreaElem.current.value ? true : false);
+  }, []);
   const saveMessage = useCallback(() => {
     localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current.value);
   }, [threadId]);
