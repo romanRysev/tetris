@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
@@ -37,9 +37,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const location = useLocation();
   const threadId = location.pathname;
   const [postList, setPostList] = useState(dummyPosts);
-  // eslint-disable-next-line no-unused-vars
-  const [newPost, setNewPost] = useState('');
-  // почему-то без setNewPost не работает, но newPost не нужен
+  const [, setNewPost] = useState('');
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
 
@@ -49,21 +47,26 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
     }
   });
 
-  const getNewPost = (text: string) => {
-    setNewPost(text);
-    const id = dummyPosts[dummyPosts.length - 1].id + 1;
-    const cleanText = text.replace(/(<([^>]+)>)/gm, ' ').replace(/\r\n|\r|\n/g, '<br />');
-    postList.push({
-      userAvatar: 'https://www.fillmurray.com/200/300',
-      userName: 'Я',
-      text: cleanText,
-      postDate: new Date(),
-      id: id,
-    });
-    setPostList(postList);
-    localStorage.removeItem(`${threadId}-saved-message`);
-    setIsNewPost(true);
-  };
+  const getNewPost = useCallback(
+    (text: string) => {
+      setNewPost(text);
+      const id = dummyPosts[dummyPosts.length - 1].id + 1;
+      const cleanText = text.replace(/<[^>]+(>|$)/g, ' ');
+      postList.push({
+        userAvatar: 'https://www.fillmurray.com/200/300',
+        userName: 'Я',
+        text: cleanText,
+        postDate: new Date(),
+        id: id,
+      });
+      setPostList(postList);
+      localStorage.removeItem(`${threadId}-saved-message`);
+      setIsNewPost(true);
+    },
+    [postList, threadId],
+  );
+
+  // почему-то перестали работать переносы строк
 
   return (
     <div className="phorum-thread-page-content">

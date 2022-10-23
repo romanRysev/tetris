@@ -1,7 +1,6 @@
-import React, { FC, useRef, useState } from 'react';
+import React, { FC, useCallback, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { Button } from '../../Button/Button';
-import { Input } from '../../Input/Input';
 import './PhorumReply.scss';
 
 type ReplyProps = {
@@ -21,13 +20,17 @@ export const PhorumReply: FC<ReplyProps> = ({
   const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
   const savedMessage = localStorage.getItem(`${threadId}-saved-message`);
   const [isFilled, setFilled] = useState(savedMessage ? true : false);
-  const checkFilled = () => {
+  const checkFilled = useCallback(() => {
     if (!textAreaElem.current.value && !!isFilled) {
       setFilled(false);
     } else if (!!textAreaElem.current.value && !isFilled) {
       setFilled(true);
     }
-  };
+  }, [isFilled]);
+  const saveMessage = useCallback(() => {
+    localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current.value);
+  }, [threadId]);
+
   return (
     <div className="phorum-reply">
       <div className="placeholder"></div>
@@ -38,16 +41,14 @@ export const PhorumReply: FC<ReplyProps> = ({
             className="reply__textarea"
             placeholder={InputPlaceholder}
             defaultValue={savedMessage ?? undefined}
-            onChange={() => {
-              checkFilled();
-            }}
-            onBlur={() => {
-              localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current.value);
-            }}
+            onChange={checkFilled}
+            onBlur={saveMessage}
           ></textarea>
         </div>
         <div className="reply__button_area">
-          <Input type="file" className="reply__input_hidden" />
+          <label className="reply__label">
+            <input type="file" className="reply__input_hidden"></input>
+          </label>
           <Button
             className="reply__button"
             onClick={() => {
