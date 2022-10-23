@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { Suspense, useEffect } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
+import { Game } from './pages/game/game';
 import { HowToPlay } from './pages/HowTo/HowToPlayPage';
 import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
 import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
@@ -36,6 +37,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Login />} />
             <Route path="/register" element={<Register />} />
+            <Route path="/game" element={<Game />} />
             <Route path="/leaderboard" element={<LeaderBoardPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="/phorum" element={<PhorumMainPage />} />
