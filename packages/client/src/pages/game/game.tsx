@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
 import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
@@ -9,9 +9,18 @@ export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefFigure = useRef<HTMLCanvasElement>(null);
-  const [score] = useState(0);
-  const [level] = useState(1);
-  const [lineCount] = useState(0);
+  const [score, setScore] = useState(0);
+  const [level, setLevel] = useState(1);
+  const [lineCount, setLineCount] = useState(0);
+  const [isGameEnded, setGameEnded] = useState(false);
+  const getData = useCallback((score: number, level: number, lineCount: number) => {
+    setScore(score);
+    setLevel(level);
+    setLineCount(lineCount);
+  }, []);
+  const getEnd = useCallback(() => {
+    setGameEnded(true);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -29,6 +38,9 @@ export const Game: React.FC = () => {
   }, []);
   const startGame = () => {
     setIsGameStarted(true);
+    setScore(0);
+    setLevel(1);
+    setLineCount(0);
     const w = new Tetris(
       'canvas',
       10,
@@ -39,6 +51,8 @@ export const Game: React.FC = () => {
       playfield,
       tetrominos,
       colors,
+      getData,
+      getEnd,
     );
     w.init();
     w.makeKeys();
@@ -116,6 +130,35 @@ export const Game: React.FC = () => {
             Начать игру
           </button>
         )}
+        {isGameEnded && (
+          <div className="game-screen__game-end">
+            <h3>Игра окончена!</h3>
+            <p>Вы добрались до {level} уровня</p>
+            <p>Ваш счет: {score} очков</p>
+            <button
+              className="game-screen__end-button"
+              onClick={() => {
+                setGameEnded(false);
+                startGame();
+              }}
+            >
+              Играть снова
+            </button>
+          </div>
+        )}
+        {/* {isPaused && (
+          <div className="game-screen__game-end">
+            <h3>Пауза</h3>
+            <button
+              className="game-screen__end-button"
+              onClick={() => {
+                w.pauseGame();
+              }}
+            >
+              Продолжить игру
+            </button>
+          </div>
+        )} */}
       </div>
       <div className="game-info">
         <div className="game-info__next-figure">

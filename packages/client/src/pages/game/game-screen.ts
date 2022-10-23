@@ -9,6 +9,7 @@ export class Tetris extends PureComponent {
   public score = 0;
   public lineCount = 0;
   public level = 1;
+  public speed = 60;
   public title: string;
   public width: number;
   public height: number;
@@ -21,6 +22,8 @@ export class Tetris extends PureComponent {
   public colors: any;
   public sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
   private cellSize = 50;
+  public shareData;
+  public sendEnd;
 
   public constructor(
     title: string,
@@ -32,6 +35,8 @@ export class Tetris extends PureComponent {
     playfield: any[],
     tetrominos: Record<string, tetrominoType[]>,
     colors: Record<string, string>,
+    getDataUp: (score: number, level: number, lineCount: number) => void,
+    sendEnd: () => void,
   ) {
     super({});
     this.canvas = canvas;
@@ -43,6 +48,8 @@ export class Tetris extends PureComponent {
     this.playfield = playfield;
     this.tetrominos = tetrominos;
     this.colors = colors;
+    this.shareData = getDataUp;
+    this.sendEnd = sendEnd;
     this.createCanvas();
   }
 
@@ -52,14 +59,12 @@ export class Tetris extends PureComponent {
       this.canvas.width = 500;
       this.canvas.height = 1000;
       if (this.ctx) {
-        this.ctx.fillStyle = 'var(--white)';
+        this.ctx.fillStyle = '#FFFFFF';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       }
     }
   }
   public drawWorld() {
-    console.log('DRAWWORLD');
-    console.log(this);
     if (this.ctx) {
       this.ctx.beginPath();
       for (let x = 0; x < this.width + 1; x++) {
@@ -74,7 +79,6 @@ export class Tetris extends PureComponent {
     }
   }
   public init() {
-    console.log('INIT');
     this.tetrominoSequence = [];
     this.playfield = [];
     for (let row = -2; row < 20; row++) {
@@ -151,6 +155,13 @@ export class Tetris extends PureComponent {
     }
     for (let row = this.playfield.length - 1; row >= 0; ) {
       if (this.playfield[row].every((cell: number) => !!cell)) {
+        this.lineCount++;
+        this.score += 40;
+        if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
+          this.level++;
+          this.speed -= 5;
+        }
+        this.shareData(this.score, this.level, this.lineCount);
         for (let r = row; r >= 0; r--) {
           for (let c = 0; c < this.playfield[r].length; c++) {
             this.playfield[r][c] = this.playfield[r - 1][c];
@@ -164,17 +175,19 @@ export class Tetris extends PureComponent {
   }
   public showGameOver() {
     this.gameOver = true;
-    if (this.ctx && this.canvas) {
-      this.ctx.fillStyle = 'black';
-      this.ctx.globalAlpha = 0.75;
-      this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
-      this.ctx.globalAlpha = 1;
-      this.ctx.fillStyle = 'white';
-      this.ctx.font = '36px monospace';
-      this.ctx.textAlign = 'center';
-      this.ctx.textBaseline = 'middle';
-      this.ctx.fillText('Игра окончена', this.canvas.width / 2, this.canvas.height / 2);
-    }
+    // TODO: перекрасить фигуры в серенький
+    this.sendEnd();
+    // if (this.ctx && this.canvas) {
+    //   this.ctx.fillStyle = 'black';
+    //   this.ctx.globalAlpha = 0.75;
+    //   this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
+    //   this.ctx.globalAlpha = 1;
+    //   this.ctx.fillStyle = 'white';
+    //   this.ctx.font = '36px monospace';
+    //   this.ctx.textAlign = 'center';
+    //   this.ctx.textBaseline = 'middle';
+    //   this.ctx.fillText('Игра окончена', this.canvas.width / 2, this.canvas.height / 2);
+    // }
   }
   public pauseGame() {
     this.paused = true;
@@ -204,7 +217,7 @@ export class Tetris extends PureComponent {
         }
       }
       if (this.tetromino && this.ctx) {
-        if (++this.count > 35) {
+        if (++this.count > this.speed) {
           this.tetromino.row++;
           this.count = 0;
           if (!this.isValidMove(this.tetromino.matrix, this.tetromino.row, this.tetromino.col)) {
@@ -267,12 +280,13 @@ export class Tetris extends PureComponent {
         }
         break;
       }
-      case 'KeyP':
+      case 'KeyP': {
         this.paused = this.paused ? false : true;
         if (this.paused) {
           this.pauseGame();
         }
         break;
+      }
     }
   };
 
