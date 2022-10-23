@@ -9,6 +9,9 @@ export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefFigure = useRef<HTMLCanvasElement>(null);
+  const [score] = useState(0);
+  const [level] = useState(1);
+  const [lineCount] = useState(0);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -66,46 +69,69 @@ export const Game: React.FC = () => {
   // TODO завернуть в useCallback
 
   return (
-    <div className="game-container">
-      <div className="menu-game">
-        <h2>меню</h2>
-        <li onClick={startGame}>Новая игра</li>
-        <li>
-          <Link to="/howto">Как играть</Link>
-        </li>
-        <li>
-          <Link to="/leaderboard">Доска почета</Link>
-        </li>
-        <li>
-          <Link to="/profile">Мой профиль</Link>
-        </li>
-        <li>
-          <Link to="/phorum">Форум</Link>
-        </li>
+    <div className="game">
+      <div className="game-menu">
+        <h2 className="game-menu__header">Меню</h2>
+        <ul className="game-menu__submenu">
+          <li className="game-menu__link" onClick={startGame}>
+            Новая игра
+          </li>
+          <li>
+            <Link className="game-menu__link" to="/howto">
+              Как играть
+            </Link>
+          </li>
 
-        <li onClick={handleLogout}>выйти</li>
+          <li>
+            <Link className="game-menu__link" to="/leaderboard">
+              Доска почета
+            </Link>
+          </li>
+        </ul>
+        <ul className="game-menu__submenu">
+          <li>
+            <Link className="game-menu__link" to="/profile">
+              Мой профиль
+            </Link>
+          </li>
+        </ul>
+        <ul className="game-menu__submenu">
+          <li>
+            <Link className="game-menu__link" to="/phorum">
+              Форум
+            </Link>
+          </li>
+        </ul>
+        <ul className="game-menu__submenu">
+          <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
+            Выйти
+          </li>
+        </ul>
       </div>
       <div className="game-screen">
-        <canvas ref={canvasRef} id="canvas" width={500} height={1000}></canvas>
-        <div className="button-wrapper">
-          <div className="button-wrapper-inner">
-            {!IsGameStarted && (
-              <button className="start-btn" onClick={startGame}>
-                Начать игру
-              </button>
-            )}
-          </div>
-        </div>
+        <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}></canvas>
+
+        {!IsGameStarted && (
+          <button className="game-screen__start-button" onClick={startGame}>
+            Начать игру
+          </button>
+        )}
       </div>
       <div className="game-info">
-        <div className="next-figure">
-          <canvas ref={canvasRefFigure} id="canvas-figure"></canvas>
+        <div className="game-info__next-figure">
+          <canvas className="game-info__canvas-figure" ref={canvasRefFigure} id="canvas-figure"></canvas>
         </div>
-        <div className="score-game">
-          <img className="avatar" src={foto} alt="" />
-          <p>Счет</p>
-          <p>Уровень</p>
-          <p>Линии</p>
+        <p>Следующая фигура</p>
+        <div className="game-info__user-info">
+          <img className="game-info__avatar" src={foto} alt="" />
+          <Link className="game-info__user-name" to="/profile">
+            Иван Иваныч Джагатай-Хан
+          </Link>
+        </div>
+        <div className="game-info__score">
+          <p>Счет: {score}</p>
+          <p>Уровень: {level}</p>
+          <p>Линии: {lineCount}</p>
         </div>
       </div>
     </div>

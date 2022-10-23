@@ -121,7 +121,8 @@ export class Tetris extends PureComponent {
     const result = matrix.map((row, i) => row.map((val, j) => matrix[N - j][i]));
     return result;
   }
-  public isValidMove(matrix: number[][], cellRow: number, cellCol: number) {
+  // TODO: типизация матрицы
+  public isValidMove(matrix: [][], cellRow: number, cellCol: number) {
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix[row].length; col++) {
         if (

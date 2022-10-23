@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import './Popup.scss';
 
 interface PopupProps extends PropsWithChildren {
-  popupRef: React.MutableRefObject<HTMLInputElement>;
+  popupRef?: React.MutableRefObject<HTMLInputElement>;
   title: string;
   buttonText: string;
   onClick: () => void;
