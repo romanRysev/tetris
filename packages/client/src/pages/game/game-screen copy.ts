@@ -1,6 +1,8 @@
-import { colors, sequence, tetrominos } from './constant';
+import { PureComponent } from 'react';
+import { tetrominos, tetrominoType } from './constant';
 
-export class Tetris {
+export class Tetris extends PureComponent {
+  private myOnClick = this.MyClick.bind(this);
   public count = 0;
   public currentTetromino = this.getNextTetromino();
   public nextTetromino = this.getNextTetromino();
@@ -9,47 +11,76 @@ export class Tetris {
   public title: string;
   public width: number;
   public height: number;
+  public canvasRef: React.RefObject<HTMLCanvasElement>;
+  public canvasRefFigure: React.RefObject<HTMLCanvasElement>;
   public canvas: HTMLCanvasElement | null;
   public canvasFigure: HTMLCanvasElement | null;
   public ctx: CanvasRenderingContext2D | null | undefined;
   public ctxFigure: CanvasRenderingContext2D | null | undefined;
   private tetrominoSequence: string[] = [];
-  public playfield: (number | string)[][] | [][] | [] = [];
+  public playfield: any[] = [];
   public tetrominos = tetrominos;
-  public colors = colors;
-  public sequence = sequence;
-  public score = 0;
-  public lineCount = 0;
-  public level = 1;
-  public speed = 60;
+  // public count = 0;
+  // public tetromino = this.getNextTetromino();
+  // public gameOver = false;
+  // public paused = false;
+  // public score = 0;
+  // public lineCount = 0;
+  // public level = 1;
+  // public speed = 60;
+  // public title: string;
+  // public width: number;
+  // public height: number;
+  // public canvasRef: React.RefObject<HTMLCanvasElement>;
+  // public canvas: HTMLCanvasElement | null;
+  // public ctx: CanvasRenderingContext2D | null | undefined;
+  // public tetrominoSequence: Array<[]> | any[] | Array<string>;
+  // public playfield: any[];
+  // public tetrominos: Record<string, tetrominoType[]>;
+  public colors: any;
+  public sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+  private cellSize = 50;
   public shareData;
   public sendEnd;
-  cellSize = 50;
 
   public constructor(
     title: string,
     width: number,
     height: number,
+    canvasRef: React.RefObject<HTMLCanvasElement>,
     canvas: HTMLCanvasElement | null,
+    tetrominoSequence: any[],
+    playfield: any[],
+    tetrominos: Record<string, tetrominoType[]>,
+    colors: Record<string, string>,
+    canvasRefFigure: React.RefObject<HTMLCanvasElement>,
     canvasFigure: HTMLCanvasElement | null,
     getDataUp: (score: number, level: number, lineCount: number) => void,
     sendEnd: () => void,
   ) {
+    super({});
     this.canvas = canvas;
-    this.canvasFigure = canvasFigure;
+    this.canvasRef = canvasRef;
     this.title = title;
     this.width = width;
     this.height = height;
+    this.tetrominoSequence = tetrominoSequence;
+    this.playfield = playfield;
+    this.tetrominos = tetrominos;
+    this.colors = colors;
+    this.canvasFigure = canvasFigure;
+    this.canvasRefFigure = canvasRefFigure;
     this.shareData = getDataUp;
     this.sendEnd = sendEnd;
     this.createCanvas();
   }
 
   public createCanvas(): void {
-    if (this.canvas && this.canvasFigure) {
-      this.ctx = this.canvas.getContext('2d');
-      this.ctxFigure = this.canvasFigure.getContext('2d');
-      if (this.ctx && this.ctxFigure) {
+    if (this.canvas && this.canvasRef.current) {
+      this.ctx = this.canvasRef.current.getContext('2d');
+      this.canvas.width = 500;
+      this.canvas.height = 1000;
+      if (this.ctx) {
         this.ctx.fillStyle = '#FFFFFF';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       }
@@ -94,19 +125,18 @@ export class Tetris {
       this.tetrominoSequence.push(name);
     }
   }
-  public get nextTetronimo() {
-    return this.nextTetromino;
-  }
   public getNextTetromino() {
     this.tetrominos = tetrominos;
     this.tetrominoSequence = [];
-    this.generateSequence();
-    const name = this.tetrominoSequence.pop() ? this.tetrominoSequence.pop() : 'I';
+    if (this.tetrominoSequence.length === 0) {
+      this.generateSequence();
+    }
+    const name = this.tetrominoSequence.pop();
     const matrix = this.tetrominos[name];
     const col = 5;
     const row = name === 'I' ? -1 : -2;
     return {
-      name: name || 'I',
+      name: name,
       matrix: matrix,
       row: row,
       col: col,
@@ -117,7 +147,8 @@ export class Tetris {
     const result = matrix.map((row, i) => row.map((val, j) => matrix[N - j][i]));
     return result;
   }
-  public isValidMove(matrix: number[][], cellRow: number, cellCol: number) {
+  // TODO: типизация матрицы
+  public isValidMove(matrix: [][], cellRow: number, cellCol: number) {
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix[row].length; col++) {
         if (
@@ -134,18 +165,18 @@ export class Tetris {
     return true;
   }
   public placeTetromino() {
-    for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
-      for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
-        if (this.currentTetromino.matrix[row][col]) {
-          if (this.currentTetromino.row + row < 0) {
+    for (let row = 0; row < this.tetromino.matrix.length; row++) {
+      for (let col = 0; col < this.tetromino.matrix[row].length; col++) {
+        if (this.tetromino.matrix[row][col]) {
+          if (this.tetromino.row + row < 0) {
             return this.showGameOver();
           }
-          this.playfield[this.currentTetromino.row + row][this.currentTetromino.col + col] = this.currentTetromino.name;
+          this.playfield[this.tetromino.row + row][this.tetromino.col + col] = this.tetromino.name;
         }
       }
     }
     for (let row = this.playfield.length - 1; row >= 0; ) {
-      if (this.playfield[row].every((cell) => !!cell)) {
+      if (this.playfield[row].every((cell: number) => !!cell)) {
         this.lineCount++;
         this.score += 40;
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
@@ -162,18 +193,27 @@ export class Tetris {
         row--;
       }
     }
-    this.currentTetromino = this.nextTetromino;
-    this.nextTetromino = this.getNextTetromino();
+    this.tetromino = this.getNextTetromino();
   }
   public showGameOver() {
     this.gameOver = true;
     // TODO: перекрасить фигуры в серенький
     this.sendEnd();
-    document.removeEventListener('keydown', this.MyClick);
+    // if (this.ctx && this.canvas) {
+    //   this.ctx.fillStyle = 'black';
+    //   this.ctx.globalAlpha = 0.75;
+    //   this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
+    //   this.ctx.globalAlpha = 1;
+    //   this.ctx.fillStyle = 'white';
+    //   this.ctx.font = '36px monospace';
+    //   this.ctx.textAlign = 'center';
+    //   this.ctx.textBaseline = 'middle';
+    //   this.ctx.fillText('Игра окончена', this.canvas.width / 2, this.canvas.height / 2);
+    // }
   }
-  public pause() {
+  public pauseGame() {
     this.paused = true;
-    if (this.paused && this.ctx && this.canvas && !this.gameOver) {
+    if (this.ctx && this.canvas) {
       this.ctx.fillStyle = 'black';
       this.ctx.globalAlpha = 0.75;
       this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
@@ -198,41 +238,22 @@ export class Tetris {
           }
         }
       }
-      if (this.nextTetromino && this.ctxFigure && this.canvasFigure) {
-        this.ctxFigure.clearRect(0, 0, this.canvasFigure.width, this.canvasFigure.height);
-        for (let i = 0; i < this.nextTetromino.matrix.length; i++) {
-          for (let j = 0; j < this.nextTetromino.matrix[i].length; j++) {
-            if (this.nextTetromino.matrix[i][j] === 1) {
-              let margin = 1.5;
-              if (this.nextTetromino.name === 'I') margin = 1;
-              else if (this.nextTetromino.name === 'O') margin = 2;
-              this.ctxFigure.fillStyle = this.colors[this.nextTetromino.name];
-              this.ctxFigure.fillRect(
-                (j + margin) * (this.cellSize / 1.5),
-                (i + margin) * (this.cellSize / 1.5),
-                this.cellSize / 1.5 - 1,
-                this.cellSize / 1.5 - 1,
-              );
-            }
-          }
-        }
-      }
-      if (this.currentTetromino && this.ctx) {
+      if (this.tetromino && this.ctx) {
         if (++this.count > this.speed) {
-          this.currentTetromino.row++;
+          this.tetromino.row++;
           this.count = 0;
-          if (!this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
-            this.currentTetromino.row--;
+          if (!this.isValidMove(this.tetromino.matrix, this.tetromino.row, this.tetromino.col)) {
+            this.tetromino.row--;
             this.placeTetromino();
           }
         }
-        this.ctx.fillStyle = this.colors[this.currentTetromino.name];
-        for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
-          for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
-            if (this.currentTetromino.matrix[row][col]) {
+        this.ctx.fillStyle = this.colors[this.tetromino.name];
+        for (let row = 0; row < this.tetromino.matrix.length; row++) {
+          for (let col = 0; col < this.tetromino.matrix[row].length; col++) {
+            if (this.tetromino.matrix[row][col]) {
               this.ctx.fillRect(
-                (this.currentTetromino.col + col) * this.cellSize,
-                (this.currentTetromino.row + row) * this.cellSize,
+                (this.tetromino.col + col) * this.cellSize,
+                (this.tetromino.row + row) * this.cellSize,
                 this.cellSize - 1,
                 this.cellSize - 1,
               );
@@ -242,66 +263,60 @@ export class Tetris {
       }
     }
   }
-
-  private MyClick = (e: KeyboardEvent) => {
+  public onKeypress = (e: KeyboardEvent) => {
     // TODO: убрать листенер
 
     switch (e.code) {
       case 'ArrowUp':
       case 'KeyW': {
-        const matrix = this.rotate(this.currentTetromino.matrix);
-        if (this.isValidMove(matrix, this.currentTetromino.row, this.currentTetromino.col)) {
-          this.currentTetromino.matrix = matrix;
+        const matrix = this.rotate(this.tetromino.matrix);
+        if (this.isValidMove(matrix, this.tetromino.row, this.tetromino.col)) {
+          this.tetromino.matrix = matrix;
         }
         break;
       }
       case 'ArrowDown':
       case 'KeyS': {
-        const row = this.currentTetromino.row + 1;
-        if (!this.isValidMove(this.currentTetromino.matrix, row, this.currentTetromino.col)) {
-          this.currentTetromino.row = row - 1;
+        const row = this.tetromino.row + 1;
+        if (!this.isValidMove(this.tetromino.matrix, row, this.tetromino.col)) {
+          this.tetromino.row = row - 1;
           this.placeTetromino();
           return;
         }
-        this.currentTetromino.row = row;
+        this.tetromino.row = row;
         break;
       }
       case 'ArrowLeft':
       case 'KeyA': {
-        const col = this.currentTetromino.col - 1;
-        if (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, col)) {
-          this.currentTetromino.col = col;
+        const col = this.tetromino.col - 1;
+        if (this.isValidMove(this.tetromino.matrix, this.tetromino.row, col)) {
+          this.tetromino.col = col;
         }
         break;
       }
       case 'ArrowRight':
       case 'KeyD': {
-        const col = this.currentTetromino.col + 1;
-        if (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, col)) {
-          this.currentTetromino.col = col;
+        const col = this.tetromino.col + 1;
+        if (this.isValidMove(this.tetromino.matrix, this.tetromino.row, col)) {
+          this.tetromino.col = col;
         }
         break;
       }
       case 'KeyP': {
         this.paused = this.paused ? false : true;
         if (this.paused) {
-          this.pause();
-        }
-        break;
-      }
-      case 'Space': {
-        while (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
-          this.currentTetromino.row++;
-        }
-        if (!this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
-          this.currentTetromino.row--;
-          this.placeTetromino();
+          this.pauseGame();
         }
         break;
       }
     }
   };
-  public onKeypress() {
-    document.addEventListener('keydown', this.MyClick);
-  }
+
+  public makeKeys = () => {
+    document.addEventListener('keydown', this.onKeypress);
+  };
+
+  public removeKeys = () => {
+    document.removeEventListener('keydown', this.onKeypress);
+  };
 }

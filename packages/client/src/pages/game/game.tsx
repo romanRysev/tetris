@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
 import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
-import { tetrominoSequence, playfield, tetrominos, colors } from './constant';
 import { Link } from 'react-router-dom';
 import { APIurls } from '../../helpers/prefix';
 export const Game: React.FC = () => {
@@ -41,21 +40,9 @@ export const Game: React.FC = () => {
     setScore(0);
     setLevel(1);
     setLineCount(0);
-    const w = new Tetris(
-      'canvas',
-      10,
-      20,
-      canvasRef,
-      canvasRef.current,
-      tetrominoSequence,
-      playfield,
-      tetrominos,
-      colors,
-      getData,
-      getEnd,
-    );
+    const w = new Tetris('canvas', 10, 20, canvasRef.current, canvasRefFigure.current, getData, getEnd);
     w.init();
-    w.makeKeys();
+    w.onKeypress();
     function step() {
       requestAnimationFrame(step);
       w.loop();
@@ -146,19 +133,6 @@ export const Game: React.FC = () => {
             </button>
           </div>
         )}
-        {/* {isPaused && (
-          <div className="game-screen__game-end">
-            <h3>Пауза</h3>
-            <button
-              className="game-screen__end-button"
-              onClick={() => {
-                w.pauseGame();
-              }}
-            >
-              Продолжить игру
-            </button>
-          </div>
-        )} */}
       </div>
       <div className="game-info">
         <div className="game-info__next-figure">

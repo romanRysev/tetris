@@ -1,7 +1,5 @@
-export let tetrominoSequence: any[];
-export let playfield: any[];
-export type tetrominoType = number[];
-export const tetrominos: Record<string, tetrominoType[]> = {
+export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
+export const tetrominos: Record<Sequence, (0 | 1)[][]> = {
   I: [
     [0, 0, 0, 0],
     [1, 1, 1, 1],
