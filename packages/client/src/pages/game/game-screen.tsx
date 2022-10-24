@@ -331,6 +331,14 @@ export class Tetris extends Component<TetrisProps> {
         }
         break;
       }
+      case 'Enter': {
+        if (!document.fullscreenElement) {
+          document.documentElement.requestFullscreen();
+        } else if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+        break;
+      }
     }
   };
   public onKeypress() {
