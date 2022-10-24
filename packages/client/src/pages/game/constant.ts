@@ -37,7 +37,7 @@ export const tetrominos: Record<Sequence, (0 | 1)[][]> = {
   ],
 };
 export const colors: Record<string, string> = {
-  I: '#FFFF00',
+  I: '#FFDD00',
   O: '#0DCAF0',
   T: '#EE82EE',
   S: '#FF0000',

@@ -4,14 +4,17 @@ import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
 import { Link } from 'react-router-dom';
 import { APIurls } from '../../helpers/prefix';
+
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
+  const [gameNo, setGameNo] = useState(1);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefFigure = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
+
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
     setLevel(level);
@@ -35,25 +38,14 @@ export const Game: React.FC = () => {
       }
     }
   }, []);
-  const startGame = () => {
+
+  const startGame = useCallback(() => {
     setIsGameStarted(true);
     setScore(0);
     setLevel(1);
     setLineCount(0);
-    // const w = new Tetris({
-    //   canvas: canvasRef.current,
-    //   canvasFigure: canvasRefFigure.current,
-    //   getDataUp: getData,
-    //   sendEnd: getEnd,
-    // });
-    // w.init();
-    // w.onKeypress();
-    // function step() {
-    //   requestAnimationFrame(step);
-    //   w.loop();
-    // }
-    // step();
-  };
+    setGameNo(gameNo + 1);
+  }, [gameNo]);
 
   async function logout() {
     const response = await fetch(APIurls.LOGOUT, {
@@ -71,6 +63,11 @@ export const Game: React.FC = () => {
       console.log(response);
     });
   };
+
+  const handleNewGame = useCallback(() => {
+    setGameEnded(false);
+    startGame();
+  }, [startGame]);
 
   // TODO завернуть в useCallback
 
@@ -115,17 +112,19 @@ export const Game: React.FC = () => {
         </ul>
       </div>
       <div className="game-screen">
-        <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}></canvas>
-        {IsGameStarted && (
-          <>
-            <Tetris
-              canvas={canvasRef.current}
-              canvasFigure={canvasRefFigure.current}
-              getDataUp={getData}
-              sendEnd={getEnd}
-            />
-          </>
-        )}
+        <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}>
+          {IsGameStarted && (
+            <>
+              <Tetris
+                canvas={canvasRef.current}
+                canvasFigure={canvasRefFigure.current}
+                getDataUp={getData}
+                sendEnd={getEnd}
+                gameNo={gameNo}
+              />
+            </>
+          )}
+        </canvas>
         {!IsGameStarted && (
           <button className="game-screen__start-button" onClick={startGame}>
             Начать игру
@@ -136,13 +135,7 @@ export const Game: React.FC = () => {
             <h3>Игра окончена!</h3>
             <p>Вы добрались до {level} уровня</p>
             <p>Ваш счет: {score} очков</p>
-            <button
-              className="game-screen__end-button"
-              onClick={() => {
-                setGameEnded(false);
-                startGame();
-              }}
-            >
+            <button className="game-screen__end-button" onClick={handleNewGame}>
               Играть снова
             </button>
           </div>

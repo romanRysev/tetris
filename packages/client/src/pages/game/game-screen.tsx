@@ -1,7 +1,14 @@
-import React, { PureComponent, ReactNode } from 'react';
+import React, { Component, ReactNode } from 'react';
 import { colors, Sequence, sequence, tetrominos } from './constant';
 
-export class Tetris extends PureComponent {
+type TetrisProps = {
+  canvas: HTMLCanvasElement | null;
+  canvasFigure: HTMLCanvasElement | null;
+  getDataUp: (score: number, level: number, lineCount: number) => void;
+  sendEnd: () => void;
+  gameNo: number;
+};
+export class Tetris extends Component<TetrisProps> {
   private count = 0;
   public currentTetromino = this.getNextTetromino();
   public nextTetromino = this.getNextTetromino();
@@ -25,17 +32,12 @@ export class Tetris extends PureComponent {
   public speed = 150;
   public shareData;
   public sendEnd;
+  public gameNo: number;
   private cellSize = 50;
 
-  public constructor(props: {
-    canvas: HTMLCanvasElement | null;
-    canvasFigure: HTMLCanvasElement | null;
-    getDataUp: (score: number, level: number, lineCount: number) => void;
-    sendEnd: () => void;
-  }) {
+  public constructor(props: TetrisProps) {
     super(props);
-    // eslint-disable-next-line react/prop-types
-    const { canvas, canvasFigure, getDataUp, sendEnd } = props;
+    const { canvas, canvasFigure, getDataUp, sendEnd, gameNo } = props;
     this.canvas = canvas;
     this.canvasFigure = canvasFigure;
     this.title = 'canvas';
@@ -43,23 +45,23 @@ export class Tetris extends PureComponent {
     this.height = 20;
     this.shareData = getDataUp;
     this.sendEnd = sendEnd;
-    this.createCanvas();
+    this.gameNo = gameNo;
   }
 
   componentDidMount(): void {
-    console.log('MOUNT');
     this.onKeypress();
     this.init();
-    const step = () => {
-      requestAnimationFrame(step);
-      this.loop();
-    };
-    step();
   }
 
   componentWillUnmount(): void {
-    console.log('UNMOUNT');
     this.removeKeypress();
+  }
+
+  componentDidUpdate(prevProps: Readonly<TetrisProps>): void {
+    if (prevProps.gameNo != this.props.gameNo) {
+      this.gameOver = false;
+      this.init();
+    }
   }
 
   public createCanvas(): void {
@@ -87,6 +89,7 @@ export class Tetris extends PureComponent {
     }
   }
   public init() {
+    this.createCanvas();
     this.tetrominoSequence = [];
     this.playfield = [];
     for (let row = -2; row < 20; row++) {
@@ -95,8 +98,18 @@ export class Tetris extends PureComponent {
         this.playfield[row][col] = 0;
       }
     }
+    this.score = 0;
+    this.lineCount = 0;
+    this.level = 1;
+    this.speed = 250;
+    this.count = 0;
     this.drawWorld();
     this.generateSequence();
+    const step = () => {
+      requestAnimationFrame(step);
+      this.loop();
+    };
+    step();
   }
   public generateSequence() {
     this.sequence = sequence.slice();
@@ -120,7 +133,7 @@ export class Tetris extends PureComponent {
     this.generateSequence();
     const name = this.tetrominoSequence.pop() as Sequence;
     const matrix = this.tetrominos[name];
-    const col = 5;
+    const col = 4;
     const row = name === 'I' ? -1 : -2;
     return {
       name: name || 'I',
@@ -191,11 +204,10 @@ export class Tetris extends PureComponent {
     this.gameOver = true;
     // TODO: перекрасить фигуры в серенький
     this.sendEnd();
-    document.removeEventListener('keydown', this.MyClick);
   }
   public pause() {
     this.paused = true;
-    if (this.paused && this.ctx && this.canvas && !this.gameOver) {
+    if (this.paused && this.ctx && this.canvas) {
       this.ctx.fillStyle = 'black';
       this.ctx.globalAlpha = 0.75;
       this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
