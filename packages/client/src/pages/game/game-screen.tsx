@@ -1,6 +1,7 @@
+import React, { PureComponent, ReactNode } from 'react';
 import { colors, Sequence, sequence, tetrominos } from './constant';
 
-export class Tetris {
+export class Tetris extends PureComponent {
   private count = 0;
   public currentTetromino = this.getNextTetromino();
   public nextTetromino = this.getNextTetromino();
@@ -21,28 +22,44 @@ export class Tetris {
   public score = 0;
   public lineCount = 0;
   public level = 1;
-  public speed = 60;
+  public speed = 150;
   public shareData;
   public sendEnd;
   private cellSize = 50;
 
-  public constructor(
-    title: string,
-    width: number,
-    height: number,
-    canvas: HTMLCanvasElement | null,
-    canvasFigure: HTMLCanvasElement | null,
-    getDataUp: (score: number, level: number, lineCount: number) => void,
-    sendEnd: () => void,
-  ) {
+  public constructor(props: {
+    canvas: HTMLCanvasElement | null;
+    canvasFigure: HTMLCanvasElement | null;
+    getDataUp: (score: number, level: number, lineCount: number) => void;
+    sendEnd: () => void;
+  }) {
+    super(props);
+    // eslint-disable-next-line react/prop-types
+    const { canvas, canvasFigure, getDataUp, sendEnd } = props;
     this.canvas = canvas;
     this.canvasFigure = canvasFigure;
-    this.title = title;
-    this.width = width;
-    this.height = height;
+    this.title = 'canvas';
+    this.width = 10;
+    this.height = 20;
     this.shareData = getDataUp;
     this.sendEnd = sendEnd;
     this.createCanvas();
+  }
+
+  componentDidMount(): void {
+    console.log('MOUNT');
+    this.onKeypress();
+    this.init();
+    const step = () => {
+      requestAnimationFrame(step);
+      this.loop();
+    };
+    step();
+  }
+
+  componentWillUnmount(): void {
+    console.log('UNMOUNT');
+    this.removeKeypress();
   }
 
   public createCanvas(): void {
@@ -155,7 +172,7 @@ export class Tetris {
         this.score += 40;
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
           this.level++;
-          this.speed -= 5;
+          this.speed -= 10;
         }
         this.shareData(this.score, this.level, this.lineCount);
         for (let r = row; r >= 0; r--) {
@@ -249,8 +266,6 @@ export class Tetris {
   }
 
   private MyClick = (e: KeyboardEvent) => {
-    // TODO: убрать листенер
-
     switch (e.code) {
       case 'ArrowUp':
       case 'KeyW': {
@@ -308,5 +323,13 @@ export class Tetris {
   };
   public onKeypress() {
     document.addEventListener('keydown', this.MyClick);
+  }
+
+  public removeKeypress() {
+    document.removeEventListener('keydown', this.MyClick);
+  }
+
+  public render(): ReactNode {
+    return <div></div>;
   }
 }

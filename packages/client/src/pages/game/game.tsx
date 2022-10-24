@@ -40,14 +40,19 @@ export const Game: React.FC = () => {
     setScore(0);
     setLevel(1);
     setLineCount(0);
-    const w = new Tetris('canvas', 10, 20, canvasRef.current, canvasRefFigure.current, getData, getEnd);
-    w.init();
-    w.onKeypress();
-    function step() {
-      requestAnimationFrame(step);
-      w.loop();
-    }
-    step();
+    // const w = new Tetris({
+    //   canvas: canvasRef.current,
+    //   canvasFigure: canvasRefFigure.current,
+    //   getDataUp: getData,
+    //   sendEnd: getEnd,
+    // });
+    // w.init();
+    // w.onKeypress();
+    // function step() {
+    //   requestAnimationFrame(step);
+    //   w.loop();
+    // }
+    // step();
   };
 
   async function logout() {
@@ -111,7 +116,16 @@ export const Game: React.FC = () => {
       </div>
       <div className="game-screen">
         <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}></canvas>
-
+        {IsGameStarted && (
+          <>
+            <Tetris
+              canvas={canvasRef.current}
+              canvasFigure={canvasRefFigure.current}
+              getDataUp={getData}
+              sendEnd={getEnd}
+            />
+          </>
+        )}
         {!IsGameStarted && (
           <button className="game-screen__start-button" onClick={startGame}>
             Начать игру
