@@ -1,7 +1,7 @@
-import { colors, sequence, tetrominos } from './constant';
+import { colors, Sequence, sequence, tetrominos } from './constant';
 
 export class Tetris {
-  public count = 0;
+  private count = 0;
   public currentTetromino = this.getNextTetromino();
   public nextTetromino = this.getNextTetromino();
   public gameOver = false;
@@ -24,7 +24,7 @@ export class Tetris {
   public speed = 60;
   public shareData;
   public sendEnd;
-  cellSize = 50;
+  private cellSize = 50;
 
   public constructor(
     title: string,
@@ -82,7 +82,7 @@ export class Tetris {
     this.generateSequence();
   }
   public generateSequence() {
-    this.sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+    this.sequence = sequence.slice();
     function getRandomInt(min: number, max: number) {
       min = Math.ceil(min);
       max = Math.floor(max);
@@ -101,7 +101,7 @@ export class Tetris {
     this.tetrominos = tetrominos;
     this.tetrominoSequence = [];
     this.generateSequence();
-    const name = this.tetrominoSequence.pop() ? this.tetrominoSequence.pop() : 'I';
+    const name = this.tetrominoSequence.pop() as Sequence;
     const matrix = this.tetrominos[name];
     const col = 5;
     const row = name === 'I' ? -1 : -2;
@@ -112,12 +112,17 @@ export class Tetris {
       col: col,
     };
   }
-  public rotate(matrix: Array<[]>) {
+  public rotate(matrix: (0 | 1)[][]) {
     const N = matrix.length - 1;
     const result = matrix.map((row, i) => row.map((val, j) => matrix[N - j][i]));
     return result;
   }
-  public isValidMove(matrix: number[][], cellRow: number, cellCol: number) {
+
+  public isValidMove(
+    matrix: number[][] = this.currentTetromino.matrix,
+    cellRow: number = this.currentTetromino.row,
+    cellCol: number = this.currentTetromino.col,
+  ) {
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix[row].length; col++) {
         if (
@@ -250,7 +255,7 @@ export class Tetris {
       case 'ArrowUp':
       case 'KeyW': {
         const matrix = this.rotate(this.currentTetromino.matrix);
-        if (this.isValidMove(matrix, this.currentTetromino.row, this.currentTetromino.col)) {
+        if (this.isValidMove(matrix)) {
           this.currentTetromino.matrix = matrix;
         }
         break;
@@ -258,7 +263,7 @@ export class Tetris {
       case 'ArrowDown':
       case 'KeyS': {
         const row = this.currentTetromino.row + 1;
-        if (!this.isValidMove(this.currentTetromino.matrix, row, this.currentTetromino.col)) {
+        if (!this.isValidMove(undefined, row)) {
           this.currentTetromino.row = row - 1;
           this.placeTetromino();
           return;
@@ -269,7 +274,7 @@ export class Tetris {
       case 'ArrowLeft':
       case 'KeyA': {
         const col = this.currentTetromino.col - 1;
-        if (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, col)) {
+        if (this.isValidMove(undefined, undefined, col)) {
           this.currentTetromino.col = col;
         }
         break;
@@ -277,23 +282,23 @@ export class Tetris {
       case 'ArrowRight':
       case 'KeyD': {
         const col = this.currentTetromino.col + 1;
-        if (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, col)) {
+        if (this.isValidMove(undefined, undefined, col)) {
           this.currentTetromino.col = col;
         }
         break;
       }
       case 'KeyP': {
-        this.paused = this.paused ? false : true;
+        this.paused = !this.paused;
         if (this.paused) {
           this.pause();
         }
         break;
       }
       case 'Space': {
-        while (this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
+        while (this.isValidMove()) {
           this.currentTetromino.row++;
         }
-        if (!this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
+        if (!this.isValidMove()) {
           this.currentTetromino.row--;
           this.placeTetromino();
         }
