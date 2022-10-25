@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
 import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
@@ -8,8 +8,8 @@ import { APIurls } from '../../consts/prefix';
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const [gameNo, setGameNo] = useState(1);
-  const canvasRef = useRef<HTMLCanvasElement>();
-  const canvasRefFigure = useRef<HTMLCanvasElement>();
+  const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
+  const canvasRefFigure = useRef() as MutableRefObject<HTMLCanvasElement>;
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
