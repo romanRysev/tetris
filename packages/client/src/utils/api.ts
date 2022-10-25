@@ -18,7 +18,7 @@ export const postRegisterRequest = async (data: RegisterForm) =>
   await fetch(APIurls.SIGNUP, {
     method: 'POST',
     headers: headers.post,
-    body: JSON.stringify({ ...data }),
+    body: JSON.stringify(data),
     credentials: 'include',
   });
 
@@ -26,7 +26,7 @@ export const postLoginRequest = async (data: LoginForm) =>
   await fetch(APIurls.LOGIN, {
     method: 'POST',
     headers: headers.post,
-    body: JSON.stringify({ ...data }),
+    body: JSON.stringify(data),
     credentials: 'include',
   });
 

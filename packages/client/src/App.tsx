@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Suspense, useEffect } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import { Game } from './pages/game/game';
 import { HowToPlay } from './pages/HowTo/HowToPlayPage';
@@ -23,7 +23,7 @@ const ProfileChangePasswordPage = React.lazy(
 
 function App() {
   const dispatch = useAppDispatch();
-  const [isLoaded, setIsLoaded] = React.useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     (async () => {
@@ -34,6 +34,7 @@ function App() {
 
   return (
     <>
+      <div style={{ display: 'none' }}>Вот тут будет жить ваше приложение :)</div>
       {isLoaded && (
         <HashRouter>
           <Suspense>

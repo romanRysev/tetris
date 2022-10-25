@@ -8,6 +8,7 @@ import { login } from '../../redux/actions/singActions';
 import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 import { loginRule, passwordRule, validation } from '../../helpers/validator';
+import classNames from 'classnames';
 
 export type LoginForm = {
   login: string;
@@ -17,9 +18,9 @@ export type LoginForm = {
 const Login = () => {
   const dispatch = useAppDispatch();
 
-  const [form, setForm] = useState<LoginForm>({ login: ' ', password: '' });
-  const [errorLogin, setErrorLogin] = useState(' ');
-  const [errorPassword, setErrorPassword] = useState(' ');
+  const [form, setForm] = useState<LoginForm>({ login: '', password: '' });
+  const [errorLogin, setErrorLogin] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
 
   const navigate = useNavigate();
 
@@ -69,7 +70,10 @@ const Login = () => {
             errorText={errorPassword}
           />
           <div className="login__buttons">
-            <Button className={`login__button ${checkError ? 'login__button_disabled' : ''}`} disabled={checkError}>
+            <Button
+              className={classNames('login__button', { login__button_disabled: checkError })}
+              disabled={checkError}
+            >
               Авторизоваться
             </Button>
           </div>

@@ -16,6 +16,7 @@ import {
 } from '../../helpers/validator';
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
+import classNames from 'classnames';
 
 export type RegisterForm = {
   login: string;
@@ -39,16 +40,15 @@ const Register = () => {
     phone: '',
   });
 
-  /** Запишем сразу невидимые ошибки в обязательные поля, чтобы по-умолчанию форма была невалидна */
-  const [errorEmail, setErrorEmail] = useState(' ');
-  const [errorLogin, setErrorLogin] = useState(' ');
-  const [errorFirstName, setErrorFirstName] = useState(' ');
-  const [errorSecondName, setErrorSecondName] = useState(' ');
-  const [errorPhone, setErrorPhone] = useState(' ');
-  const [errorPassword, setErrorPassword] = useState(' ');
-  const [errorSecondPassword, setErrorSecondPassword] = useState(' ');
-  const [secondPassword, setSecondPassword] = useState(' ');
-  const [passwordsCompareError, setPasswordsCompareError] = useState(' ');
+  const [errorEmail, setErrorEmail] = useState('');
+  const [errorLogin, setErrorLogin] = useState('');
+  const [errorFirstName, setErrorFirstName] = useState('');
+  const [errorSecondName, setErrorSecondName] = useState('');
+  const [errorPhone, setErrorPhone] = useState('');
+  const [errorPassword, setErrorPassword] = useState('');
+  const [errorSecondPassword, setErrorSecondPassword] = useState('');
+  const [secondPassword, setSecondPassword] = useState('');
+  const [passwordsCompareError, setPasswordsCompareError] = useState('');
 
   const onFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, type, checked } = e.target;
@@ -71,6 +71,7 @@ const Register = () => {
 
   const checkEmail = (e: React.FocusEvent<HTMLInputElement>) => {
     setErrorEmail(validation(e.target.value, [emailRule, requiredRule]).errorMessages.join('\n') ?? '');
+    console.log(e.target.value, errorEmail, checkError);
   };
 
   const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -103,21 +104,16 @@ const Register = () => {
     );
   };
 
-  const checkError = errorEmail
-    ? true
-    : errorLogin
-    ? true
-    : errorFirstName
-    ? true
-    : errorSecondName
-    ? true
-    : errorPhone
-    ? true
-    : errorPassword
-    ? true
-    : errorSecondPassword
-    ? true
-    : !!passwordsCompareError;
+  const checkError = !!(
+    errorEmail ||
+    errorLogin ||
+    errorFirstName ||
+    errorSecondName ||
+    errorPhone ||
+    errorPassword ||
+    errorSecondPassword ||
+    passwordsCompareError
+  );
 
   return (
     <div className="register">
@@ -181,7 +177,10 @@ const Register = () => {
             errorText={errorSecondPassword}
           />
           <p className="register__password-compare-error">{passwordsCompareError}</p>
-          <Button className={`register__button ${checkError ? 'register__button_disabled' : ''}`} disabled={checkError}>
+          <Button
+            className={classNames('register__button', { register__button_disabled: checkError })}
+            disabled={checkError}
+          >
             Зарегистрироваться
           </Button>
         </form>

@@ -56,6 +56,8 @@ export const maxLengthRule = (length: number) => {
 };
 
 export const requiredRule = (value: string) => {
+  console.log(value);
+
   return value?.length > 0 || 'Поле обязательное';
 };
 
@@ -89,7 +91,7 @@ export const emailRule = (value: string) => {
   return email.test(value) || 'Проверьте правильность введенного email';
 };
 
-export const comparePasswordsRules = (firstPassword: string, secondPassword: string) => {
+export const comparePasswordsRules = (firstPassword: string | undefined, secondPassword: string | undefined) => {
   return () => {
     return firstPassword === secondPassword || 'Пароли отличаются';
   };
