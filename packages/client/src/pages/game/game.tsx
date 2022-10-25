@@ -8,8 +8,8 @@ import { APIurls } from '../../consts/prefix';
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const [gameNo, setGameNo] = useState(1);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const canvasRefFigure = useRef<HTMLCanvasElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>();
+  const canvasRefFigure = useRef<HTMLCanvasElement>();
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
