@@ -3,7 +3,7 @@ import './game.scss';
 import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
 import { Link } from 'react-router-dom';
-import { APIurls } from '../../helpers/prefix';
+import { APIurls } from './../../helpers/prefix';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
