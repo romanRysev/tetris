@@ -1,11 +1,11 @@
-@import '_variables';
+@import 'variables';
 
 .button {
   border: none;
-  height: 40px;
   border-radius: 8px;
-  width: 100%;
   cursor: pointer;
+  height: 40px;
+  width: 100%;
 
   &_theme_light {
     background-color: $button-light-background-color;

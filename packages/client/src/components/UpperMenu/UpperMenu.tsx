@@ -1,7 +1,7 @@
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
-import { APIurls } from '../../helpers/prefix';
+import { APIurls } from '../../consts/prefix';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 import { dummyUser } from '../../consts/dummyData';
 
