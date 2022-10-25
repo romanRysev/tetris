@@ -1,5 +1,6 @@
 export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
-export const tetrominos: Record<Sequence, (0 | 1)[][]> = {
+export type TetrominoMatrix = (0 | 1)[][];
+export const tetrominos: Record<Sequence, TetrominoMatrix> = {
   I: [
     [0, 0, 0, 0],
     [1, 1, 1, 1],

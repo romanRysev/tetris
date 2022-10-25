@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { colors, gray, Sequence, sequence, tetrominos } from './constant';
+import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement | null;
@@ -146,7 +146,7 @@ export class Tetris extends Component<TetrisProps> {
     };
   }
 
-  private rotate(matrix: (0 | 1)[][]) {
+  private rotate(matrix: TetrominoMatrix) {
     const N = matrix.length - 1;
     const result = matrix.map((row, i) => row.map((val, j) => matrix[N - j][i]));
     return result;
