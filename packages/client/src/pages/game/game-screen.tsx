@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { colors, Sequence, sequence, tetrominos } from './constant';
+import { colors, gray, Sequence, sequence, tetrominos } from './constant';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement | null;
@@ -8,44 +8,48 @@ type TetrisProps = {
   sendEnd: () => void;
   gameNo: number;
 };
+
+type Playfield = (Sequence | undefined)[][] | [][] | [];
 export class Tetris extends Component<TetrisProps> {
   private count = 0;
-  public currentTetromino = this.getNextTetromino();
-  public nextTetromino = this.getNextTetromino();
-  public gameOver = false;
-  public paused = false;
-  public title: string;
-  public width: number;
-  public height: number;
-  public canvas: HTMLCanvasElement | null;
-  public canvasFigure: HTMLCanvasElement | null;
-  public ctx: CanvasRenderingContext2D | null | undefined;
-  public ctxFigure: CanvasRenderingContext2D | null | undefined;
+  private currentTetromino = this.getNextTetromino();
+  private nextTetromino = this.getNextTetromino();
+  private gameOver = false;
+  private paused = false;
+  private title: string;
+  private width: number;
+  private height: number;
+  private canvas: HTMLCanvasElement;
+  private canvasFigure: HTMLCanvasElement;
+  private ctx: CanvasRenderingContext2D;
+  private ctxFigure: CanvasRenderingContext2D;
   private tetrominoSequence: string[] = [];
-  public playfield: (number | string)[][] | [][] | [] = [];
-  public tetrominos = tetrominos;
-  public colors = colors;
-  public sequence = sequence;
-  public score = 0;
-  public lineCount = 0;
-  public level = 1;
-  public speed = 150;
-  public shareData;
-  public sendEnd;
-  public gameNo: number;
+  private playfield: Playfield = [];
+  private tetrominos = tetrominos;
+  private colors = colors;
+  private sequence = sequence;
+  private score = 0;
+  private lineCount = 0;
+  private level = 1;
+  private speed = 150;
+  private shareData;
+  private sendEnd;
+  private gameNo: number;
   private cellSize = 50;
 
   public constructor(props: TetrisProps) {
     super(props);
     const { canvas, canvasFigure, getDataUp, sendEnd, gameNo } = props;
-    this.canvas = canvas;
-    this.canvasFigure = canvasFigure;
+    this.canvas = canvas as HTMLCanvasElement;
+    this.canvasFigure = canvasFigure as HTMLCanvasElement;
     this.title = 'canvas';
     this.width = 10;
     this.height = 20;
     this.shareData = getDataUp;
     this.sendEnd = sendEnd;
     this.gameNo = gameNo;
+    this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
+    this.ctxFigure = this.canvasFigure.getContext('2d') as CanvasRenderingContext2D;
   }
 
   componentDidMount(): void {
@@ -64,54 +68,51 @@ export class Tetris extends Component<TetrisProps> {
     }
   }
 
-  public createCanvas(): void {
-    if (this.canvas && this.canvasFigure) {
-      this.ctx = this.canvas.getContext('2d');
-      this.ctxFigure = this.canvasFigure.getContext('2d');
-      if (this.ctx && this.ctxFigure) {
-        this.ctx.fillStyle = '#FFFFFF';
-        this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      }
-    }
+  private createCanvas(): void {
+    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
-  public drawWorld() {
-    if (this.ctx) {
-      this.ctx.beginPath();
-      for (let x = 0; x < this.width + 1; x++) {
-        this.ctx.moveTo(this.cellSize * x, 0);
-        this.ctx.lineTo(this.cellSize * x, this.height * this.cellSize);
-      }
-      for (let y = 0; y < this.height + 1; y++) {
-        this.ctx.moveTo(0, this.cellSize * y);
-        this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
-      }
-      this.ctx.stroke();
+
+  private drawWorld() {
+    this.ctx.beginPath();
+    for (let x = 0; x < this.width + 1; x++) {
+      this.ctx.moveTo(this.cellSize * x, 0);
+      this.ctx.lineTo(this.cellSize * x, this.height * this.cellSize);
     }
+    for (let y = 0; y < this.height + 1; y++) {
+      this.ctx.moveTo(0, this.cellSize * y);
+      this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
+    }
+    this.ctx.stroke();
   }
-  public init() {
+
+  private init() {
     this.createCanvas();
     this.tetrominoSequence = [];
     this.playfield = [];
     for (let row = -2; row < 20; row++) {
       this.playfield[row] = [];
       for (let col = 0; col < 10; col++) {
-        this.playfield[row][col] = 0;
+        this.playfield[row][col] = undefined;
       }
     }
     this.score = 0;
     this.lineCount = 0;
     this.level = 1;
-    this.speed = 250;
+    this.speed = 150;
     this.count = 0;
     this.drawWorld();
     this.generateSequence();
     const step = () => {
-      requestAnimationFrame(step);
-      this.loop();
+      if (!this.gameOver) {
+        requestAnimationFrame(step);
+        this.loop();
+      }
     };
     step();
   }
-  public generateSequence() {
+
+  private generateSequence() {
     this.sequence = sequence.slice();
     function getRandomInt(min: number, max: number) {
       min = Math.ceil(min);
@@ -124,35 +125,38 @@ export class Tetris extends Component<TetrisProps> {
       this.tetrominoSequence.push(name);
     }
   }
-  public get nextTetronimo() {
+
+  private get nextTetronimo() {
     return this.nextTetromino;
   }
-  public getNextTetromino() {
+
+  private getNextTetromino() {
     this.tetrominos = tetrominos;
     this.tetrominoSequence = [];
     this.generateSequence();
     const name = this.tetrominoSequence.pop() as Sequence;
     const matrix = this.tetrominos[name];
     const col = 4;
-    const row = name === 'I' ? -1 : -2;
+    const row = -1;
     return {
-      name: name || 'I',
+      name: name,
       matrix: matrix,
       row: row,
       col: col,
     };
   }
-  public rotate(matrix: (0 | 1)[][]) {
+
+  private rotate(matrix: (0 | 1)[][]) {
     const N = matrix.length - 1;
     const result = matrix.map((row, i) => row.map((val, j) => matrix[N - j][i]));
     return result;
   }
 
-  public isValidMove(
-    matrix: number[][] = this.currentTetromino.matrix,
-    cellRow: number = this.currentTetromino.row,
-    cellCol: number = this.currentTetromino.col,
-  ) {
+  private isValidMove({
+    matrix = this.currentTetromino.matrix,
+    cellRow = this.currentTetromino.row,
+    cellCol = this.currentTetromino.col,
+  }) {
     for (let row = 0; row < matrix.length; row++) {
       for (let col = 0; col < matrix[row].length; col++) {
         if (
@@ -168,7 +172,8 @@ export class Tetris extends Component<TetrisProps> {
     }
     return true;
   }
-  public placeTetromino() {
+
+  private placeTetromino() {
     for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
         if (this.currentTetromino.matrix[row][col]) {
@@ -182,7 +187,7 @@ export class Tetris extends Component<TetrisProps> {
     for (let row = this.playfield.length - 1; row >= 0; ) {
       if (this.playfield[row].every((cell) => !!cell)) {
         this.lineCount++;
-        this.score += 40;
+        this.score += 40 * (this.level + 1);
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
           this.level++;
           this.speed -= 10;
@@ -200,14 +205,25 @@ export class Tetris extends Component<TetrisProps> {
     this.currentTetromino = this.nextTetromino;
     this.nextTetromino = this.getNextTetromino();
   }
-  public showGameOver() {
+
+  private showGameOver() {
     this.gameOver = true;
-    // TODO: перекрасить фигуры в серенький
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    this.drawWorld();
+    for (let row = 0; row < 20; row++) {
+      for (let col = 0; col < 10; col++) {
+        if (this.playfield[row][col]) {
+          this.ctx.fillStyle = gray;
+          this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
+        }
+      }
+    }
     this.sendEnd();
   }
-  public pause() {
+
+  private pause() {
     this.paused = true;
-    if (this.paused && this.ctx && this.canvas) {
+    if (this.paused) {
       this.ctx.fillStyle = 'black';
       this.ctx.globalAlpha = 0.75;
       this.ctx.fillRect(0, this.canvas.height / 2 - 30, this.canvas.width, 60);
@@ -219,20 +235,21 @@ export class Tetris extends Component<TetrisProps> {
       this.ctx.fillText('Пауза', this.canvas.width / 2, this.canvas.height / 2);
     }
   }
-  public loop() {
-    if (!this.gameOver && !this.paused && this.ctx && this.canvas) {
+
+  private loop() {
+    if (!this.gameOver && !this.paused) {
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.drawWorld();
       for (let row = 0; row < 20; row++) {
         for (let col = 0; col < 10; col++) {
-          if (this.ctx && this.playfield[row][col]) {
-            const name = this.playfield[row][col];
+          if (this.playfield[row][col]) {
+            const name: Sequence = this.playfield[row][col] as Sequence;
             this.ctx.fillStyle = this.colors[name];
             this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
           }
         }
       }
-      if (this.nextTetromino && this.ctxFigure && this.canvasFigure) {
+      if (this.nextTetromino) {
         this.ctxFigure.clearRect(0, 0, this.canvasFigure.width, this.canvasFigure.height);
         for (let i = 0; i < this.nextTetromino.matrix.length; i++) {
           for (let j = 0; j < this.nextTetromino.matrix[i].length; j++) {
@@ -251,11 +268,11 @@ export class Tetris extends Component<TetrisProps> {
           }
         }
       }
-      if (this.currentTetromino && this.ctx) {
+      if (this.currentTetromino) {
         if (++this.count > this.speed) {
           this.currentTetromino.row++;
           this.count = 0;
-          if (!this.isValidMove(this.currentTetromino.matrix, this.currentTetromino.row, this.currentTetromino.col)) {
+          if (!this.isValidMove({})) {
             this.currentTetromino.row--;
             this.placeTetromino();
           }
@@ -282,7 +299,7 @@ export class Tetris extends Component<TetrisProps> {
       case 'ArrowUp':
       case 'KeyW': {
         const matrix = this.rotate(this.currentTetromino.matrix);
-        if (this.isValidMove(matrix)) {
+        if (this.isValidMove({ matrix: matrix })) {
           this.currentTetromino.matrix = matrix;
         }
         break;
@@ -290,7 +307,7 @@ export class Tetris extends Component<TetrisProps> {
       case 'ArrowDown':
       case 'KeyS': {
         const row = this.currentTetromino.row + 1;
-        if (!this.isValidMove(undefined, row)) {
+        if (!this.isValidMove({ cellRow: row })) {
           this.currentTetromino.row = row - 1;
           this.placeTetromino();
           return;
@@ -301,7 +318,7 @@ export class Tetris extends Component<TetrisProps> {
       case 'ArrowLeft':
       case 'KeyA': {
         const col = this.currentTetromino.col - 1;
-        if (this.isValidMove(undefined, undefined, col)) {
+        if (this.isValidMove({ cellCol: col })) {
           this.currentTetromino.col = col;
         }
         break;
@@ -309,7 +326,7 @@ export class Tetris extends Component<TetrisProps> {
       case 'ArrowRight':
       case 'KeyD': {
         const col = this.currentTetromino.col + 1;
-        if (this.isValidMove(undefined, undefined, col)) {
+        if (this.isValidMove({ cellCol: col })) {
           this.currentTetromino.col = col;
         }
         break;
@@ -322,10 +339,10 @@ export class Tetris extends Component<TetrisProps> {
         break;
       }
       case 'Space': {
-        while (this.isValidMove()) {
+        while (this.isValidMove({})) {
           this.currentTetromino.row++;
         }
-        if (!this.isValidMove()) {
+        if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
         }
@@ -341,11 +358,11 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
   };
-  public onKeypress() {
+  private onKeypress() {
     document.addEventListener('keydown', this.MyClick);
   }
 
-  public removeKeypress() {
+  private removeKeypress() {
     document.removeEventListener('keydown', this.MyClick);
   }
 
