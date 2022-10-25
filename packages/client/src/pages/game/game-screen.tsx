@@ -9,7 +9,7 @@ type TetrisProps = {
   gameNo: number;
 };
 
-type Playfield = (Sequence | undefined)[][] | [][] | [];
+type Playfield = (Sequence | undefined)[][];
 export class Tetris extends Component<TetrisProps> {
   private count = 0;
   private currentTetromino = this.getNextTetromino();
