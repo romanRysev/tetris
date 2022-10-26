@@ -2,8 +2,9 @@ import React, { MutableRefObject, useCallback, useEffect, useRef, useState } fro
 import './game.scss';
 import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
-import { Link } from 'react-router-dom';
-import { APIurls } from '../../consts/prefix';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAppDispatch } from '../../redux/hooks';
+import { logout } from './../../redux/actions/singActions';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -47,21 +48,14 @@ export const Game: React.FC = () => {
     setGameNo(gameNo + 1);
   }, [gameNo]);
 
-  async function logout() {
-    const response = await fetch(APIurls.LOGOUT, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await response.json();
-  }
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout().then((response) => {
-      console.log(response);
-    });
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
   };
 
   const handleNewGame = useCallback(() => {
