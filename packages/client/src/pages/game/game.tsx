@@ -4,6 +4,10 @@ import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
 import { Link } from 'react-router-dom';
 import { APIurls } from '../../consts/prefix';
+// import { store } from '../../redux/store';
+// import { dummyUser } from './../../consts/dummyData';
+// import { getProfileRequest } from './../../utils/api';
+// import { UserProps } from '../../components/UserInfo/UserInfo';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -14,6 +18,7 @@ export const Game: React.FC = () => {
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
+  // const [userProfile, setUserProfile] = useState(dummyUser);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -38,6 +43,35 @@ export const Game: React.FC = () => {
       }
     }
   }, []);
+
+  // async function getUser() {
+  //   const response = await fetch(APIurls.GETUSER, {
+  //     method: 'POST',
+  //     credentials: 'include',
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //     },
+  //   });
+  //   return await response.json();
+  // }
+
+  // const retrieveUser = async () => {
+  //   const response: UserProps = await getProfileRequest().then((resp) => {
+  //     return resp.text();
+  //   });
+  //   setUserProfile({
+  //     id: response.id,
+  //     first_name: response.first_name,
+  //     second_name: response.second_name,
+  //     display_name: response.display_name,
+  //     login: response.login,
+  //     email: response.email,
+  //     phone: response.phone,
+  //     avatar: response.avatar,
+  //   });
+  // };
+
+  // const thisUser = store.getState().auth.isAuthorized ? retrieveUser() : dummyUser;
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -147,9 +181,9 @@ export const Game: React.FC = () => {
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
-          <img className="game-info__avatar" src={foto} alt="" />
+          <img className="game-info__avatar" src={userProfile.avatar ?? foto} alt="" />
           <Link className="game-info__user-name" to="/profile">
-            Иван Иваныч Джагатай-Хан
+            {userProfile.display_name ?? `${userProfile.first_name} ${userProfile.second_name}`}
           </Link>
         </div>
         <div className="game-info__score">
