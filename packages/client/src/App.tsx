@@ -30,7 +30,7 @@ function App() {
       await dispatch(checkLogin());
       setIsLoaded(true);
     })();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
@@ -40,7 +40,7 @@ function App() {
           <Suspense>
             <Routes>
               <Route element={<ProtectedRoute />}>
-                <Route path="/" element={<ProfilePage />} />
+                <Route path="/" element={<Game />} />
                 <Route path="/profile" element={<ProfilePage />} />
                 <Route path="/leaderboard" element={<LeaderBoardPage />} />
                 <Route path="/phorum" element={<PhorumMainPage />} />

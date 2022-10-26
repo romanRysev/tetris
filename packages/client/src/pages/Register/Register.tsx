@@ -61,7 +61,7 @@ const Register = () => {
     const res = await dispatch(register(form));
 
     if (res.meta.requestStatus === 'fulfilled') {
-      navigate('/');
+      navigate('/game');
     }
   };
 
