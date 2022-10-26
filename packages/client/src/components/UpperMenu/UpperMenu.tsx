@@ -24,6 +24,10 @@ function handleLogout() {
 
 const menuLinks: MenuItemProps[] = [
   {
+    text: 'ИГРАТЬ',
+    link: '/game',
+  },
+  {
     text: 'Мой профиль',
     link: '/profile',
   },
