@@ -21,6 +21,7 @@ const Login = () => {
   const [form, setForm] = useState<LoginForm>({ login: '', password: '' });
   const [errorLogin, setErrorLogin] = useState('');
   const [errorPassword, setErrorPassword] = useState('');
+  const [formError, setFormError] = useState('');
 
   const navigate = useNavigate();
 
@@ -35,6 +36,8 @@ const Login = () => {
     const res = await dispatch(login(form));
     if (res.meta.requestStatus === 'fulfilled') {
       navigate('/game');
+    } else {
+      setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);
     }
   };
 
@@ -70,6 +73,7 @@ const Login = () => {
             errorText={errorPassword}
           />
           <div className="login__buttons">
+            <p className="login__form-error">{formError}</p>
             <Button
               className={classNames('login__button', { login__button_disabled: checkError })}
               disabled={checkError}
