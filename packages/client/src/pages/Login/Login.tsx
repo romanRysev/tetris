@@ -34,7 +34,7 @@ const Login = () => {
     e.preventDefault();
     const res = await dispatch(login(form));
     if (res.meta.requestStatus === 'fulfilled') {
-      navigate('/');
+      navigate('/game');
     }
   };
 
