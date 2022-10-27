@@ -1,13 +1,13 @@
+/* eslint-disable camelcase */
 import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
-import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
-import { Link } from 'react-router-dom';
-import { APIurls } from '../../consts/prefix';
-// import { store } from '../../redux/store';
-// import { dummyUser } from './../../consts/dummyData';
-// import { getProfileRequest } from './../../utils/api';
-// import { UserProps } from '../../components/UserInfo/UserInfo';
+import { Link, useNavigate } from 'react-router-dom';
+import { dummyUser } from './../../consts/dummyData';
+import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
+import { getProfileRequest } from '../../utils/api';
+import { useAppDispatch } from '../../redux/hooks';
+import { logout } from '../../redux/actions/singActions';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -18,7 +18,10 @@ export const Game: React.FC = () => {
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
-  // const [userProfile, setUserProfile] = useState(dummyUser);
+  const [userProfile, setUserProfile] = useState(dummyUser);
+  const [isLoadedUserProfile, setLoadedUserProfile] = useState(false);
+  const userName = makeUserNameFromUser(userProfile);
+  const userAvatar = makeUserAvatarFromUser(userProfile);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -42,36 +45,30 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-  }, []);
+    if (!isLoadedUserProfile) {
+      // TODO брать из стора
+      retrieveUser();
+      setLoadedUserProfile(true);
+    }
+  }, [isLoadedUserProfile]);
 
-  // async function getUser() {
-  //   const response = await fetch(APIurls.GETUSER, {
-  //     method: 'POST',
-  //     credentials: 'include',
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //     },
-  //   });
-  //   return await response.json();
-  // }
+  const retrieveUser = async () => {
+    const response = await getProfileRequest().then((resp) => {
+      return resp.text();
+    });
+    const { id, first_name, second_name, display_name, login, email, phone, avatar } = JSON.parse(response);
 
-  // const retrieveUser = async () => {
-  //   const response: UserProps = await getProfileRequest().then((resp) => {
-  //     return resp.text();
-  //   });
-  //   setUserProfile({
-  //     id: response.id,
-  //     first_name: response.first_name,
-  //     second_name: response.second_name,
-  //     display_name: response.display_name,
-  //     login: response.login,
-  //     email: response.email,
-  //     phone: response.phone,
-  //     avatar: response.avatar,
-  //   });
-  // };
-
-  // const thisUser = store.getState().auth.isAuthorized ? retrieveUser() : dummyUser;
+    setUserProfile({
+      id: id,
+      first_name: first_name,
+      second_name: second_name,
+      display_name: display_name,
+      login: login,
+      email: email,
+      phone: phone,
+      avatar: avatar,
+    });
+  };
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -81,29 +78,20 @@ export const Game: React.FC = () => {
     setGameNo(gameNo + 1);
   }, [gameNo]);
 
-  async function logout() {
-    const response = await fetch(APIurls.LOGOUT, {
-      method: 'POST',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-    return await response.json();
-  }
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
 
-  const handleLogout = () => {
-    logout().then((response) => {
-      console.log(response);
-    });
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
   };
 
   const handleNewGame = useCallback(() => {
     setGameEnded(false);
     startGame();
   }, [startGame]);
-
-  // TODO завернуть в useCallback
 
   return (
     <div className="game">
@@ -181,9 +169,9 @@ export const Game: React.FC = () => {
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
-          <img className="game-info__avatar" src={userProfile.avatar ?? foto} alt="" />
+          <img className="game-info__avatar" src={userAvatar} alt="" />
           <Link className="game-info__user-name" to="/profile">
-            {userProfile.display_name ?? `${userProfile.first_name} ${userProfile.second_name}`}
+            {userName}
           </Link>
         </div>
         <div className="game-info__score">

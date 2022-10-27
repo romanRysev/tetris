@@ -9,5 +9,5 @@ export function makeUserAvatarFromUser(user: UserProps) {
 
 export function makeUserNameFromUser(user: UserProps) {
   const { first_name, second_name, display_name } = user;
-  return display_name ?? `${first_name} ${second_name}`;
+  return display_name ? display_name : `${first_name} ${second_name}`;
 }

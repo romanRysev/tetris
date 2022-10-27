@@ -1,26 +1,13 @@
-import React, { FC, useState } from 'react';
+/* eslint-disable camelcase */
+import React, { FC, useEffect, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
-import { APIurls } from '../../consts/prefix';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 import { dummyUser } from '../../consts/dummyData';
-
-async function logout() {
-  const response = await fetch(APIurls.LOGOUT, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return await response.json();
-}
-
-function handleLogout() {
-  logout().then((response) => {
-    console.log(response);
-  });
-}
+import { useAppDispatch } from '../../redux/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../redux/actions/singActions';
+import { getProfileRequest } from '../../utils/api';
 
 const menuLinks: MenuItemProps[] = [
   {
@@ -47,9 +34,48 @@ const menuLinks: MenuItemProps[] = [
 
 export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
+
+  const [userProfile, setUserProfile] = useState(dummyUser);
+  const [isLoadedUserProfile, setLoadedUserProfile] = useState(false);
+
+  useEffect(() => {
+    if (!isLoadedUserProfile) {
+      // TODO брать из стора
+      retrieveUser();
+      setLoadedUserProfile(true);
+    }
+  }, [isLoadedUserProfile]);
+
+  const retrieveUser = async () => {
+    const response = await getProfileRequest().then((resp) => {
+      return resp.text();
+    });
+    const { id, first_name, second_name, display_name, login, email, phone, avatar } = JSON.parse(response);
+
+    setUserProfile({
+      id: id,
+      first_name: first_name,
+      second_name: second_name,
+      display_name: display_name,
+      login: login,
+      email: email,
+      phone: phone,
+      avatar: avatar,
+    });
+  };
+
   return (
     <div className="upper-menu">
-      <UserInfo {...dummyUser} />
+      <UserInfo {...userProfile} />
 
       <nav className="upper-menu__nav">
         <ul className="upper-menu__list">
