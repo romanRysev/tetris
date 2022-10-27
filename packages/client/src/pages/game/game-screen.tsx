@@ -10,6 +10,7 @@ type TetrisProps = {
 };
 
 type Playfield = (Sequence | undefined)[][];
+
 export class Tetris extends Component<TetrisProps> {
   private count = 0;
   private currentTetromino = this.getNextTetromino();
@@ -133,7 +134,7 @@ export class Tetris extends Component<TetrisProps> {
     const name = this.tetrominoSequence.pop() as Sequence;
     const matrix = this.tetrominos[name];
     const col = 4;
-    const row = -1;
+    const row = name === 'I' ? 0 : -1;
     return {
       name: name,
       matrix: matrix,
@@ -176,8 +177,10 @@ export class Tetris extends Component<TetrisProps> {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
         if (this.currentTetromino.matrix[row][col]) {
           if (this.currentTetromino.row + row < 0) {
+            this.playfield[0][this.currentTetromino.col] = this.currentTetromino.name;
             return this.showGameOver();
           }
+          // TODO вот куда-то сюда надо вписать проверку на касание верхнего края стакана
           this.playfield[this.currentTetromino.row + row][this.currentTetromino.col + col] = this.currentTetromino.name;
         }
       }
@@ -198,6 +201,11 @@ export class Tetris extends Component<TetrisProps> {
         }
       } else {
         row--;
+      }
+    }
+    for (let i = 0; i < this.playfield[0].length; i++) {
+      if (this.playfield[0][i] != undefined) {
+        return this.showGameOver();
       }
     }
     this.currentTetromino = this.nextTetromino;
