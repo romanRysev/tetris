@@ -9,7 +9,8 @@ export const register = createAsyncThunk('auth/register', async (data: RegisterF
     if (res.ok) {
       return thunkAPI.fulfillWithValue(res);
     }
-    throw new Error('Не удалось создать пользователя');
+    const err = await res.json();
+    throw new Error(err.reason);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }
@@ -21,7 +22,8 @@ export const login = createAsyncThunk('auth/login', async (data: LoginForm, thun
     if (res.ok) {
       return thunkAPI.fulfillWithValue(res);
     }
-    throw new Error('Не удалось загрузить пользователя');
+    const err = await res.json();
+    throw new Error(err.reason);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }
@@ -33,7 +35,8 @@ export const checkLogin = createAsyncThunk('auth/checkLogin', async (data, thunk
     if (res.ok) {
       return thunkAPI.fulfillWithValue(await res.json());
     }
-    throw new Error('Не удалось загрузить пользователя');
+    const err = await res.json();
+    throw new Error(err.reason);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }
