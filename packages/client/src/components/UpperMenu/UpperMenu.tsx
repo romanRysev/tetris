@@ -1,13 +1,13 @@
 /* eslint-disable camelcase */
 import React, { FC, useEffect, useState } from 'react';
 import './UpperMenu.scss';
-import { UserInfo } from '../UserInfo/UserInfo';
+import { UserInfo, UserProps } from '../UserInfo/UserInfo';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 import { dummyUser } from '../../consts/dummyData';
 import { useAppDispatch } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/actions/singActions';
-import { getProfileRequest } from '../../utils/api';
+import { store } from '../../redux/store';
 
 const menuLinks: MenuItemProps[] = [
   {
@@ -45,33 +45,10 @@ export const UpperMenu: FC = () => {
   };
 
   const [userProfile, setUserProfile] = useState(dummyUser);
-  const [isLoadedUserProfile, setLoadedUserProfile] = useState(false);
 
   useEffect(() => {
-    if (!isLoadedUserProfile) {
-      // TODO брать из стора
-      retrieveUser();
-      setLoadedUserProfile(true);
-    }
-  }, [isLoadedUserProfile]);
-
-  const retrieveUser = async () => {
-    const response = await getProfileRequest().then((resp) => {
-      return resp.text();
-    });
-    const { id, first_name, second_name, display_name, login, email, phone, avatar } = JSON.parse(response);
-
-    setUserProfile({
-      id: id,
-      first_name: first_name,
-      second_name: second_name,
-      display_name: display_name,
-      login: login,
-      email: email,
-      phone: phone,
-      avatar: avatar,
-    });
-  };
+    setUserProfile(store.getState().auth.user as UserProps);
+  }, []);
 
   return (
     <div className="upper-menu">

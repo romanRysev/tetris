@@ -2,8 +2,9 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { dummyUser } from '../../../consts/dummyData';
-import { getProfileRequest } from '../../../utils/api';
+import { store } from '../../../redux/store';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../../utils/makeUserProps';
+import { UserProps } from '../../UserInfo/UserInfo';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -45,36 +46,14 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
   const [userProfile, setUserProfile] = useState(dummyUser);
-  const [isLoadedUserProfile, setLoadedUserProfile] = useState(false);
-  const retrieveUser = async () => {
-    const response = await getProfileRequest().then((resp) => {
-      return resp.text();
-    });
-    const { id, first_name, second_name, display_name, login, email, phone, avatar } = JSON.parse(response);
-
-    setUserProfile({
-      id: id,
-      first_name: first_name,
-      second_name: second_name,
-      display_name: display_name,
-      login: login,
-      email: email,
-      phone: phone,
-      avatar: avatar,
-    });
-  };
 
   useEffect(() => {
     if (isNewPost) {
       endRef.current?.scrollIntoView({ behavior: 'smooth' });
       setIsNewPost(false);
     }
-    if (!isLoadedUserProfile) {
-      // TODO брать из стора
-      retrieveUser();
-      setLoadedUserProfile(true);
-    }
-  }, [isLoadedUserProfile, isNewPost]);
+    setUserProfile(store.getState().auth.user as UserProps);
+  }, [isNewPost]);
 
   const getNewPost = useCallback(
     (text: string) => {

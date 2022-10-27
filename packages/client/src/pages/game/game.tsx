@@ -5,9 +5,10 @@ import { Tetris } from './game-screen';
 import { Link, useNavigate } from 'react-router-dom';
 import { dummyUser } from './../../consts/dummyData';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
-import { getProfileRequest } from '../../utils/api';
 import { useAppDispatch } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
+import { store } from '../../redux/store';
+import { UserProps } from '../../components/UserInfo/UserInfo';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -19,7 +20,6 @@ export const Game: React.FC = () => {
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
   const [userProfile, setUserProfile] = useState(dummyUser);
-  const [isLoadedUserProfile, setLoadedUserProfile] = useState(false);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
 
@@ -45,30 +45,8 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    if (!isLoadedUserProfile) {
-      // TODO брать из стора
-      retrieveUser();
-      setLoadedUserProfile(true);
-    }
-  }, [isLoadedUserProfile]);
-
-  const retrieveUser = async () => {
-    const response = await getProfileRequest().then((resp) => {
-      return resp.text();
-    });
-    const { id, first_name, second_name, display_name, login, email, phone, avatar } = JSON.parse(response);
-
-    setUserProfile({
-      id: id,
-      first_name: first_name,
-      second_name: second_name,
-      display_name: display_name,
-      login: login,
-      email: email,
-      phone: phone,
-      avatar: avatar,
-    });
-  };
+    setUserProfile(store.getState().auth.user as UserProps);
+  }, []);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
