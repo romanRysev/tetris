@@ -71,6 +71,10 @@ export const Game: React.FC = () => {
     startGame();
   }, [startGame]);
 
+  const toProfile = useCallback(() => {
+    navigate('/profile');
+  }, [navigate]);
+
   return (
     <div className="game">
       <div className="game-menu">
@@ -147,7 +151,7 @@ export const Game: React.FC = () => {
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
-          <img className="game-info__avatar" src={userAvatar} alt="" />
+          <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
           <Link className="game-info__user-name" to="/profile">
             {userName}
           </Link>
