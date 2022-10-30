@@ -177,10 +177,9 @@ export class Tetris extends Component<TetrisProps> {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
         if (this.currentTetromino.matrix[row][col]) {
           if (this.currentTetromino.row + row < 0) {
-            this.playfield[0][this.currentTetromino.col] = this.currentTetromino.name;
+            row--;
             return this.showGameOver();
           }
-          // TODO вот куда-то сюда надо вписать проверку на касание верхнего края стакана
           this.playfield[this.currentTetromino.row + row][this.currentTetromino.col + col] = this.currentTetromino.name;
         }
       }
