@@ -287,7 +287,7 @@ export class Tetris extends Component<TetrisProps> {
         }
       }
 
-      this.ctx.fillStyle = !this.gameOver ? this.colors[this.currentTetromino.name] : gray;
+      this.ctx.fillStyle = this.gameOver ? gray : this.colors[this.currentTetromino.name];
       for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
         for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
           if (this.currentTetromino.matrix[row][col]) {
