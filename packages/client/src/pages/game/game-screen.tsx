@@ -10,6 +10,7 @@ type TetrisProps = {
 };
 
 type Playfield = (Sequence | undefined)[][];
+
 export class Tetris extends Component<TetrisProps> {
   private count = 0;
   private currentTetromino = this.getNextTetromino();
@@ -64,6 +65,8 @@ export class Tetris extends Component<TetrisProps> {
   componentDidUpdate(prevProps: Readonly<TetrisProps>): void {
     if (prevProps.gameNo != this.props.gameNo) {
       this.gameOver = false;
+      this.nextTetromino = this.getNextTetromino();
+      this.currentTetromino = this.nextTetromino;
       this.init();
     }
   }
@@ -133,7 +136,7 @@ export class Tetris extends Component<TetrisProps> {
     const name = this.tetrominoSequence.pop() as Sequence;
     const matrix = this.tetrominos[name];
     const col = 4;
-    const row = -1;
+    const row = name == 'I' ? -2 : -1;
     return {
       name: name,
       matrix: matrix,
@@ -200,6 +203,11 @@ export class Tetris extends Component<TetrisProps> {
         row--;
       }
     }
+    for (let i = 0; i < this.playfield[0].length; i++) {
+      if (this.playfield[0][i] != undefined) {
+        return this.showGameOver();
+      }
+    }
     this.currentTetromino = this.nextTetromino;
     this.nextTetromino = this.getNextTetromino();
   }
@@ -208,7 +216,7 @@ export class Tetris extends Component<TetrisProps> {
     this.gameOver = true;
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawWorld();
-    for (let row = 0; row < 20; row++) {
+    for (let row = -2; row < 20; row++) {
       for (let col = 0; col < 10; col++) {
         if (this.playfield[row][col]) {
           this.ctx.fillStyle = gray;
@@ -278,7 +286,8 @@ export class Tetris extends Component<TetrisProps> {
           this.placeTetromino();
         }
       }
-      this.ctx.fillStyle = this.colors[this.currentTetromino.name];
+
+      this.ctx.fillStyle = this.gameOver ? gray : this.colors[this.currentTetromino.name];
       for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
         for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
           if (this.currentTetromino.matrix[row][col]) {
