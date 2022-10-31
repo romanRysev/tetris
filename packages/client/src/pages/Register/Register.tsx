@@ -74,7 +74,6 @@ const Register = () => {
 
   const checkEmail = (e: React.FocusEvent<HTMLInputElement>) => {
     setErrorEmail(validation(e.target.value, [emailRule, requiredRule]).errorMessages.join('\n') ?? '');
-    console.log(e.target.value, errorEmail, checkError);
   };
 
   const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {

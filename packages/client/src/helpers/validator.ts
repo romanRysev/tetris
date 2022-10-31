@@ -56,8 +56,6 @@ export const maxLengthRule = (length: number) => {
 };
 
 export const requiredRule = (value: string) => {
-  console.log(value);
-
   return value?.length > 0 || 'Поле обязательное';
 };
 

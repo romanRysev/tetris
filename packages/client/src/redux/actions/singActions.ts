@@ -7,7 +7,10 @@ export const register = createAsyncThunk('auth/register', async (data: RegisterF
   try {
     const res = await postRegisterRequest(data);
     if (res.ok) {
-      return thunkAPI.fulfillWithValue(res);
+      const profileRes = await getProfileRequest();
+      if (profileRes.ok) {
+        return thunkAPI.fulfillWithValue(await profileRes.json());
+      }
     }
     const err = await res.json();
     throw new Error(err.reason);
@@ -20,7 +23,10 @@ export const login = createAsyncThunk('auth/login', async (data: LoginForm, thun
   try {
     const res = await postLoginRequest(data);
     if (res.ok) {
-      return thunkAPI.fulfillWithValue(res);
+      const profileRes = await getProfileRequest();
+      if (profileRes.ok) {
+        return thunkAPI.fulfillWithValue(await profileRes.json());
+      }
     }
     const err = await res.json();
     throw new Error(err.reason);

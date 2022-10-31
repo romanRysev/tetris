@@ -1,8 +1,19 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { login, logout, register, checkLogin } from '../actions/singActions';
+import { setAvatar, setProfileInfo } from '../actions/profileActions';
+
+interface IUserData {
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  display_name: string;
+  avatar: string;
+}
 
 interface IUserSlice {
-  user: Record<string, unknown>;
+  user: IUserData | Record<string, never>;
   isAuthorized: boolean;
   isFetching: boolean;
   fetchingFailed: boolean;
@@ -38,10 +49,10 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.isFetching = false;
     },
-    [login.fulfilled.type]: (state) => {
+    [login.fulfilled.type]: (state, action) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
-      state.user = {};
+      state.user = action.payload;
       state.isFetching = false;
     },
     [login.pending.type]: (state) => {
@@ -73,6 +84,12 @@ export const authSlice = createSlice({
     [logout.fulfilled.type]: (state) => {
       state.isAuthorized = false;
       state.user = {};
+    },
+    [setAvatar.fulfilled.type]: (state, action) => {
+      state.user.avatar = action.payload.avatar;
+    },
+    [setProfileInfo.fulfilled.type]: (state, action) => {
+      state.user = action.payload;
     },
   },
 });

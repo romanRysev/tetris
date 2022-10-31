@@ -8,12 +8,25 @@
 
   &__button {
     display: block;
-    margin: 60px auto 0;
+    margin: 20px auto 0;
     width: 280px;
   }
 
   &__table {
     margin: 60px auto 0;
     max-width: 800px;
+  }
+
+  &__error-message {
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: center;
+    color: var(--color-danger);
+    height: 20px;
+  }
+
+  &__button_disabled {
+    background-color: var(--color-danger);
+    cursor: default;
   }
 }

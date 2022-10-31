@@ -29,4 +29,11 @@
   &__input_file {
     display: none;
   }
+
+  &__error-message {
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: center;
+    color: var(--color-danger);
+  }
 }
