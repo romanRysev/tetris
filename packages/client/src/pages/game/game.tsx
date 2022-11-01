@@ -17,9 +17,9 @@ export const Game: React.FC = () => {
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
-  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
-  const userName = makeUserNameFromUser(UserProfile);
-  const userAvatar = makeUserAvatarFromUser(UserProfile);
+  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
+  const userName = makeUserNameFromUser(userProfile);
+  const userAvatar = makeUserAvatarFromUser(userProfile);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);

@@ -42,11 +42,12 @@ export const UpperMenu: FC = () => {
     }
   };
 
-  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
 
   return (
     <div className="upper-menu">
-      <UserInfo {...UserProfile} />
+      <UserInfo {...userProfile} />
+
       <nav className="upper-menu__nav">
         <ul className="upper-menu__list">
           {menuLinks.map((item, index) => (

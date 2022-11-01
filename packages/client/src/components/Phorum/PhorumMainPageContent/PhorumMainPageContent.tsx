@@ -49,7 +49,7 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
   const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
   const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
   const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
 
   return (
     <div className="phorum-main-page-content">
@@ -70,7 +70,7 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
           onClick={() => {
             const threadName = inputElem.current.value;
             // TODO передавать данные для новой страницы
-            const userName = makeUserNameFromUser(UserProfile);
+            const userName = makeUserNameFromUser(userProfile);
             const date = new Date();
             list.push({
               thread: threadName,

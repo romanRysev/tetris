@@ -44,7 +44,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const [, setNewPost] = useState('');
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
-  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
 
   useEffect(() => {
     if (isNewPost) {
@@ -59,8 +59,8 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       const id = dummyPosts[dummyPosts.length - 1].id + 1;
       const cleanText = text.replace(/<[^>]+(>|$)/g, ' ');
       postList.push({
-        userAvatar: makeUserAvatarFromUser(UserProfile),
-        userName: makeUserNameFromUser(UserProfile),
+        userAvatar: makeUserAvatarFromUser(userProfile),
+        userName: makeUserNameFromUser(userProfile),
         text: cleanText,
         postDate: new Date(),
         id: id,
@@ -69,7 +69,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       localStorage.removeItem(`${threadId}-saved-message`);
       setIsNewPost(true);
     },
-    [postList, threadId, UserProfile],
+    [postList, threadId, userProfile],
   );
 
   // почему-то перестали работать переносы строк
