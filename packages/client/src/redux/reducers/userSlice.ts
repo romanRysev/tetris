@@ -2,6 +2,17 @@ import { createSlice } from '@reduxjs/toolkit';
 import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
 import { login, logout, register, checkLogin } from '../actions/singActions';
+import { setAvatar, setProfileInfo } from '../actions/profileActions';
+
+interface IUserData {
+  first_name: string;
+  second_name: string;
+  login: string;
+  email: string;
+  phone: string;
+  display_name: string;
+  avatar: string;
+}
 
 interface IUserSlice {
   user: UserChars;
@@ -64,7 +75,7 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.isFetching = false;
     },
-    [login.fulfilled.type]: (state) => {
+    [login.fulfilled.type]: (state, action) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
       state.user = convertUser(dummyUser);
@@ -99,6 +110,12 @@ export const authSlice = createSlice({
     [logout.fulfilled.type]: (state) => {
       state.isAuthorized = false;
       state.user = convertUser(dummyUser);
+    },
+    [setAvatar.fulfilled.type]: (state, action) => {
+      state.user.avatar = action.payload.avatar;
+    },
+    [setProfileInfo.fulfilled.type]: (state, action) => {
+      state.user = action.payload;
     },
   },
 });

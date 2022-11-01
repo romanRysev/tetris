@@ -49,6 +49,7 @@ const Register = () => {
   const [errorSecondPassword, setErrorSecondPassword] = useState('');
   const [secondPassword, setSecondPassword] = useState('');
   const [passwordsCompareError, setPasswordsCompareError] = useState('');
+  const [formError, setFormError] = useState('');
 
   const onFieldChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name: fieldName, type, checked } = e.target;
@@ -62,6 +63,8 @@ const Register = () => {
 
     if (res.meta.requestStatus === 'fulfilled') {
       navigate('/game');
+    } else {
+      setFormError(`Ошибка регистрации. ${(res.payload as Error)?.message}`);
     }
   };
 
@@ -71,7 +74,6 @@ const Register = () => {
 
   const checkEmail = (e: React.FocusEvent<HTMLInputElement>) => {
     setErrorEmail(validation(e.target.value, [emailRule, requiredRule]).errorMessages.join('\n') ?? '');
-    console.log(e.target.value, errorEmail, checkError);
   };
 
   const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
@@ -176,7 +178,8 @@ const Register = () => {
             onBlur={checkSecondPassword}
             errorText={errorSecondPassword}
           />
-          <p className="register__password-compare-error">{passwordsCompareError}</p>
+          <p className="register__form-error">{passwordsCompareError}</p>
+          <p className="register__form-error">{formError}</p>
           <Button
             className={classNames('register__button', { register__button_disabled: checkError })}
             disabled={checkError}
