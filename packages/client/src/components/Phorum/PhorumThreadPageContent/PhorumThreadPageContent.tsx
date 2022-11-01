@@ -1,7 +1,6 @@
 /* eslint-disable camelcase */
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { dummyUser } from '../../../consts/dummyData';
 import { store } from '../../../redux/store';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../../utils/makeUserProps';
 import { UserProps } from '../../UserInfo/UserInfo';
@@ -45,14 +44,12 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const [, setNewPost] = useState('');
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
-  const [userProfile, setUserProfile] = useState(dummyUser);
 
   useEffect(() => {
     if (isNewPost) {
       endRef.current?.scrollIntoView({ behavior: 'smooth' });
       setIsNewPost(false);
     }
-    setUserProfile(store.getState().auth.user as UserProps);
   }, [isNewPost]);
 
   const getNewPost = useCallback(
@@ -61,8 +58,8 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       const id = dummyPosts[dummyPosts.length - 1].id + 1;
       const cleanText = text.replace(/<[^>]+(>|$)/g, ' ');
       postList.push({
-        userAvatar: makeUserAvatarFromUser(userProfile),
-        userName: makeUserNameFromUser(userProfile),
+        userAvatar: makeUserAvatarFromUser(store.getState().auth.user as UserProps),
+        userName: makeUserNameFromUser(store.getState().auth.user as UserProps),
         text: cleanText,
         postDate: new Date(),
         id: id,
@@ -71,7 +68,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       localStorage.removeItem(`${threadId}-saved-message`);
       setIsNewPost(true);
     },
-    [postList, threadId, userProfile],
+    [postList, threadId],
   );
 
   // почему-то перестали работать переносы строк
