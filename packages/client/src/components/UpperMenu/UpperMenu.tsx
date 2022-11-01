@@ -1,13 +1,11 @@
 /* eslint-disable camelcase */
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo, UserProps } from '../UserInfo/UserInfo';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
-import { dummyUser } from '../../consts/dummyData';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/actions/singActions';
-import { store } from '../../redux/store';
 
 const menuLinks: MenuItemProps[] = [
   {
@@ -44,16 +42,11 @@ export const UpperMenu: FC = () => {
     }
   };
 
-  const [userProfile, setUserProfile] = useState(dummyUser);
-
-  useEffect(() => {
-    setUserProfile(store.getState().auth.user as UserProps);
-  }, []);
+  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
 
   return (
     <div className="upper-menu">
-      <UserInfo {...userProfile} />
-
+      <UserInfo {...UserProfile} />
       <nav className="upper-menu__nav">
         <ul className="upper-menu__list">
           {menuLinks.map((item, index) => (

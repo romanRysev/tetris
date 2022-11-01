@@ -1,6 +1,5 @@
-import React, { FC, useEffect, useRef, useState } from 'react';
-import { dummyUser } from '../../../consts/dummyData';
-import { store } from '../../../redux/store';
+import React, { FC, useRef, useState } from 'react';
+import { useAppSelector } from '../../../redux/hooks';
 import { makeUserNameFromUser } from '../../../utils/makeUserProps';
 import { Popup } from '../../Popup/Popup';
 import { UserProps } from '../../UserInfo/UserInfo';
@@ -47,13 +46,11 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
   // TODO прикрутить валидацию
   const [list, setList] = useState(dummyList);
   const [isNew, setIsNew] = useState(false);
-  const [userProfile, setUserProfile] = useState(dummyUser);
   const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
   const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
   const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
-  useEffect(() => {
-    setUserProfile(store.getState().auth.user as UserProps);
-  }, []);
+  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
+
   return (
     <div className="phorum-main-page-content">
       <h3 className="phorum-main-page-content__header">{title}</h3>
@@ -73,7 +70,7 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
           onClick={() => {
             const threadName = inputElem.current.value;
             // TODO передавать данные для новой страницы
-            const userName = makeUserNameFromUser(userProfile);
+            const userName = makeUserNameFromUser(UserProfile);
             const date = new Date();
             list.push({
               thread: threadName,

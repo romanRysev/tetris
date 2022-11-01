@@ -3,11 +3,9 @@ import React, { MutableRefObject, useCallback, useEffect, useRef, useState } fro
 import './game.scss';
 import { Tetris } from './game-screen';
 import { Link, useNavigate } from 'react-router-dom';
-import { dummyUser } from './../../consts/dummyData';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { store } from '../../redux/store';
 import { UserProps } from '../../components/UserInfo/UserInfo';
 
 export const Game: React.FC = () => {
@@ -19,9 +17,9 @@ export const Game: React.FC = () => {
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
-  const [userProfile, setUserProfile] = useState(dummyUser);
-  const userName = makeUserNameFromUser(userProfile);
-  const userAvatar = makeUserAvatarFromUser(userProfile);
+  const UserProfile: UserProps = useAppSelector((state) => state.auth.user as UserProps);
+  const userName = makeUserNameFromUser(UserProfile);
+  const userAvatar = makeUserAvatarFromUser(UserProfile);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -45,7 +43,6 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    setUserProfile(store.getState().auth.user as UserProps);
   }, []);
 
   const startGame = useCallback(() => {
