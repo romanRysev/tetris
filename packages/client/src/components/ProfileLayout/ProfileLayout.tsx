@@ -18,7 +18,7 @@ interface ProfileLayoutProps extends PropsWithChildren {
 
 export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = '/', className }) => {
   const dispatch = useAppDispatch();
-  const { avatar, display_name: displayName, first_name: firstName } = useAppSelector((state) => state.auth.user);
+  const { avatar, displayName, firstName } = useAppSelector((state) => state.auth.user);
   const avatarPath = filePrefix + avatar;
 
   const [title, setTitle] = useState('Загрузите файл');

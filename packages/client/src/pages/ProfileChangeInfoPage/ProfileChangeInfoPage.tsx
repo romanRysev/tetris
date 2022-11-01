@@ -20,10 +20,10 @@ export const ProfileChangeInfoPage = () => {
 
   const [email, setEmail] = useState(user.email);
   const [login, setLogin] = useState(user.login);
-  const [firstName, setFirstName] = useState(user.first_name);
-  const [secondName, setSecondName] = useState(user.second_name);
+  const [firstName, setFirstName] = useState(user.firstName);
+  const [secondName, setSecondName] = useState(user.secondName);
   const [phone, setPhone] = useState(user.phone);
-  const [displayName, setDisplayName] = useState(user.display_name || '');
+  const [displayName, setDisplayName] = useState(user.displayName || '');
 
   const [errorLogin, setErrorLogin] = useState('');
   const [errorEmail, setErrorEmail] = useState('');

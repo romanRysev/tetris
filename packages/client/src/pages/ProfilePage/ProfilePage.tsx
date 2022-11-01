@@ -17,9 +17,9 @@ export const ProfilePage = () => {
     login,
     email,
     phone,
-    first_name: firstName,
-    second_name: lastName,
-    display_name: displayName,
+    firstName,
+    secondName: lastName,
+    displayName,
   } = useAppSelector((state) => state.auth.user);
 
   const onLogout = async () => {
