@@ -1,7 +1,7 @@
 /* eslint-disable camelcase */
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
-import { UserInfo, UserProps } from '../UserInfo/UserInfo';
+import { UserInfo } from '../UserInfo/UserInfo';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
@@ -42,7 +42,7 @@ export const UpperMenu: FC = () => {
     }
   };
 
-  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user);
 
   return (
     <div className="upper-menu">

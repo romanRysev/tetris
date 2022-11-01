@@ -1,23 +1,22 @@
 /* eslint-disable camelcase */
-import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
 import { Tetris } from './game-screen';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { UserProps } from '../../components/UserInfo/UserInfo';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const [gameNo, setGameNo] = useState(1);
-  const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
-  const canvasRefFigure = useRef() as MutableRefObject<HTMLCanvasElement>;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRefFigure = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
-  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
 
@@ -114,7 +113,7 @@ export const Game: React.FC = () => {
       </div>
       <div className="game-screen">
         <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}>
-          {IsGameStarted && (
+          {IsGameStarted && canvasRef.current && canvasRefFigure.current && (
             <>
               <Tetris
                 canvas={canvasRef.current}

@@ -1,6 +1,7 @@
 /* eslint-disable camelcase */
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { UserChars } from '../../redux/reducers/userSlice';
 import { defaulAvatar, filePrefix } from '../../utils/constants';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
 
@@ -17,9 +18,9 @@ export type UserProps = {
   avatar: string;
 };
 
-export const UserInfo: FC<UserProps> = ({ first_name, second_name, display_name, avatar }) => {
+export const UserInfo: FC<UserChars> = ({ firstName, secondName, displayName, avatar }) => {
   const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaulAvatar;
-  const name = display_name ? display_name : `${first_name} ${second_name}`;
+  const name = displayName || `${firstName} ${secondName}`;
   const navigate = useNavigate();
   const handleProfile = useCallback(() => {
     navigate('/profile');

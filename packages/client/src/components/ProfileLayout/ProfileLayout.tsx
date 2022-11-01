@@ -28,8 +28,8 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
   const [showValidation, setShowValidation] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
 
-  const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const popupElem = useRef<HTMLInputElement>(null);
+  const inputElem = useRef<HTMLInputElement>(null);
 
   const handleAvatarClick = useCallback(() => {
     setPopupVisible(true);
@@ -48,7 +48,7 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
   }, [popupVisible]);
 
   const handleScreenClick = useCallback((event: BaseSyntheticEvent) => {
-    const withinBoundaries = popupElem.current === event.target || popupElem.current.contains(event.target);
+    const withinBoundaries = popupElem.current === event.target || popupElem.current?.contains(event.target);
 
     if (!withinBoundaries) {
       setPopupVisible(false);
@@ -80,7 +80,7 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
       {popupVisible && (
         <BackgroundBlur onClick={handleScreenClick}>
           <Popup
-            popupRef={popupElem}
+            ref={popupElem}
             onClick={handleButtonSubmit}
             title={title}
             buttonText="Поменять"

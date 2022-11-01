@@ -1,16 +1,42 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { UserProps } from '../../components/UserInfo/UserInfo';
+import { dummyUser } from '../../consts/dummyData';
 import { login, logout, register, checkLogin } from '../actions/singActions';
 
 interface IUserSlice {
-  user: Record<string, unknown>;
+  user: UserChars;
   isAuthorized: boolean;
   isFetching: boolean;
   fetchingFailed: boolean;
   error: string | null;
 }
 
+export interface UserChars {
+  id: number;
+  firstName: string;
+  secondName: string;
+  displayName: string;
+  login: string;
+  email: string;
+  phone: string;
+  avatar: string;
+}
+
+function convertUser(user: UserProps): UserChars {
+  return {
+    id: user.id,
+    firstName: user.first_name,
+    secondName: user.second_name,
+    displayName: user.display_name,
+    login: user.login,
+    email: user.email,
+    phone: user.phone,
+    avatar: user.avatar,
+  };
+}
+
 const initialState: IUserSlice = {
-  user: {},
+  user: convertUser(dummyUser),
   isAuthorized: false,
   isFetching: false,
   fetchingFailed: false,
@@ -25,7 +51,7 @@ export const authSlice = createSlice({
     [register.fulfilled.type]: (state, action) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
-      state.user = action.payload;
+      state.user = convertUser(action.payload);
       state.isFetching = false;
     },
     [register.pending.type]: (state) => {
@@ -41,7 +67,7 @@ export const authSlice = createSlice({
     [login.fulfilled.type]: (state) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
-      state.user = {};
+      state.user = convertUser(dummyUser);
       state.isFetching = false;
     },
     [login.pending.type]: (state) => {
@@ -57,7 +83,7 @@ export const authSlice = createSlice({
     [checkLogin.fulfilled.type]: (state, action) => {
       state.fetchingFailed = false;
       state.isAuthorized = !!action.payload.id;
-      state.user = action.payload;
+      state.user = convertUser(action.payload);
       state.isFetching = false;
     },
     [checkLogin.pending.type]: (state) => {
@@ -72,7 +98,7 @@ export const authSlice = createSlice({
     },
     [logout.fulfilled.type]: (state) => {
       state.isAuthorized = false;
-      state.user = {};
+      state.user = convertUser(dummyUser);
     },
   },
 });

@@ -3,7 +3,6 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useAppSelector } from '../../../redux/hooks';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../../utils/makeUserProps';
-import { UserProps } from '../../UserInfo/UserInfo';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -44,7 +43,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const [, setNewPost] = useState('');
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
-  const userProfile = useAppSelector((state) => state.auth.user as UserProps);
+  const userProfile = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (isNewPost) {
