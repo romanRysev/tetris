@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
 import { Tetris } from './game-screen';

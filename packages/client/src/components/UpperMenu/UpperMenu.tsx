@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';

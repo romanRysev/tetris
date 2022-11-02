@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserChars } from '../../redux/reducers/userSlice';
