@@ -21,6 +21,7 @@ export const PhorumThreadListItem: FC<ThreadListItemProps> = (props) => {
     // TODO: отправить данные
     navigate('/phorum/thread/1');
   }, [navigate]);
+  // TODO привесить отправку на профиль ? и отправку к последнему сообщению
   return (
     <li className="phorum-thread-list__item">
       <div className="thread">

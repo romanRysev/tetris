@@ -1,5 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../../redux/hooks';
+import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../../utils/makeUserProps';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -40,12 +42,14 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
   const [, setNewPost] = useState('');
   const endRef = useRef<null | HTMLDivElement>(null);
   const [isNewPost, setIsNewPost] = useState(false);
+  const userProfile = useAppSelector((state) => state.auth.user);
 
   useEffect(() => {
     if (isNewPost) {
       endRef.current?.scrollIntoView({ behavior: 'smooth' });
+      setIsNewPost(false);
     }
-  });
+  }, [isNewPost]);
 
   const getNewPost = useCallback(
     (text: string) => {
@@ -53,8 +57,8 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       const id = dummyPosts[dummyPosts.length - 1].id + 1;
       const cleanText = text.replace(/<[^>]+(>|$)/g, ' ');
       postList.push({
-        userAvatar: 'https://www.fillmurray.com/200/300',
-        userName: 'Я',
+        userAvatar: makeUserAvatarFromUser(userProfile),
+        userName: makeUserNameFromUser(userProfile),
         text: cleanText,
         postDate: new Date(),
         id: id,
@@ -63,7 +67,7 @@ export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ titl
       localStorage.removeItem(`${threadId}-saved-message`);
       setIsNewPost(true);
     },
-    [postList, threadId],
+    [postList, threadId, userProfile],
   );
 
   // почему-то перестали работать переносы строк

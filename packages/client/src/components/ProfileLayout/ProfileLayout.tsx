@@ -18,7 +18,7 @@ interface ProfileLayoutProps extends PropsWithChildren {
 
 export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = '/', className }) => {
   const dispatch = useAppDispatch();
-  const { avatar, display_name: displayName, first_name: firstName } = useAppSelector((state) => state.auth.user);
+  const { avatar, displayName, firstName } = useAppSelector((state) => state.auth.user);
   const avatarPath = filePrefix + avatar;
 
   const [title, setTitle] = useState('Загрузите файл');
@@ -28,8 +28,8 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = 
   const [popupVisible, setPopupVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
 
-  const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const popupElem = useRef<HTMLInputElement>(null);
+  const inputElem = useRef<HTMLInputElement>(null);
 
   const handleAvatarClick = useCallback(() => {
     setErrorMessage(false);
@@ -56,15 +56,17 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = 
     });
   }, [popupVisible]);
 
-  const handleScreenClick = useCallback(
-    (event: BaseSyntheticEvent) => {
-      const withinBoundaries = popupElem.current === event.target || popupElem.current.contains(event.target);
-      if (!withinBoundaries) {
-        handleAvatarClose();
-      }
-    },
-    [handleAvatarClose],
-  );
+  const handleScreenClick = useCallback((event: BaseSyntheticEvent) => {
+    const withinBoundaries = popupElem.current === event.target || popupElem.current?.contains(event.target);
+
+    if (!withinBoundaries) {
+      setPopupVisible(false);
+      setShowValidation(false);
+      setFile(undefined);
+      setLabelText('Выбрать файл на компьютере');
+      setTitle('Загрузите файл');
+    }
+  }, []);
 
   const handleButtonSubmit = useCallback(() => {
     if (!file) {
@@ -96,7 +98,7 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = 
       {popupVisible && (
         <BackgroundBlur onClick={handleScreenClick}>
           <Popup
-            popupRef={popupElem}
+            ref={popupElem}
             onClick={handleButtonSubmit}
             title={title}
             buttonText="Поменять"

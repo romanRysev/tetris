@@ -2,8 +2,7 @@ import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
-import { dummyUser } from '../../consts/dummyData';
-import { useAppDispatch } from '../../redux/hooks';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { useNavigate } from 'react-router-dom';
 import { logout } from '../../redux/actions/singActions';
 
@@ -31,6 +30,7 @@ const menuLinks: MenuItemProps[] = [
 ];
 
 export const UpperMenu: FC = () => {
+  const [isNight, setIsNight] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -40,10 +40,12 @@ export const UpperMenu: FC = () => {
       navigate('/login');
     }
   };
-  const [isNight, setIsNight] = useState(false);
+
+  const userProfile = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="upper-menu">
-      <UserInfo {...dummyUser} />
+      <UserInfo {...userProfile} />
 
       <nav className="upper-menu__nav">
         <ul className="upper-menu__list">

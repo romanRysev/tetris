@@ -9,8 +9,11 @@
     height: 130px;
     border: 1px solid var(--color-lightgray);
     text-align: start;
-    font-style: italic;
     box-sizing: border-box;
+
+    &::placeholder {
+      font-style: italic;
+    }
   }
 
   &__input {

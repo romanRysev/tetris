@@ -1,20 +1,23 @@
-import React, { MutableRefObject, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './game.scss';
-import foto from '../../assets/avatar.svg';
 import { Tetris } from './game-screen';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '../../redux/hooks';
-import { logout } from './../../redux/actions/singActions';
+import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { logout } from '../../redux/actions/singActions';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
   const [gameNo, setGameNo] = useState(1);
-  const canvasRef = useRef() as MutableRefObject<HTMLCanvasElement>;
-  const canvasRefFigure = useRef() as MutableRefObject<HTMLCanvasElement>;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const canvasRefFigure = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
   const [level, setLevel] = useState(1);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
+  const userProfile = useAppSelector((state) => state.auth.user);
+  const userName = makeUserNameFromUser(userProfile);
+  const userAvatar = makeUserAvatarFromUser(userProfile);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -63,7 +66,9 @@ export const Game: React.FC = () => {
     startGame();
   }, [startGame]);
 
-  // TODO завернуть в useCallback
+  const toProfile = useCallback(() => {
+    navigate('/profile');
+  }, [navigate]);
 
   return (
     <div className="game">
@@ -107,7 +112,7 @@ export const Game: React.FC = () => {
       </div>
       <div className="game-screen">
         <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}>
-          {IsGameStarted && (
+          {IsGameStarted && canvasRef.current && canvasRefFigure.current && (
             <>
               <Tetris
                 canvas={canvasRef.current}
@@ -141,9 +146,9 @@ export const Game: React.FC = () => {
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
-          <img className="game-info__avatar" src={foto} alt="" />
+          <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
           <Link className="game-info__user-name" to="/profile">
-            Иван Иваныч Джагатай-Хан
+            {userName}
           </Link>
         </div>
         <div className="game-info__score">

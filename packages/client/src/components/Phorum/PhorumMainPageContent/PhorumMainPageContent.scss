@@ -64,7 +64,10 @@
     height: 100px;
     margin-bottom: 10px;
     color: var(--color-midgray);
-    font-style: italic;
+
+    &::placeholder {
+      font-style: italic;
+    }
   }
 }
 

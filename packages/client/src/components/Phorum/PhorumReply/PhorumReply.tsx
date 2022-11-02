@@ -17,14 +17,14 @@ export const PhorumReply: FC<ReplyProps> = ({
 }) => {
   const location = useLocation();
   const threadId = location.pathname;
-  const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
+  const textAreaElem = useRef<HTMLTextAreaElement>(null);
   const savedMessage = localStorage.getItem(`${threadId}-saved-message`);
   const [isFilled, setFilled] = useState(savedMessage ? true : false);
   const checkFilled = useCallback(() => {
-    setFilled(textAreaElem.current.value ? true : false);
+    setFilled(textAreaElem.current?.value ? true : false);
   }, []);
   const saveMessage = useCallback(() => {
-    localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current.value);
+    localStorage.setItem(`${threadId}-saved-message`, textAreaElem.current?.value || '');
   }, [threadId]);
 
   return (
@@ -48,8 +48,10 @@ export const PhorumReply: FC<ReplyProps> = ({
           <Button
             className="reply__button"
             onClick={() => {
-              getDataUp(textAreaElem.current.value);
-              textAreaElem.current.value = '';
+              if (textAreaElem.current) {
+                getDataUp(textAreaElem.current.value);
+                textAreaElem.current.value = '';
+              }
             }}
             disabled={isFilled ? false : true}
           >
