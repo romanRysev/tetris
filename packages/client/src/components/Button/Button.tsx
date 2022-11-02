@@ -1,30 +1,22 @@
-import React, { PropsWithChildren } from 'react';
+import React from 'react';
 import classNames from 'classnames';
 
 import './Button.scss';
 
-interface Props extends PropsWithChildren {
+type Props = React.PropsWithChildren<{
   className?: string;
   onClick?: () => void;
   disabled?: boolean;
   backgroundOpacity?: boolean;
   type?: 'button' | 'reset' | 'submit';
-}
+}>;
 
-export const Button: React.FC<Props> = ({
-  className,
-  backgroundOpacity = false,
-  children,
-  onClick,
-  disabled = false,
-  type = 'button',
-}) => {
+export const Button: React.FC<Props> = ({ ...rest }) => {
+  const { backgroundOpacity, className, children, ...otherProps } = rest;
   return (
     <button
-      type={type}
-      onClick={onClick}
+      {...otherProps}
       className={classNames('button', 'button_theme_light', backgroundOpacity ? 'button_opacity' : '', className)}
-      disabled={disabled}
     >
       <p className={classNames('button__text', backgroundOpacity ? 'button__text_opacity' : '')}>{children}</p>
     </button>

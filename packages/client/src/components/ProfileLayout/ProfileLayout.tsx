@@ -1,38 +1,47 @@
 import React, { BaseSyntheticEvent, FC, PropsWithChildren, useCallback, useEffect, useRef, useState } from 'react';
 import classNames from 'classnames';
 
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { BackButton } from '../BackButton/BackButton';
 import { AvatarLg } from '../AvatarLg/AvatarLg';
 import { BackgroundBlur } from '../BackgroundBlur/BackgroundBlur';
 import { Popup } from '../Popup/Popup';
+import { setAvatar } from '../../redux/actions/profileActions';
+import { filePrefix } from '../../consts/prefix';
 
 import './ProfileLayout.scss';
 
 interface ProfileLayoutProps extends PropsWithChildren {
-  firstName?: string;
-  avatarPath?: string;
   navBackPath?: string;
   className?: string;
 }
 
-export const ProfileLayout: FC<ProfileLayoutProps> = ({
-  children,
-  firstName,
-  avatarPath,
-  navBackPath = '/',
-  className,
-}) => {
+export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = '/', className }) => {
+  const dispatch = useAppDispatch();
+  const { avatar, displayName, firstName } = useAppSelector((state) => state.auth.user);
+  const avatarPath = filePrefix + avatar;
+
   const [title, setTitle] = useState('Загрузите файл');
   const [labelText, setLabelText] = useState('Выбрать файл на компьютере');
   const [file, setFile] = useState<File | undefined>(undefined);
   const [showValidation, setShowValidation] = useState(false);
   const [popupVisible, setPopupVisible] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
 
-  const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
+  const popupElem = useRef<HTMLInputElement>(null);
+  const inputElem = useRef<HTMLInputElement>(null);
 
   const handleAvatarClick = useCallback(() => {
+    setErrorMessage(false);
     setPopupVisible(true);
+  }, []);
+
+  const handleAvatarClose = useCallback(() => {
+    setPopupVisible(false);
+    setShowValidation(false);
+    setFile(undefined);
+    setLabelText('Выбрать файл на компьютере');
+    setTitle('Загрузите файл');
   }, []);
 
   useEffect(() => {
@@ -48,7 +57,7 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
   }, [popupVisible]);
 
   const handleScreenClick = useCallback((event: BaseSyntheticEvent) => {
-    const withinBoundaries = popupElem.current === event.target || popupElem.current.contains(event.target);
+    const withinBoundaries = popupElem.current === event.target || popupElem.current?.contains(event.target);
 
     if (!withinBoundaries) {
       setPopupVisible(false);
@@ -63,24 +72,33 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
     if (!file) {
       setShowValidation(true);
     } else {
-      // send data
+      const formData = new FormData();
+      formData.append('avatar', file);
+      (async () => {
+        const res = await dispatch(setAvatar(formData));
+        if (res.meta.requestStatus === 'fulfilled') {
+          handleAvatarClose();
+        } else {
+          setErrorMessage(true);
+        }
+      })();
     }
-  }, [file]);
+  }, [dispatch, file, handleAvatarClose]);
 
   return (
     <div className={classNames('profile-layout', className)}>
       <BackButton to={navBackPath} />
       <AvatarLg
-        avatarPath={avatarPath}
+        avatarPath={avatar ? avatarPath : ''}
         onClick={handleAvatarClick}
-        name={firstName}
+        name={displayName ? displayName : firstName}
         className="profile-layout__avatar"
       />
 
       {popupVisible && (
         <BackgroundBlur onClick={handleScreenClick}>
           <Popup
-            popupRef={popupElem}
+            ref={popupElem}
             onClick={handleButtonSubmit}
             title={title}
             buttonText="Поменять"
@@ -96,10 +114,10 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({
               <input ref={inputElem} type="file" className="profile-layout__input_file" />
               {labelText}
             </label>
+            {errorMessage && <p className="profile-layout__error-message">Не удалось сохранить изменения</p>}
           </Popup>
         </BackgroundBlur>
       )}
-
       {children}
     </div>
   );

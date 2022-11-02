@@ -1,39 +1,36 @@
-import React, { FC } from 'react';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import { Link } from '../../components/Link/Link';
 import { Table, TableCell, TableRow } from '../../components/Table/Table';
 import { ProfileLayout } from '../../components/ProfileLayout/ProfileLayout';
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { logout } from '../../redux/actions/singActions';
 
 import './ProfilePage.scss';
 
-interface ProfilePageProps {
-  profileData?: {
-    firstName: string;
-    lastName: string;
-    login: string;
-    email: string;
-    phone: string;
-    displayName: string;
-    avatarPath: string;
+export const ProfilePage = () => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const {
+    login,
+    email,
+    phone,
+    firstName,
+    secondName: lastName,
+    displayName,
+  } = useAppSelector((state) => state.auth.user);
+
+  const onLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
   };
-}
-
-const data = {
-  firstName: 'Иван',
-  lastName: 'Иванов',
-  login: 'ivanivanov',
-  email: 'pochta@yandex.ru',
-  phone: '+7 (909) 967 30 30 ',
-  displayName: 'Иван',
-  avatarPath: '',
-};
-
-export const ProfilePage: FC<ProfilePageProps> = ({ profileData }) => {
-  profileData = data; // TODO: брать из стора
-  const { firstName, lastName, login, email, phone, displayName, avatarPath } = profileData;
 
   return (
-    <ProfileLayout firstName={firstName} avatarPath={avatarPath} className="profile-page">
+    <ProfileLayout className="profile-page">
       <Table className="profile-page__table">
         <TableRow>
           <TableCell> Почта </TableCell>
@@ -77,9 +74,9 @@ export const ProfilePage: FC<ProfilePageProps> = ({ profileData }) => {
         </TableRow>
         <TableRow>
           <TableCell>
-            <Link to="/" color="red">
+            <p className="link link_red" onClick={onLogout}>
               Выйти
-            </Link>
+            </p>
           </TableCell>
         </TableRow>
       </Table>

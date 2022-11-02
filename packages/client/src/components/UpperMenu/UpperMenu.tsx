@@ -1,28 +1,16 @@
 import React, { FC, useState } from 'react';
 import './UpperMenu.scss';
 import { UserInfo } from '../UserInfo/UserInfo';
-import { APIurls } from '../../helpers/prefix';
 import { MenuItemProps, UpperMenuItem } from './__Item/UpperMenu__Item';
-import { dummyUser } from '../../consts/dummyData';
-
-async function logout() {
-  const response = await fetch(APIurls.LOGOUT, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-  });
-  return await response.json();
-}
-
-function handleLogout() {
-  logout().then((response) => {
-    console.log(response);
-  });
-}
+import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { useNavigate } from 'react-router-dom';
+import { logout } from '../../redux/actions/singActions';
 
 const menuLinks: MenuItemProps[] = [
+  {
+    text: 'ИГРАТЬ',
+    link: '/game',
+  },
   {
     text: 'Мой профиль',
     link: '/profile',
@@ -43,9 +31,21 @@ const menuLinks: MenuItemProps[] = [
 
 export const UpperMenu: FC = () => {
   const [isNight, setIsNight] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
+
+  const userProfile = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="upper-menu">
-      <UserInfo {...dummyUser} />
+      <UserInfo {...userProfile} />
 
       <nav className="upper-menu__nav">
         <ul className="upper-menu__list">

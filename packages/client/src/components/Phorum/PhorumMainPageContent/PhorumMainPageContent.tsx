@@ -1,5 +1,5 @@
 import React, { FC, useRef, useState } from 'react';
-import { dummyUser } from '../../../consts/dummyData';
+import { useAppSelector } from '../../../redux/hooks';
 import { makeUserNameFromUser } from '../../../utils/makeUserProps';
 import { Popup } from '../../Popup/Popup';
 import { PhorumMainListHeader } from '../PhorumMainListHeader/PhorumMainListHeader';
@@ -45,9 +45,10 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
   // TODO прикрутить валидацию
   const [list, setList] = useState(dummyList);
   const [isNew, setIsNew] = useState(false);
-  const popupElem = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const inputElem = useRef() as React.MutableRefObject<HTMLInputElement>;
-  const textAreaElem = useRef() as React.MutableRefObject<HTMLTextAreaElement>;
+  const inputElem = useRef<HTMLInputElement>(null);
+  const textAreaElem = useRef<HTMLTextAreaElement>(null);
+  const userProfile = useAppSelector((state) => state.auth.user);
+
   return (
     <div className="phorum-main-page-content">
       <h3 className="phorum-main-page-content__header">{title}</h3>
@@ -61,23 +62,24 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
 
       {!!isNew && (
         <Popup
-          popupRef={popupElem}
           title="Новая тема"
           buttonText="Создать новую тему"
           onClick={() => {
-            const threadName = inputElem.current.value;
+            const threadName = inputElem.current?.value;
             // TODO передавать данные для новой страницы
-            const userName = makeUserNameFromUser(dummyUser);
+            const userName = makeUserNameFromUser(userProfile);
             const date = new Date();
-            list.push({
-              thread: threadName,
-              pageCount: 0,
-              author: userName,
-              startDate: date.toLocaleDateString('ru'),
-              replies: '0 ответов',
-              lastReplyUser: userName,
-              lastReplyDate: date.toLocaleDateString('ru'),
-            });
+            if (threadName) {
+              list.push({
+                thread: threadName,
+                pageCount: 0,
+                author: userName,
+                startDate: date.toLocaleDateString('ru'),
+                replies: '0 ответов',
+                lastReplyUser: userName,
+                lastReplyDate: date.toLocaleDateString('ru'),
+              });
+            }
             // тут я хотела поинтересоваться - так можно делать, или это совсем дно? Так в список темы добавляются, потом это будет по-другому (наверное)
             setList(list);
             setIsNew(false);

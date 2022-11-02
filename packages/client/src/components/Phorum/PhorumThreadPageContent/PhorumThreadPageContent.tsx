@@ -1,4 +1,7 @@
-import React, { FC } from 'react';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
+import { useAppSelector } from '../../../redux/hooks';
+import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../../utils/makeUserProps';
 import { PhorumPostProps } from '../PhorumPost/PhorumPost';
 import { PhorumPostList } from '../PhorumPostList/PhorumPostList';
 import { PhorumReply } from '../PhorumReply/PhorumReply';
@@ -33,13 +36,50 @@ export type PhorumThreadPageContentProps = {
 };
 
 export const PhorumThreadPageContent: FC<PhorumThreadPageContentProps> = ({ title }) => {
+  const location = useLocation();
+  const threadId = location.pathname;
+  const [postList, setPostList] = useState(dummyPosts);
+  const [, setNewPost] = useState('');
+  const endRef = useRef<null | HTMLDivElement>(null);
+  const [isNewPost, setIsNewPost] = useState(false);
+  const userProfile = useAppSelector((state) => state.auth.user);
+
+  useEffect(() => {
+    if (isNewPost) {
+      endRef.current?.scrollIntoView({ behavior: 'smooth' });
+      setIsNewPost(false);
+    }
+  }, [isNewPost]);
+
+  const getNewPost = useCallback(
+    (text: string) => {
+      setNewPost(text);
+      const id = dummyPosts[dummyPosts.length - 1].id + 1;
+      const cleanText = text.replace(/<[^>]+(>|$)/g, ' ');
+      postList.push({
+        userAvatar: makeUserAvatarFromUser(userProfile),
+        userName: makeUserNameFromUser(userProfile),
+        text: cleanText,
+        postDate: new Date(),
+        id: id,
+      });
+      setPostList(postList);
+      localStorage.removeItem(`${threadId}-saved-message`);
+      setIsNewPost(true);
+    },
+    [postList, threadId, userProfile],
+  );
+
+  // почему-то перестали работать переносы строк
+
   return (
     <div className="phorum-thread-page-content">
       <h3 className="phorum-thread-page-content__header">{title}</h3>
       <div className="phorum-thread-page-content__thread">
-        <PhorumPostList {...dummyPosts} />
+        <PhorumPostList {...postList} />
+        <div ref={endRef} />
       </div>
-      <PhorumReply />
+      <PhorumReply getDataUp={getNewPost} />
     </div>
   );
 };

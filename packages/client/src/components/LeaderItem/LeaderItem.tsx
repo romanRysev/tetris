@@ -1,6 +1,6 @@
 import classNames from 'classnames';
 import React, { FC } from 'react';
-import { defaulAvatar, filePrefix } from '../../helpers/prefix';
+import { defaulAvatar, filePrefix } from '../../utils/constants';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
 import './LeaderItem.scss';
 

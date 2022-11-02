@@ -1,0 +1,150 @@
+#GAME {
+  width: 600px;
+  height: 600px;
+  border: 1px solid #ebeeee;
+}
+.game {
+  display: flex;
+  width: 100%;
+  max-width: 1280px;
+  justify-content: space-evenly;
+  padding: 2rem 2rem;
+  height: 100%;
+  max-height: 720px;
+}
+
+.game-menu {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0px 0px 13px 1px rgba(106, 139, 165, 0.58);
+  padding: 1rem;
+
+  &__header {
+    color: var(--color-messages);
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  &__submenu {
+    list-style: none;
+    padding: 0;
+
+  }
+
+  &__link {
+    color: var(--color-messages);
+    text-decoration: none;
+    cursor: pointer;
+
+    &_color-red {
+      color: red;
+    }
+  }
+}
+
+.game-info {
+  display: flex;
+  flex-direction: column;
+  width: 200px;
+
+  &__next-figure {
+    width: 200px;
+    height: 200px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 13px 1px rgba(106, 139, 165, 0.58);
+  }
+
+  &__user-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  &__avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    cursor: pointer;
+  }
+
+  &__user-name {
+    text-decoration: none;
+    line-height: 50px;
+    cursor: pointer;
+  }
+
+  &__score {
+    padding-top: 20px;
+  }
+
+  &__canvas-figure {
+    padding-top: 15%;
+  }
+}
+
+.game-screen {
+  width: 300px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+
+  &__canvas {
+    height: 100%;
+    position: relative;
+  }
+
+  &__start-button {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-links);
+    color: var(--white);
+    position: absolute;
+    top: 300px;
+
+  }
+
+  &__game-end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 233px;
+    height: 178px;
+    border-radius: 10px;
+    background-color: var(--white);
+    position: absolute;
+    top: 250px;
+    padding: 10px;
+    box-shadow: 0 0 6px 0 rgba(106, 139, 165, 0.58);
+  }
+
+  &__end-button {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-links);
+    color: var(--white);
+  }
+}
+
+
+.game-over {
+  background: white;
+  height: 10rem;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 13px 1px rgba(106, 139, 165, 0.58);
+  padding: 0rem 1rem;
+  display: none;
+}
+.show {
+  display: table-caption;
+}
+

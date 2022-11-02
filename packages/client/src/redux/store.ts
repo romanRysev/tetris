@@ -1,10 +1,15 @@
 import { Action, configureStore, ThunkAction } from '@reduxjs/toolkit';
-import { counterSlice } from '../components/counter/counterSlice';
+import { authSlice } from './reducers/userSlice';
 
 export const store = configureStore({
   reducer: {
-    counter: counterSlice.reducer,
+    auth: authSlice.reducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
+  devTools: process.env.NODE_ENV !== 'production',
 });
 
 export type AppDispatch = typeof store.dispatch;

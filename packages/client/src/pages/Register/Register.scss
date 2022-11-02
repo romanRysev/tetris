@@ -18,22 +18,24 @@
   row-gap: 16px;
 }
 
-.register__form > p {
-  padding-top: 20px;
-  padding-bottom: 24px;
-}
-
 .register__title {
   text-align: center;
   margin: 0;
   font-weight: 500;
   font-size: 1.25rem;
-  color: #1E1E1E;
+  color: #1e1e1e;
 }
 
-.register__buttons {
+.register__button {
   margin-top: 30px;
-  display: flex;
-  flex-direction: column;
 }
 
+.register__button_disabled {
+  background-color: #a51212;
+  cursor: default;
+}
+.register__form-error {
+  margin: 0;
+  padding: 0;
+  color: #ff2f2f;
+}
