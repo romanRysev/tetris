@@ -16,3 +16,5 @@ export const PhorumMainPage: React.FC<PhorumPageProps> = () => {
     </StaticLayout>
   );
 };
+
+export default PhorumMainPage;

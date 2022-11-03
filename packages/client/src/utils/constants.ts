@@ -19,4 +19,5 @@ export enum APIurls {
   CHANGEPASS = 'https://ya-praktikum.tech/api/v2/user/password',
   CHANGEAVATAR = 'https://ya-praktikum.tech/api/v2/user/profile/avatar',
   SEEKUSER = 'https://ya-praktikum.tech/api/v2/user/search',
+  LEADERBOARD = 'https://ya-praktikum.tech/api/v2/leaderboard',
 }

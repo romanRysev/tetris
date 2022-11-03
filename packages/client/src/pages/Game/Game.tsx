@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import './game.scss';
-import { Tetris } from './game-screen';
+import './Game.scss';
+import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
+import { AddLeader, addToLeaderBoard } from '../../utils/api';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -25,10 +26,101 @@ export const Game: React.FC = () => {
     setLineCount(lineCount);
   }, []);
   const getEnd = useCallback(() => {
+    // console.log(score);
     setGameEnded(true);
+
+    // sendResult();
+    // const date = new Date();
+    // const res: AddLeader = {
+    //   data: {
+    //     score: score,
+    //     user: {
+    //       avatar: userAvatar,
+    //       userName: userName,
+    //       id: userProfile.id,
+    //     },
+    //     date: date.toLocaleDateString('ru'),
+    //   },
+    //   ratingFieldName: 'score',
+    //   teamName: 'Codinsk',
+    // };
+
+    // //   try {
+    // //     console.log("!");
+    // //     const res = await getLeaderBoard(data);
+    // //     const leaders = await res.json();
+    // //     console.log(leaders, 'РЕЗУЛЬТАТ');
+    // //     return res.ok ? thunkAPI.fulfillWithValue({ ...leaders }) : thunkAPI.rejectWithValue('Не удалось получить данные');
+    // //   } catch (e) {
+    // //     return thunkAPI.rejectWithValue('Не удалось получить данные');
+    // //   }
+    // // });
+
+    // // внести отработку ошибок
+    // // разобраться с типами!!! а так в принципе готово
+    // // можно еще результат все-таки в стор засылать, переписывая score
+    // const send = async (res: AddLeader) => {
+    //   const result = await addToLeaderBoard(res);
+    //   const resp = await result.json();
+    //   if (resp.ok) {
+    //     console.log(resp);
+    //   }
+    // };
+    // send(res);
+    // setGameEnded(true);
   }, []);
 
+  // const sendResult = () => {
+  //   const date = new Date();
+  //   const res: AddLeader = {
+  //     data: {
+  //       score: score,
+  //       user: {
+  //         avatar: userAvatar,
+  //         userName: userName,
+  //         id: userProfile.id,
+  //       },
+  //       date: date.toLocaleDateString('ru'),
+  //     },
+  //     ratingFieldName: 'score',
+  //     teamName: 'Codinsk',
+  //   };
+  //   const send = async (res: AddLeader) => {
+  //     const result = await addToLeaderBoard(res);
+  //     const resp = await result.json();
+  //     if (resp.ok) {
+  //       console.log(resp);
+  //     }
+  //   };
+  //   send(res);
+  // };
+
   useEffect(() => {
+    const sendResult = () => {
+      const date = new Date();
+      const res: AddLeader = {
+        data: {
+          score: score,
+          user: {
+            avatar: userAvatar,
+            userName: userName,
+            id: userProfile.id,
+          },
+          date: date.toLocaleDateString('ru'),
+        },
+        ratingFieldName: 'score',
+        teamName: 'CodinskTest',
+      };
+      const send = async (res: AddLeader) => {
+        const result = await addToLeaderBoard(res);
+        // найти где тут коды
+        const resp = await result.json();
+        if (resp.ok) {
+          console.log(resp);
+        }
+      };
+      send(res);
+    };
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
     if (canvas && canvasFigure) {
@@ -41,7 +133,10 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-  }, []);
+    if (isGameEnded) {
+      sendResult();
+    }
+  }, [isGameEnded, score, userAvatar, userName, userProfile.id]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -160,3 +255,5 @@ export const Game: React.FC = () => {
     </div>
   );
 };
+
+export default Game;

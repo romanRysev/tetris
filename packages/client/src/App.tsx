@@ -1,12 +1,6 @@
 import * as React from 'react';
 import { Suspense, useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
-import { Game } from './pages/game/game';
-import { HowToPlay } from './pages/HowTo/HowToPlayPage';
-import { LeaderBoardPage } from './pages/LeaderBoardPage/LeaderBoardPage';
-import { PhorumMainPage } from './pages/Phorum/PhorumMainPage/PhorumMainPage';
-import { PhorumThreadPage } from './pages/Phorum/PhorumThreadPage/PhorumThreadPage';
-
 import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch } from './redux/hooks';
@@ -20,6 +14,11 @@ const ProfileChangeInfoPage = React.lazy(() => import('./pages/ProfileChangeInfo
 const ProfileChangePasswordPage = React.lazy(
   () => import('./pages/ProfileChangePasswordPage/ProfileChangePasswordPage'),
 );
+const Game = React.lazy(() => import('./pages/Game/Game'));
+const HowToPlay = React.lazy(() => import('./pages/HowTo/HowToPlayPage'));
+const LeaderBoardPage = React.lazy(() => import('./pages/LeaderBoardPage/LeaderBoardPage'));
+const PhorumMainPage = React.lazy(() => import('./pages/Phorum/PhorumMainPage/PhorumMainPage'));
+const PhorumThreadPage = React.lazy(() => import('./pages/Phorum/PhorumThreadPage/PhorumThreadPage'));
 
 function App() {
   const dispatch = useAppDispatch();

@@ -3,12 +3,16 @@ import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
 import { login, logout, register, checkLogin } from '../actions/singActions';
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
+// import { LeaderProps } from '../../components/LeaderItem/LeaderItem';
+import { setLeaderBoard } from '../actions/leaderBoardActions';
+import { ILeader } from '../../utils/api';
 interface IUserSlice {
   user: UserChars;
   isAuthorized: boolean;
   isFetching: boolean;
   fetchingFailed: boolean;
   error: string | null;
+  leaders: { data: ILeader }[] | [];
 }
 
 export interface UserChars {
@@ -41,6 +45,7 @@ const initialState: IUserSlice = {
   isFetching: false,
   fetchingFailed: false,
   error: null,
+  leaders: [],
 };
 
 export const authSlice = createSlice({
@@ -105,6 +110,9 @@ export const authSlice = createSlice({
     },
     [setProfileInfo.fulfilled.type]: (state, action) => {
       state.user = convertUser(action.payload);
+    },
+    [setLeaderBoard.fulfilled.type]: (state, action) => {
+      state.leaders = action.payload;
     },
   },
 });
