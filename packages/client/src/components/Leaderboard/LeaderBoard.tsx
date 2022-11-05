@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from 'react';
 import { setLeaderBoard } from '../../redux/actions/leaderBoardActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { store } from '../../redux/store';
 import { GetLeaders } from '../../utils/api';
 import { LeaderItem } from '../LeaderItem/LeaderItem';
 
@@ -13,7 +12,6 @@ export type LeaderBoardProps = {
 
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   const dispatch = useAppDispatch();
-  console.log(store.getState());
   const leaderList = Object.values(useAppSelector((state) => state.leaders.leaderList));
   const [isLoaded, setLoaded] = useState(false);
 
