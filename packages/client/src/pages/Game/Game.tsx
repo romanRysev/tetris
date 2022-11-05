@@ -19,6 +19,8 @@ export const Game: React.FC = () => {
   const userProfile = useAppSelector((state) => state.auth.user);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -26,74 +28,8 @@ export const Game: React.FC = () => {
     setLineCount(lineCount);
   }, []);
   const getEnd = useCallback(() => {
-    // console.log(score);
     setGameEnded(true);
-
-    // sendResult();
-    // const date = new Date();
-    // const res: AddLeader = {
-    //   data: {
-    //     score: score,
-    //     user: {
-    //       avatar: userAvatar,
-    //       userName: userName,
-    //       id: userProfile.id,
-    //     },
-    //     date: date.toLocaleDateString('ru'),
-    //   },
-    //   ratingFieldName: 'score',
-    //   teamName: 'Codinsk',
-    // };
-
-    // //   try {
-    // //     console.log("!");
-    // //     const res = await getLeaderBoard(data);
-    // //     const leaders = await res.json();
-    // //     console.log(leaders, 'РЕЗУЛЬТАТ');
-    // //     return res.ok ? thunkAPI.fulfillWithValue({ ...leaders }) : thunkAPI.rejectWithValue('Не удалось получить данные');
-    // //   } catch (e) {
-    // //     return thunkAPI.rejectWithValue('Не удалось получить данные');
-    // //   }
-    // // });
-
-    // // внести отработку ошибок
-    // // разобраться с типами!!! а так в принципе готово
-    // // можно еще результат все-таки в стор засылать, переписывая score
-    // const send = async (res: AddLeader) => {
-    //   const result = await addToLeaderBoard(res);
-    //   const resp = await result.json();
-    //   if (resp.ok) {
-    //     console.log(resp);
-    //   }
-    // };
-    // send(res);
-    // setGameEnded(true);
   }, []);
-
-  // const sendResult = () => {
-  //   const date = new Date();
-  //   const res: AddLeader = {
-  //     data: {
-  //       score: score,
-  //       user: {
-  //         avatar: userAvatar,
-  //         userName: userName,
-  //         id: userProfile.id,
-  //       },
-  //       date: date.toLocaleDateString('ru'),
-  //     },
-  //     ratingFieldName: 'score',
-  //     teamName: 'Codinsk',
-  //   };
-  //   const send = async (res: AddLeader) => {
-  //     const result = await addToLeaderBoard(res);
-  //     const resp = await result.json();
-  //     if (resp.ok) {
-  //       console.log(resp);
-  //     }
-  //   };
-  //   send(res);
-  // };
 
   useEffect(() => {
     const sendResult = () => {
@@ -112,11 +48,17 @@ export const Game: React.FC = () => {
         teamName: 'CodinskTest',
       };
       const send = async (res: AddLeader) => {
-        const result = await addToLeaderBoard(res);
-        // найти где тут коды
-        const resp = await result.json();
-        if (resp.ok) {
-          console.log(resp);
+        try {
+          const result = await addToLeaderBoard(res);
+          const resp = await result.json();
+          if (resp.ok) {
+            setShowError(false);
+          } else {
+            setShowError(true);
+            setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
+          }
+        } catch (error) {
+          return;
         }
       };
       send(res);
@@ -164,6 +106,10 @@ export const Game: React.FC = () => {
   const toProfile = useCallback(() => {
     navigate('/profile');
   }, [navigate]);
+
+  const handleErrorMsg = useCallback(() => {
+    setShowError(false);
+  }, []);
 
   return (
     <div className="game">
@@ -226,11 +172,20 @@ export const Game: React.FC = () => {
         )}
         {isGameEnded && (
           <div className="game-screen__game-end">
-            <h3>Игра окончена!</h3>
+            <h3 className="game-screen__h3">Игра окончена!</h3>
             <p>Вы добрались до {level} уровня</p>
             <p>Ваш счет: {score} очков</p>
             <button className="game-screen__end-button" onClick={handleNewGame}>
               Играть снова
+            </button>
+          </div>
+        )}
+        {showError && (
+          <div className="game-screen__error">
+            <h3 className="game-screen__h3">Ошибка с отправкой результатов</h3>
+            <p>{errorMsg}</p>
+            <button className="game-screen__error-button" onClick={handleErrorMsg}>
+              Понятно
             </button>
           </div>
         )}

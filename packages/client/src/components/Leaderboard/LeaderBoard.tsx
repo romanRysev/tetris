@@ -1,7 +1,8 @@
 import React, { FC, useEffect, useState } from 'react';
 import { setLeaderBoard } from '../../redux/actions/leaderBoardActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { GetLeaders, ILeader } from '../../utils/api';
+import { store } from '../../redux/store';
+import { GetLeaders } from '../../utils/api';
 import { LeaderItem } from '../LeaderItem/LeaderItem';
 
 import './LeaderBoard.scss';
@@ -12,7 +13,8 @@ export type LeaderBoardProps = {
 
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   const dispatch = useAppDispatch();
-  const leaderList: { data: ILeader }[] | [] = Object.values(useAppSelector((state) => state.auth.leaders));
+  console.log(store.getState());
+  const leaderList = Object.values(useAppSelector((state) => state.leaders.leaderList));
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -21,7 +23,6 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
       cursor: 0,
       limit: 10,
     };
-    console.log('1');
     if (!isLoaded) {
       (async () => {
         const res = await dispatch(setLeaderBoard(req));
@@ -38,25 +39,31 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
       {!leaderList && <div>Пока никого нет. Стань первым :)</div>}
 
       <ul className="leaderboard__list leaderboard__list_top">
-        {leaderList.slice(0, 3).map((leader, index) => (
-          <LeaderItem
-            avatar={leader.data.user.avatar}
-            userName={leader.data.user.userName}
-            score={leader.data.score}
-            key={'top' + index}
-          />
-        ))}
+        {leaderList &&
+          leaderList
+            .slice(0, 3)
+            .map((leader, index) => (
+              <LeaderItem
+                avatar={leader.data.user.avatar}
+                userName={leader.data.user.userName}
+                score={leader.data.score}
+                key={'top' + index}
+              />
+            ))}
       </ul>
 
       <ul className="leaderboard__list">
-        {leaderList.slice(3, 10).map((leader, index) => (
-          <LeaderItem
-            avatar={leader.data.user.avatar}
-            userName={leader.data.user.userName}
-            score={leader.data.score}
-            key={'leader' + index}
-          />
-        ))}
+        {leaderList &&
+          leaderList
+            .slice(3, 10)
+            .map((leader, index) => (
+              <LeaderItem
+                avatar={leader.data.user.avatar}
+                userName={leader.data.user.userName}
+                score={leader.data.score}
+                key={'leader' + index}
+              />
+            ))}
       </ul>
     </div>
   );

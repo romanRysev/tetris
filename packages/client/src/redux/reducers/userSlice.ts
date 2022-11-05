@@ -3,7 +3,6 @@ import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
 import { login, logout, register, checkLogin } from '../actions/singActions';
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
-// import { LeaderProps } from '../../components/LeaderItem/LeaderItem';
 import { setLeaderBoard } from '../actions/leaderBoardActions';
 import { ILeader } from '../../utils/api';
 interface IUserSlice {
@@ -12,7 +11,6 @@ interface IUserSlice {
   isFetching: boolean;
   fetchingFailed: boolean;
   error: string | null;
-  leaders: { data: ILeader }[] | [];
 }
 
 export interface UserChars {
@@ -25,6 +23,14 @@ export interface UserChars {
   phone: string;
   avatar: string;
 }
+
+interface ILeadersSlice {
+  leaderList: Record<'data', ILeader>[] | [];
+}
+
+const leadersInitState: ILeadersSlice = {
+  leaderList: [],
+};
 
 function convertUser(user: UserProps): UserChars {
   return {
@@ -45,7 +51,6 @@ const initialState: IUserSlice = {
   isFetching: false,
   fetchingFailed: false,
   error: null,
-  leaders: [],
 };
 
 export const authSlice = createSlice({
@@ -111,8 +116,16 @@ export const authSlice = createSlice({
     [setProfileInfo.fulfilled.type]: (state, action) => {
       state.user = convertUser(action.payload);
     },
+  },
+});
+
+export const leadersSlice = createSlice({
+  name: 'leaders',
+  initialState: leadersInitState,
+  reducers: {},
+  extraReducers: {
     [setLeaderBoard.fulfilled.type]: (state, action) => {
-      state.leaders = action.payload;
+      state.leaderList = action.payload;
     },
   },
 });
