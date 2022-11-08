@@ -24,12 +24,14 @@ export interface UserChars {
   avatar: string;
 }
 
-interface ILeadersSlice {
+export interface ILeadersSlice {
   leaderList: Record<'data', ILeader>[] | [];
+  date: number | undefined;
 }
 
 const leadersInitState: ILeadersSlice = {
   leaderList: [],
+  date: undefined,
 };
 
 function convertUser(user: UserProps): UserChars {
@@ -126,6 +128,7 @@ export const leadersSlice = createSlice({
   extraReducers: {
     [setLeaderBoard.fulfilled.type]: (state, action) => {
       state.leaderList = action.payload;
+      state.date = Date.now();
     },
   },
 });

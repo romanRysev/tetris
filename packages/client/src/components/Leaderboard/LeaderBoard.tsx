@@ -1,6 +1,7 @@
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useEffect } from 'react';
 import { setLeaderBoard } from '../../redux/actions/leaderBoardActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
+import { store } from '../../redux/store';
 import { GetLeaders } from '../../utils/api';
 import { LeaderItem } from '../LeaderItem/LeaderItem';
 
@@ -13,7 +14,6 @@ export type LeaderBoardProps = {
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   const dispatch = useAppDispatch();
   const leaderList = useAppSelector((state) => Object.values(state.leaders.leaderList));
-  const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
     const req: GetLeaders = {
@@ -21,15 +21,15 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
       cursor: 0,
       limit: 10,
     };
-    if (!isLoaded) {
-      (async () => {
-        const res = await dispatch(setLeaderBoard(req));
-        if (res.meta.requestStatus === 'fulfilled') {
-          setLoaded(true);
-        }
-      })();
-    }
-  }, [dispatch, leaderList, isLoaded]);
+
+    (async () => {
+      const res = await dispatch(setLeaderBoard(req));
+      console.log(res);
+      if (res.meta.requestStatus === 'fulfilled') {
+        console.log(store.getState());
+      }
+    })();
+  }, [dispatch, leaderList]);
 
   return (
     <div className="leaderboard">
