@@ -7,7 +7,7 @@ export type LeaderProps = {
   avatar: string;
   userName: string;
   onClick?: () => void;
-  score: string | number;
+  score: number;
 };
 
 export const LeaderItem: FC<LeaderProps> = ({

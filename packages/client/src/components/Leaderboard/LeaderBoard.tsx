@@ -12,7 +12,7 @@ export type LeaderBoardProps = {
 
 export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска почета' }) => {
   const dispatch = useAppDispatch();
-  const leaderList = Object.values(useAppSelector((state) => state.leaders.leaderList));
+  const leaderList = useAppSelector((state) => Object.values(state.leaders.leaderList));
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
