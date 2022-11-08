@@ -17,7 +17,6 @@ export default defineConfig({
     // eslint-disable-next-line new-cap
     VitePWA({
       registerType: 'autoUpdate',
-      scope: '/*',
       workbox: {
         globPatterns: ['**/*.{ts,tsx,scss,html,ico,png,svg,jpg,js,css}'],
       },
