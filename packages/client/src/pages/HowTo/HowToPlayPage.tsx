@@ -176,3 +176,5 @@ export const HowToPlay: FC = () => {
     </div>
   );
 };
+
+export default HowToPlay;

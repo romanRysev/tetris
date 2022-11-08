@@ -21,6 +21,28 @@ export interface IChangePassword {
   newPassword: string;
 }
 
+export interface ILeader {
+  score: number;
+  user: {
+    avatar: string;
+    userName: string;
+    id: number;
+  };
+  date: string;
+}
+
+export interface AddLeader {
+  data: ILeader;
+  ratingFieldName: string;
+  teamName: string;
+}
+
+export interface GetLeaders {
+  ratingFieldName: string;
+  cursor: 0;
+  limit: 10;
+}
+
 export const postLogout = async () =>
   await fetch(APIurls.LOGOUT, {
     method: 'POST',
@@ -71,6 +93,22 @@ export const setProfilePasswordRequest = async (data: IChangePassword) =>
   await fetch(APIurls.CHANGEPASS, {
     method: 'PUT',
     headers: headers.put,
+    credentials: 'include',
+    body: JSON.stringify({ ...data }),
+  });
+
+export const addToLeaderBoard = async (data: AddLeader) =>
+  await fetch(APIurls.LEADERBOARD, {
+    method: 'POST',
+    headers: headers.post,
+    credentials: 'include',
+    body: JSON.stringify({ ...data }),
+  });
+
+export const getLeaderBoard = async (data: GetLeaders) =>
+  await fetch(`${APIurls.LEADERBOARD}/CodinskTest`, {
+    method: 'POST',
+    headers: headers.post,
     credentials: 'include',
     body: JSON.stringify({ ...data }),
   });

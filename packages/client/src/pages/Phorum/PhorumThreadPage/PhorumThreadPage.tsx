@@ -14,3 +14,5 @@ export const PhorumThreadPage: React.FC<PhorumThreadPageProps> = ({ title }) => 
     </StaticLayout>
   );
 };
+
+export default PhorumThreadPage;
