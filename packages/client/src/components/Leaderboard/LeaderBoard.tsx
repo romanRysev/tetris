@@ -1,7 +1,6 @@
 import React, { FC, useEffect } from 'react';
 import { setLeaderBoard } from '../../redux/actions/leaderBoardActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { store } from '../../redux/store';
 import { GetLeaders } from '../../utils/api';
 import { LeaderItem } from '../LeaderItem/LeaderItem';
 
@@ -23,11 +22,7 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
     };
 
     (async () => {
-      const res = await dispatch(setLeaderBoard(req));
-      console.log(res);
-      if (res.meta.requestStatus === 'fulfilled') {
-        console.log(store.getState());
-      }
+      await dispatch(setLeaderBoard(req));
     })();
   }, [dispatch, leaderList]);
 
