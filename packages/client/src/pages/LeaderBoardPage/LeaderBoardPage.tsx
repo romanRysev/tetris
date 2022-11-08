@@ -6,3 +6,5 @@ import './../../scss/index.scss';
 export const LeaderBoardPage = () => {
   return <StaticLayout>{<LeaderBoard />}</StaticLayout>;
 };
+
+export default LeaderBoardPage;

@@ -3,6 +3,8 @@ import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
 import { login, logout, register, checkLogin } from '../actions/singActions';
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
+import { setLeaderBoard } from '../actions/leaderBoardActions';
+import { ILeader } from '../../utils/api';
 interface IUserSlice {
   user: UserChars;
   isAuthorized: boolean;
@@ -21,6 +23,16 @@ export interface UserChars {
   phone: string;
   avatar: string;
 }
+
+export interface ILeadersSlice {
+  leaderList: Record<'data', ILeader>[] | [];
+  date: number | undefined;
+}
+
+const leadersInitState: ILeadersSlice = {
+  leaderList: [],
+  date: undefined,
+};
 
 function convertUser(user: UserProps): UserChars {
   return {
@@ -105,6 +117,18 @@ export const authSlice = createSlice({
     },
     [setProfileInfo.fulfilled.type]: (state, action) => {
       state.user = convertUser(action.payload);
+    },
+  },
+});
+
+export const leadersSlice = createSlice({
+  name: 'leaders',
+  initialState: leadersInitState,
+  reducers: {},
+  extraReducers: {
+    [setLeaderBoard.fulfilled.type]: (state, action) => {
+      state.leaderList = action.payload;
+      state.date = Date.now();
     },
   },
 });
