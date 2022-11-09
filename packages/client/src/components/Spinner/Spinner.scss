@@ -36,41 +36,41 @@
     height: 1em;
     transform: rotate(0deg);
     animation: Rotate 1.2s infinite linear;
+  }
 
-    &_item {
-      position: absolute;
-      display: block;
-      width: 14px;
-      height: 14px;
-      background-color: #177ddc;
-      border-radius: 100%;
-      transform: scale(0.75);
-      transform-origin: 50% 50%;
-      opacity: 0.3;
-      animation: SpinMove 1s infinite linear alternate;
+  &__item {
+    position: absolute;
+    display: block;
+    width: 14px;
+    height: 14px;
+    background-color: #177ddc;
+    border-radius: 100%;
+    transform: scale(0.75);
+    transform-origin: 50% 50%;
+    opacity: 0.3;
+    animation: SpinMove 1s infinite linear alternate;
 
-      &:nth-child(1) {
-        top: 0;
-        left: 0;
-      }
+    &:nth-child(1) {
+      top: 0;
+      left: 0;
+    }
 
-      &:nth-child(2) {
-        top: 0;
-        right: 0;
-        animation-delay: 0.4s;
-      }
+    &:nth-child(2) {
+      top: 0;
+      right: 0;
+      animation-delay: 0.4s;
+    }
 
-      &:nth-child(3) {
-        right: 0;
-        bottom: 0;
-        animation-delay: 0.8s;
-      }
+    &:nth-child(3) {
+      right: 0;
+      bottom: 0;
+      animation-delay: 0.8s;
+    }
 
-      &:nth-child(4) {
-        bottom: 0;
-        left: 0;
-        animation-delay: 1.2s;
-      }
+    &:nth-child(4) {
+      bottom: 0;
+      left: 0;
+      animation-delay: 1.2s;
     }
   }
 }
