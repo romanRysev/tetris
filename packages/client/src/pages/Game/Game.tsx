@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
-import { Tetris } from './GameScreen';
+import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
+import { AddLeader, addToLeaderBoard } from '../../utils/api';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -18,6 +19,8 @@ export const Game: React.FC = () => {
   const userProfile = useAppSelector((state) => state.auth.user);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
+  const [showError, setShowError] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -29,6 +32,37 @@ export const Game: React.FC = () => {
   }, []);
 
   useEffect(() => {
+    const sendResult = () => {
+      const date = new Date();
+      const res: AddLeader = {
+        data: {
+          score: score,
+          user: {
+            avatar: userAvatar,
+            userName: userName,
+            id: userProfile.id,
+          },
+          date: date.toLocaleDateString('ru'),
+        },
+        ratingFieldName: 'score',
+        teamName: 'CodinskTest',
+      };
+      const send = async (res: AddLeader) => {
+        try {
+          const result = await addToLeaderBoard(res);
+          const resp = await result.json();
+          if (resp.ok) {
+            setShowError(false);
+          } else {
+            setShowError(true);
+            setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
+          }
+        } catch (error) {
+          return;
+        }
+      };
+      send(res);
+    };
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
     if (canvas && canvasFigure) {
@@ -41,7 +75,10 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-  }, []);
+    if (isGameEnded) {
+      sendResult();
+    }
+  }, [isGameEnded, score, userAvatar, userName, userProfile.id]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -69,6 +106,10 @@ export const Game: React.FC = () => {
   const toProfile = useCallback(() => {
     navigate('/profile');
   }, [navigate]);
+
+  const handleErrorMsg = useCallback(() => {
+    setShowError(false);
+  }, []);
 
   return (
     <div className="game">
@@ -131,11 +172,20 @@ export const Game: React.FC = () => {
         )}
         {isGameEnded && (
           <div className="game-screen__game-end">
-            <h3>Игра окончена!</h3>
+            <h3 className="game-screen__h3">Игра окончена!</h3>
             <p>Вы добрались до {level} уровня</p>
             <p>Ваш счет: {score} очков</p>
             <button className="game-screen__end-button" onClick={handleNewGame}>
               Играть снова
+            </button>
+          </div>
+        )}
+        {showError && (
+          <div className="game-screen__error">
+            <h3 className="game-screen__h3">Ошибка с отправкой результатов</h3>
+            <p>{errorMsg}</p>
+            <button className="game-screen__error-button" onClick={handleErrorMsg}>
+              Понятно
             </button>
           </div>
         )}

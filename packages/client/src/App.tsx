@@ -5,6 +5,7 @@ import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
+import { Spinner } from './components/Spinner/Spinner';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
@@ -36,7 +37,7 @@ function App() {
       <div style={{ display: 'none' }}>Вот тут будет жить ваше приложение :)</div>
       {isLoaded && (
         <HashRouter>
-          <Suspense>
+          <Suspense fallback={<Spinner />}>
             <Routes>
               <Route element={<ProtectedRoute />}>
                 <Route path="/" element={<Game />} />
