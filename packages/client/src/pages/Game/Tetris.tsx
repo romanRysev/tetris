@@ -322,6 +322,8 @@ export class Tetris extends Component<TetrisProps> {
           return;
         }
         this.currentTetromino.row = row;
+        this.score += 1;
+        this.shareData(this.score, this.level, this.lineCount);
         break;
       }
       case 'ArrowLeft':
@@ -350,10 +352,13 @@ export class Tetris extends Component<TetrisProps> {
       case 'Space': {
         while (this.isValidMove({})) {
           this.currentTetromino.row++;
+          this.score += 2;
         }
+
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
+          this.shareData(this.score - 2, this.level, this.lineCount);
         }
         break;
       }
