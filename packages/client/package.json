@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc --noEmit && vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "format": "prettier --write .",
@@ -48,7 +48,8 @@
     "react-redux": "^8.0.4",
     "ts-jest": "^29.0.3",
     "typescript": "^4.8.4",
-    "vite": "^3.1.4"
+    "vite": "^3.1.4",
+    "workbox-window": "6.5.4"
   },
   "license": "MIT"
 }
