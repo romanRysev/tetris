@@ -1,3 +1,8 @@
+import manBasic from './../../assets/img/man/man-basic.png';
+import manHeadLeft from './../../assets/img/man/man-basic-head-left.png';
+import manLeftLegUP from './../../assets/img/man/man-left-leg-up.png';
+import manRightLegUp from './../../assets/img/man/man-right-leg-up.png';
+
 export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
 export type TetrominoMatrix = (0 | 1)[][];
 export const tetrominos: Record<Sequence, TetrominoMatrix> = {
@@ -49,3 +54,10 @@ export const colors: Record<Sequence, string> = {
 
 export const gray = '#D9D9D9';
 export const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+
+export const man: Record<string, string> = {
+  basic: manBasic,
+  head: manHeadLeft,
+  leftLeg: manLeftLegUP,
+  rightLeg: manRightLegUp,
+};

@@ -1,5 +1,5 @@
 import React, { Component, ReactNode } from 'react';
-import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
+import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos, man } from './constant';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -37,6 +37,7 @@ export class Tetris extends Component<TetrisProps> {
   private sendEnd;
   private gameNo: number;
   private cellSize = 50;
+  private sharkMode = true;
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -242,6 +243,11 @@ export class Tetris extends Component<TetrisProps> {
     }
   }
 
+  private drawWater(end: number) {
+    this.ctx.fillStyle = 'rgba(0, 188, 255, 0.1)';
+    this.ctx.fillRect(0, this.canvas.height - end, this.canvas.width, this.canvas.height);
+  }
+
   private loop() {
     if (this.gameOver || this.paused) {
       return;
@@ -249,14 +255,37 @@ export class Tetris extends Component<TetrisProps> {
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawWorld();
+    let upperRow = 0;
     for (let row = 0; row < 20; row++) {
+      let filled = 0;
       for (let col = 0; col < 10; col++) {
         if (this.playfield[row][col]) {
+          filled++;
           const name = this.playfield[row][col];
           this.ctx.fillStyle = name ? this.colors[name] : 'white';
           this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
         }
       }
+      if (filled > 0) {
+        upperRow++;
+      }
+    }
+    if (this.sharkMode) {
+      this.drawWater(upperRow * this.cellSize);
+      const img = new Image();
+      const randomNo = Math.random();
+      // не, очень уж быстро
+      if (randomNo < 0.3) {
+        img.src = man.basic;
+      } else if (randomNo >= 0.3 && randomNo < 0.5) {
+        img.src = man.left;
+      } else if (randomNo >= 0.5 && randomNo < 0.8) {
+        img.src = man.leftLeg;
+      } else {
+        img.src = man.rightLeg;
+      }
+
+      this.ctx.drawImage(img, this.cellSize * 2, 0);
     }
     if (this.nextTetromino) {
       this.ctxFigure.clearRect(0, 0, this.canvasFigure.width, this.canvasFigure.height);
