@@ -175,6 +175,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private placeTetromino() {
+    let linesAtOnce = 0;
     for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
         if (this.currentTetromino.matrix[row][col]) {
@@ -187,13 +188,12 @@ export class Tetris extends Component<TetrisProps> {
     }
     for (let row = this.playfield.length - 1; row >= 0; ) {
       if (this.playfield[row].every((cell) => !!cell)) {
+        linesAtOnce++;
         this.lineCount++;
-        this.score += 40 * (this.level + 1);
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
           this.level++;
-          this.speed -= 10;
+          this.speed -= 50;
         }
-        this.shareData(this.score, this.level, this.lineCount);
         for (let r = row; r >= 0; r--) {
           for (let c = 0; c < this.playfield[r].length; c++) {
             this.playfield[r][c] = this.playfield[r - 1][c];
@@ -203,6 +203,26 @@ export class Tetris extends Component<TetrisProps> {
         row--;
       }
     }
+    let ratio = 0;
+    switch (linesAtOnce) {
+      case 0:
+        break;
+      case 1:
+        ratio = 40;
+        break;
+      case 2:
+        ratio = 100;
+        break;
+      case 3:
+        ratio = 300;
+        break;
+      default:
+        ratio = 1200;
+        break;
+    }
+    this.score += ratio * (this.level + 1);
+    this.shareData(this.score, this.level, this.lineCount);
+
     for (let i = 0; i < this.playfield[0].length; i++) {
       if (this.playfield[0][i] != undefined) {
         return this.showGameOver();
