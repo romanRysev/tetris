@@ -13,7 +13,7 @@ export const Game: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const canvasRefFigure = useRef<HTMLCanvasElement>(null);
   const [score, setScore] = useState(0);
-  const [level, setLevel] = useState(1);
+  const [level, setLevel] = useState(0);
   const [lineCount, setLineCount] = useState(0);
   const [isGameEnded, setGameEnded] = useState(false);
   const userProfile = useAppSelector((state) => state.auth.user);

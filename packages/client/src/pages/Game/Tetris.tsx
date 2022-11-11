@@ -12,7 +12,6 @@ type TetrisProps = {
 type Playfield = (Sequence | undefined)[][];
 
 export class Tetris extends Component<TetrisProps> {
-  private count = 0;
   private currentTetromino = this.getNextTetromino();
   private nextTetromino = this.getNextTetromino();
   private gameOver = false;
@@ -31,12 +30,13 @@ export class Tetris extends Component<TetrisProps> {
   private sequence = sequence;
   private score = 0;
   private lineCount = 0;
-  private level = 1;
-  private speed = 150;
+  private level = 0;
+  private speed = 1000;
   private shareData;
   private sendEnd;
   private gameNo: number;
   private cellSize = 50;
+  private timestamp = 0;
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -101,9 +101,9 @@ export class Tetris extends Component<TetrisProps> {
     }
     this.score = 0;
     this.lineCount = 0;
-    this.level = 1;
-    this.speed = 150;
-    this.count = 0;
+    this.level = 0;
+    this.speed = 1000;
+    this.timestamp = Date.now();
     this.drawWorld();
     this.generateSequence();
     const step = () => {
@@ -298,9 +298,9 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
     if (this.currentTetromino) {
-      if (++this.count > this.speed) {
+      if (Date.now() - this.timestamp > this.speed) {
         this.currentTetromino.row++;
-        this.count = 0;
+        this.timestamp = Date.now();
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
