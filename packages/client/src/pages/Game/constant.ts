@@ -3,6 +3,11 @@ import manHeadLeft from './../../assets/img/man/man-basic-head-left.png';
 import manLeftLegUP from './../../assets/img/man/man-left-leg-up.png';
 import manRightLegUp from './../../assets/img/man/man-right-leg-up.png';
 
+import shark1 from './../../assets/img/shark/shark-1.png';
+import shark2 from './../../assets/img/shark/shark-2.png';
+import sharkM1 from './../../assets/img/shark/shark-mirror-1.png';
+import sharkM2 from './../../assets/img/shark/shark-mirror-2.png';
+
 export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
 export type TetrominoMatrix = (0 | 1)[][];
 export const tetrominos: Record<Sequence, TetrominoMatrix> = {
@@ -60,4 +65,11 @@ export const man: Record<string, string> = {
   head: manHeadLeft,
   leftLeg: manLeftLegUP,
   rightLeg: manRightLegUp,
+};
+
+export const shark: Record<string, string> = {
+  basic: shark1,
+  left: shark2,
+  basicM: sharkM1,
+  leftM: sharkM2,
 };
