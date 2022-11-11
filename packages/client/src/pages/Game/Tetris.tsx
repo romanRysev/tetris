@@ -12,7 +12,6 @@ type TetrisProps = {
 type Playfield = (Sequence | undefined)[][];
 
 export class Tetris extends Component<TetrisProps> {
-  private count = 0;
   private currentTetromino = this.getNextTetromino();
   private nextTetromino = this.getNextTetromino();
   private gameOver = false;
@@ -31,12 +30,13 @@ export class Tetris extends Component<TetrisProps> {
   private sequence = sequence;
   private score = 0;
   private lineCount = 0;
-  private level = 1;
-  private speed = 150;
+  private level = 0;
+  private speed = 1000;
   private shareData;
   private sendEnd;
   private gameNo: number;
   private cellSize = 50;
+  private timestamp = 0;
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -101,9 +101,9 @@ export class Tetris extends Component<TetrisProps> {
     }
     this.score = 0;
     this.lineCount = 0;
-    this.level = 1;
-    this.speed = 150;
-    this.count = 0;
+    this.level = 0;
+    this.speed = 1000;
+    this.timestamp = Date.now();
     this.drawWorld();
     this.generateSequence();
     const step = () => {
@@ -175,6 +175,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private placeTetromino() {
+    let linesAtOnce = 0;
     for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
         if (this.currentTetromino.matrix[row][col]) {
@@ -187,13 +188,12 @@ export class Tetris extends Component<TetrisProps> {
     }
     for (let row = this.playfield.length - 1; row >= 0; ) {
       if (this.playfield[row].every((cell) => !!cell)) {
+        linesAtOnce++;
         this.lineCount++;
-        this.score += 40 * (this.level + 1);
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
           this.level++;
-          this.speed -= 10;
+          this.speed -= 50;
         }
-        this.shareData(this.score, this.level, this.lineCount);
         for (let r = row; r >= 0; r--) {
           for (let c = 0; c < this.playfield[r].length; c++) {
             this.playfield[r][c] = this.playfield[r - 1][c];
@@ -203,6 +203,10 @@ export class Tetris extends Component<TetrisProps> {
         row--;
       }
     }
+    const ratio = { 0: 0, 1: 40, 2: 100, 3: 300 }[linesAtOnce] ?? 1200;
+    this.score += ratio * (this.level + 1);
+    this.shareData(this.score, this.level, this.lineCount);
+
     for (let i = 0; i < this.playfield[0].length; i++) {
       if (this.playfield[0][i] != undefined) {
         return this.showGameOver();
@@ -278,9 +282,10 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
     if (this.currentTetromino) {
-      if (++this.count > this.speed) {
+      const rightNow = Date.now();
+      if (rightNow - this.timestamp > this.speed) {
         this.currentTetromino.row++;
-        this.count = 0;
+        this.timestamp = rightNow;
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
