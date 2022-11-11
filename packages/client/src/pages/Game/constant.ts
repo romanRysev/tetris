@@ -8,6 +8,8 @@ import shark2 from './../../assets/img/shark/shark-2.png';
 import sharkM1 from './../../assets/img/shark/shark-mirror-1.png';
 import sharkM2 from './../../assets/img/shark/shark-mirror-2.png';
 
+// import themeMusic from './../../assets/music/jaws.mp3';
+
 export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
 export type TetrominoMatrix = (0 | 1)[][];
 export const tetrominos: Record<Sequence, TetrominoMatrix> = {

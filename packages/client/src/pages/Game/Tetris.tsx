@@ -1,5 +1,6 @@
 import React, { Component, ReactNode } from 'react';
 import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos, man, shark } from './constant';
+import themeMusic from './../../assets/music/jaws.mp3';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -51,6 +52,8 @@ export class Tetris extends Component<TetrisProps> {
   private sharkPreloaded = false;
   private manPics: Record<string, HTMLImageElement> = {};
   private sharkPics: Record<string, HTMLImageElement> = {};
+  private themeMusic: HTMLAudioElement = new Audio();
+  private musicPreloaded = false;
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -86,6 +89,19 @@ export class Tetris extends Component<TetrisProps> {
     });
   }
 
+  async preloadMusic(src) {
+    // тип срц?
+    return await new Promise((resolve, reject) => {
+      // const song = new Audio();
+      this.themeMusic.src = src;
+      console.log(this.themeMusic);
+      this.themeMusic.onload = () => resolve(this.themeMusic);
+      this.themeMusic.onerror = (event) => reject(event);
+    }).catch((error) => {
+      console.log(error.message);
+    });
+  }
+
   componentDidMount(): void {
     this.onKeypress();
     if (!this.manPreloaded || !this.sharkPreloaded) {
@@ -94,6 +110,13 @@ export class Tetris extends Component<TetrisProps> {
       });
       this.preloadImages(shark, this.sharkPics).then(() => {
         this.sharkPreloaded = true;
+      });
+    }
+
+    if (!this.musicPreloaded) {
+      this.preloadMusic(themeMusic).then(() => {
+        console.log('музыка загрузилося');
+        this.musicPreloaded = true;
       });
     }
     this.init();
