@@ -12,14 +12,13 @@ type TetrisProps = {
 type Playfield = (Sequence | undefined)[][];
 
 export class Tetris extends Component<TetrisProps> {
-  private count = 0;
   private currentTetromino = this.getNextTetromino();
   private nextTetromino = this.getNextTetromino();
   private gameOver = false;
   private paused = false;
-  private title: string;
-  private width: number;
-  private height: number;
+  private title: string; // нужно ли куда-то?
+  private width: number; // тоже не понимаю
+  private height: number; // тоже не понимаю
   private canvas: HTMLCanvasElement;
   private canvasFigure: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -35,18 +34,23 @@ export class Tetris extends Component<TetrisProps> {
   private speed = 1000;
   private shareData;
   private sendEnd;
-  private gameNo: number;
+  private gameNo: number; // тоже надо разобраться нужно нет
   private cellSize = 50;
-  private sharkMode = true;
-  private manPic = 0;
   private timestamp = 0;
 
+  private sharkMode = true;
+  private manPic = 0;
   private sharkCoords = {
     x: 0,
     y: 0,
   };
   private sharkForward = true;
   private sharkStep = 10;
+  private manCoords = 0;
+  private manPreloaded = false;
+  private sharkPreloaded = false;
+  private manPics: Record<string, HTMLImageElement> = {};
+  private sharkPics: Record<string, HTMLImageElement> = {};
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -63,8 +67,35 @@ export class Tetris extends Component<TetrisProps> {
     this.ctxFigure = this.canvasFigure.getContext('2d') as CanvasRenderingContext2D;
   }
 
+  async preloadImages(images: Record<string, string>, target: Record<string, HTMLImageElement>) {
+    const sources = Object.values(images);
+    const keys = Object.keys(images);
+    return await Promise.allSettled(
+      sources.map(
+        (source, index) =>
+          new Promise((resolve, reject) => {
+            const img = new Image();
+            img.src = source;
+            Object.assign(target, { [keys[index]]: img });
+            img.onload = () => resolve(img);
+            img.onerror = (event) => reject(event);
+          }),
+      ),
+    ).catch((error) => {
+      console.log(error.message); // сделать единый блок демонстрации ошибок?
+    });
+  }
+
   componentDidMount(): void {
     this.onKeypress();
+    if (!this.manPreloaded || !this.sharkPreloaded) {
+      this.preloadImages(man, this.manPics).then(() => {
+        this.manPreloaded = true;
+      });
+      this.preloadImages(shark, this.sharkPics).then(() => {
+        this.sharkPreloaded = true;
+      });
+    }
     this.init();
   }
 
@@ -107,18 +138,31 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private drawMan() {
-    const img = new Image();
+    let img: HTMLImageElement = this.manPics.basic;
     const randomNo = this.manPic;
     if (randomNo < 0.3) {
-      img.src = man.basic;
+      img = this.manPics.basic;
     } else if (randomNo >= 0.3 && randomNo < 0.5) {
-      img.src = man.head;
+      img = this.manPics.head;
     } else if (randomNo >= 0.5 && randomNo < 0.8) {
-      img.src = man.leftLeg;
+      img = this.manPics.leftLeg;
     } else {
-      img.src = man.rightLeg;
+      img = this.manPics.rightLeg;
     }
-    this.ctx.drawImage(img, this.cellSize * 2, 0);
+
+    this.ctx.drawImage(img, this.manCoords, 0);
+  }
+
+  private drawShark() {
+    let img: HTMLImageElement = this.sharkPics.basicM;
+    const randomNo = this.manPic;
+    if (randomNo < 0.5) {
+      img = this.sharkForward ? this.sharkPics.basicM : this.sharkPics.basic;
+    } else if (randomNo >= 0.5) {
+      img = this.sharkForward ? this.sharkPics.leftM : this.sharkPics.left;
+    }
+
+    this.ctx.drawImage(img, this.sharkCoords.x, this.sharkCoords.y);
   }
 
   private makeManPic() {
@@ -141,17 +185,6 @@ export class Tetris extends Component<TetrisProps> {
     }
   }
 
-  private drawShark() {
-    const img = new Image();
-    const randomNo = this.manPic;
-    if (randomNo < 0.5) {
-      img.src = this.sharkForward ? shark.basicM : shark.basic;
-    } else if (randomNo >= 0.5) {
-      img.src = this.sharkForward ? shark.leftM : shark.left;
-    }
-    this.ctx.drawImage(img, this.sharkCoords.x, this.sharkCoords.y);
-  }
-
   // END для акул
 
   private init() {
@@ -169,12 +202,12 @@ export class Tetris extends Component<TetrisProps> {
     this.level = 0;
     this.speed = 1000;
     this.timestamp = Date.now();
-    this.count = 0;
     this.sharkCoords = {
       x: 0,
       y: 0,
     };
     this.sharkForward = true;
+    this.manCoords = this.cellSize * Math.floor(Math.random() * 10);
     this.drawWorld();
     this.generateSequence();
     const step = () => {
@@ -384,7 +417,6 @@ export class Tetris extends Component<TetrisProps> {
     if (this.currentTetromino) {
       if (Date.now() - this.timestamp > this.speed) {
         this.currentTetromino.row++;
-        this.count = 0;
         this.timestamp = Date.now();
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
@@ -472,6 +504,7 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
   };
+
   private onKeypress() {
     document.addEventListener('keydown', this.MyClick);
   }
