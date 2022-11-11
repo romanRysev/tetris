@@ -331,23 +331,7 @@ export class Tetris extends Component<TetrisProps> {
         row--;
       }
     }
-    let ratio = 0;
-    switch (linesAtOnce) {
-      case 0:
-        break;
-      case 1:
-        ratio = 40;
-        break;
-      case 2:
-        ratio = 100;
-        break;
-      case 3:
-        ratio = 300;
-        break;
-      default:
-        ratio = 1200;
-        break;
-    }
+    const ratio = { 0: 0, 1: 40, 2: 100, 3: 300 }[linesAtOnce] ?? 1200;
     this.score += ratio * (this.level + 1);
     this.shareData(this.score, this.level, this.lineCount);
 
@@ -438,9 +422,10 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
     if (this.currentTetromino) {
-      if (Date.now() - this.timestamp > this.speed) {
+      const rightNow = Date.now();
+      if (rightNow - this.timestamp > this.speed) {
         this.currentTetromino.row++;
-        this.timestamp = Date.now();
+        this.timestamp = rightNow;
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
@@ -482,6 +467,8 @@ export class Tetris extends Component<TetrisProps> {
           return;
         }
         this.currentTetromino.row = row;
+        this.score += 1;
+        this.shareData(this.score, this.level, this.lineCount);
         break;
       }
       case 'ArrowLeft':
@@ -510,10 +497,13 @@ export class Tetris extends Component<TetrisProps> {
       case 'Space': {
         while (this.isValidMove({})) {
           this.currentTetromino.row++;
+          this.score += 2;
         }
+
         if (!this.isValidMove({})) {
           this.currentTetromino.row--;
           this.placeTetromino();
+          this.shareData(this.score - 2, this.level, this.lineCount);
         }
         break;
       }
