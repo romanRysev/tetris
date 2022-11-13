@@ -17,9 +17,8 @@ export class Tetris extends Component<TetrisProps> {
   private nextTetromino = this.getNextTetromino();
   private gameOver = false;
   private paused = false;
-  private title: string; // нужно ли куда-то?
-  private width: number; // тоже не понимаю
-  private height: number; // тоже не понимаю
+  private width: number;
+  private height: number;
   private canvas: HTMLCanvasElement;
   private canvasFigure: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
@@ -35,7 +34,6 @@ export class Tetris extends Component<TetrisProps> {
   private speed = 1000;
   private shareData;
   private sendEnd;
-  private gameNo: number; // тоже надо разобраться нужно нет
   private cellSize = 50;
   private timestamp = 0;
 
@@ -57,15 +55,13 @@ export class Tetris extends Component<TetrisProps> {
 
   public constructor(props: TetrisProps) {
     super(props);
-    const { canvas, canvasFigure, getDataUp, sendEnd, gameNo } = props;
+    const { canvas, canvasFigure, getDataUp, sendEnd } = props;
     this.canvas = canvas;
     this.canvasFigure = canvasFigure;
-    this.title = 'canvas';
     this.width = 10;
     this.height = 20;
     this.shareData = getDataUp;
     this.sendEnd = sendEnd;
-    this.gameNo = gameNo;
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.ctxFigure = this.canvasFigure.getContext('2d') as CanvasRenderingContext2D;
   }
@@ -89,8 +85,7 @@ export class Tetris extends Component<TetrisProps> {
     });
   }
 
-  async preloadMusic(src) {
-    // тип срц?
+  async preloadMusic(src: string) {
     return await new Promise((resolve, reject) => {
       // const song = new Audio();
       this.themeMusic.src = src;
@@ -241,6 +236,9 @@ export class Tetris extends Component<TetrisProps> {
     };
     step();
     this.makeManPic();
+    // const audioContext = new AudioContext();
+    // const track = audioContext.createMediaElementSource(this.themeMusic);
+    // this.themeMusic.play();
   }
 
   private generateSequence() {
