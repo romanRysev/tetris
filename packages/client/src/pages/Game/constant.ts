@@ -8,7 +8,13 @@ import shark2 from './../../assets/img/shark/shark-2.png';
 import sharkM1 from './../../assets/img/shark/shark-mirror-1.png';
 import sharkM2 from './../../assets/img/shark/shark-mirror-2.png';
 
-// import themeMusic from './../../assets/music/jaws.mp3';
+import splash from './../../assets/sounds/shark/splash.mp3';
+import splashSm from './../../assets/sounds/shark/splash-sm.mp3';
+import swirl from './../../assets/sounds/shark/swirl.mp3';
+import laughter from './../../assets/sounds/shark/villain-laughter.mp3';
+import pouring from './../../assets/sounds/shark/water-pouring-a.mp3';
+
+import jaws from './../../assets/music/jaws.mp3';
 
 export type Sequence = 'I' | 'J' | 'L' | 'O' | 'S' | 'T' | 'Z';
 export type TetrominoMatrix = (0 | 1)[][];
@@ -74,4 +80,14 @@ export const shark: Record<string, string> = {
   left: shark2,
   basicM: sharkM1,
   leftM: sharkM2,
+};
+
+export const sharkMusic = jaws;
+
+export const sharkSounds = {
+  start: pouring,
+  end: laughter,
+  fall: splash,
+  position: splashSm,
+  line: swirl,
 };
