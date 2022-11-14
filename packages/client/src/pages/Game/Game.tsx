@@ -50,7 +50,7 @@ export const Game: React.FC = () => {
       const send = async (res: AddLeader) => {
         try {
           const result = await addToLeaderBoard(res);
-          const resp = await result.json();
+          const resp = await result?.json();
           if (resp.ok) {
             setShowError(false);
           } else {
@@ -58,6 +58,8 @@ export const Game: React.FC = () => {
             setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
           }
         } catch (error) {
+          setShowError(true);
+          setErrorMsg(`Ошибка: ${(error as Error)?.message}. Переходим на страницу авторизации`);
           return;
         }
       };
@@ -108,8 +110,9 @@ export const Game: React.FC = () => {
   }, [navigate]);
 
   const handleErrorMsg = useCallback(() => {
+    navigate('/login');
     setShowError(false);
-  }, []);
+  }, [navigate]);
 
   return (
     <div className="game">

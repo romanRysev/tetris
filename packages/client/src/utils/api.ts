@@ -48,6 +48,8 @@ export const postLogout = async () =>
     method: 'POST',
     headers: headers.get,
     credentials: 'include',
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const postRegisterRequest = async (data: RegisterForm) =>
@@ -56,6 +58,8 @@ export const postRegisterRequest = async (data: RegisterForm) =>
     headers: headers.post,
     body: JSON.stringify(data),
     credentials: 'include',
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const postLoginRequest = async (data: LoginForm) =>
@@ -64,6 +68,8 @@ export const postLoginRequest = async (data: LoginForm) =>
     headers: headers.post,
     body: JSON.stringify(data),
     credentials: 'include',
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const getProfileRequest = async () =>
@@ -71,6 +77,8 @@ export const getProfileRequest = async () =>
     method: 'GET',
     headers: { ...headers.get },
     credentials: 'include',
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const setAvatarRequest = async (data: FormData) =>
@@ -79,6 +87,8 @@ export const setAvatarRequest = async (data: FormData) =>
     headers: { accept: 'application/xml' },
     credentials: 'include',
     body: data,
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const setProfileInfoRequest = async (data: IChangeInfo) =>
@@ -87,6 +97,8 @@ export const setProfileInfoRequest = async (data: IChangeInfo) =>
     headers: headers.put,
     credentials: 'include',
     body: JSON.stringify(data),
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const setProfilePasswordRequest = async (data: IChangePassword) =>
@@ -95,6 +107,8 @@ export const setProfilePasswordRequest = async (data: IChangePassword) =>
     headers: headers.put,
     credentials: 'include',
     body: JSON.stringify({ ...data }),
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const addToLeaderBoard = async (data: AddLeader) =>
@@ -103,6 +117,8 @@ export const addToLeaderBoard = async (data: AddLeader) =>
     headers: headers.post,
     credentials: 'include',
     body: JSON.stringify({ ...data }),
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
 
 export const getLeaderBoard = async (data: GetLeaders) =>
@@ -111,4 +127,6 @@ export const getLeaderBoard = async (data: GetLeaders) =>
     headers: headers.post,
     credentials: 'include',
     body: JSON.stringify({ ...data }),
+  }).catch((error) => {
+    alert(`Ошибка: ${(error as Error)?.message}`);
   });
