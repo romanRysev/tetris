@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { AddLeader, addToLeaderBoard } from '../../utils/api';
+// import { AddLeader, addToLeaderBoard } from '../../utils/api';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -19,8 +19,10 @@ export const Game: React.FC = () => {
   const userProfile = useAppSelector((state) => state.auth.user);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
-  const [showError, setShowError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
+  const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
+  // const [showError, setShowError] = useState(false);
+  // const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
+  const [theme] = useState('shark');
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -31,38 +33,71 @@ export const Game: React.FC = () => {
     setGameEnded(true);
   }, []);
 
+  // const sendResult = useCallback(() => {
+  //   const date = new Date();
+  //   const res: AddLeader = {
+  //     data: {
+  //       score: score,
+  //       user: {
+  //         avatar: userAvatar,
+  //         userName: userName,
+  //         id: userProfile.id,
+  //       },
+  //       date: date.toLocaleDateString('ru'),
+  //     },
+  //     ratingFieldName: 'score',
+  //     teamName: 'CodinskTest',
+  //   };
+  //   const send = async (res: AddLeader) => {
+  //     try {
+  //       const result = await addToLeaderBoard(res);
+  //       const resp = await result.json();
+  //       if (resp.ok) {
+  //         setShowError(false);
+  //       } else {
+  //         setShowError(true);
+  //         setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
+  //       }
+  //     } catch (error) {
+  //       return;
+  //     }
+  //   };
+  //   send(res);
+  // }, [score, userAvatar, userName, userProfile.id]);
+
   useEffect(() => {
-    const sendResult = () => {
-      const date = new Date();
-      const res: AddLeader = {
-        data: {
-          score: score,
-          user: {
-            avatar: userAvatar,
-            userName: userName,
-            id: userProfile.id,
-          },
-          date: date.toLocaleDateString('ru'),
-        },
-        ratingFieldName: 'score',
-        teamName: 'CodinskTest',
-      };
-      const send = async (res: AddLeader) => {
-        try {
-          const result = await addToLeaderBoard(res);
-          const resp = await result.json();
-          if (resp.ok) {
-            setShowError(false);
-          } else {
-            setShowError(true);
-            setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
-          }
-        } catch (error) {
-          return;
-        }
-      };
-      send(res);
-    };
+    console.log('USEFFECT MOUNT');
+    // const sendResult = () => {
+    //   const date = new Date();
+    //   const res: AddLeader = {
+    //     data: {
+    //       score: score,
+    //       user: {
+    //         avatar: userAvatar,
+    //         userName: userName,
+    //         id: userProfile.id,
+    //       },
+    //       date: date.toLocaleDateString('ru'),
+    //     },
+    //     ratingFieldName: 'score',
+    //     teamName: 'CodinskTest',
+    //   };
+    //   const send = async (res: AddLeader) => {
+    //     try {
+    //       const result = await addToLeaderBoard(res);
+    //       const resp = await result.json();
+    //       if (resp.ok) {
+    //         setShowError(false);
+    //       } else {
+    //         setShowError(true);
+    //         setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
+    //       }
+    //     } catch (error) {
+    //       return;
+    //     }
+    //   };
+    //   send(res);
+    // };
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
     if (canvas && canvasFigure) {
@@ -75,10 +110,14 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    if (isGameEnded) {
-      sendResult();
-    }
-  }, [isGameEnded, score, userAvatar, userName, userProfile.id]);
+    // if (isGameEnded) {
+    //   sendResult();
+    //   console.log(isGameEnded, IsGameStarted);
+    // }
+    return () => {
+      console.log('USEFFECT UNMOUNT');
+    };
+  }, [IsGameStarted]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -107,12 +146,13 @@ export const Game: React.FC = () => {
     navigate('/profile');
   }, [navigate]);
 
-  const handleErrorMsg = useCallback(() => {
-    setShowError(false);
-  }, []);
+  // const handleErrorMsg = useCallback(() => {
+  //   setShowError(false);
+  // }, []);
 
   return (
     <div className="game">
+      {theme === 'shark' && <div className="background background_theme_shark"></div>}
       <div className="game-menu">
         <h2 className="game-menu__header">Меню</h2>
         <ul className="game-menu__submenu">
@@ -161,6 +201,9 @@ export const Game: React.FC = () => {
                 getDataUp={getData}
                 sendEnd={getEnd}
                 gameNo={gameNo}
+                isAuthorized={isAuthorized}
+                userProfile={userProfile}
+                theme={theme}
               />
             </>
           )}
@@ -180,7 +223,7 @@ export const Game: React.FC = () => {
             </button>
           </div>
         )}
-        {showError && (
+        {/* {showError && (
           <div className="game-screen__error">
             <h3 className="game-screen__h3">Ошибка с отправкой результатов</h3>
             <p>{errorMsg}</p>
@@ -188,7 +231,7 @@ export const Game: React.FC = () => {
               Понятно
             </button>
           </div>
-        )}
+        )} */}
       </div>
       <div className="game-info">
         <div className="game-info__next-figure">

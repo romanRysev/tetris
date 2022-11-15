@@ -44,6 +44,10 @@
       color: red;
     }
   }
+
+  &_theme_shark {
+    background-color: rgba(255, 255, 255, .1);
+  }
 }
 
 .game-info {
@@ -83,6 +87,10 @@
 
   &__canvas-figure {
     padding-top: 15%;
+  }
+
+  &_theme_shark {
+    background-color: rgba(255, 255, 255, .1);
   }
 }
 
@@ -167,3 +175,17 @@
   display: table-caption;
 }
 
+.background {
+  position: absolute;
+  z-index: -100;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  &_theme_shark {
+    background-image: url('./../../assets/img/shark/beach.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

@@ -1,17 +1,9 @@
 import React, { Component, ReactNode } from 'react';
-import {
-  colors,
-  gray,
-  Sequence,
-  sequence,
-  TetrominoMatrix,
-  tetrominos,
-  man,
-  shark,
-  sharkMusic,
-  sharkSounds,
-} from './constant';
-// import themeMusic from './../../assets/music/jaws.mp3';
+import { UserChars } from '../../redux/reducers/userSlice';
+import { AddLeader, addToLeaderBoard } from '../../utils/api';
+import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
+import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
+import { man, shark, themes } from './themes';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -19,18 +11,21 @@ type TetrisProps = {
   getDataUp: (score: number, level: number, lineCount: number) => void;
   sendEnd: () => void;
   gameNo: number;
+  isAuthorized: boolean;
+  userProfile: UserChars;
+  theme: string;
 };
 
 type Playfield = (Sequence | undefined)[][];
 
-type StringObject = Record<string, string>;
+// type StringObject = Record<string, string>;
 
-interface ThemeProps {
-  sounds?: StringObject;
-  music?: string;
-  images?: Record<string, StringObject> | StringObject | string;
-  backgroundImg?: string;
-}
+// interface ThemeProps {
+//   sounds?: StringObject;
+//   music?: string;
+//   images?: Record<string, StringObject> | StringObject | string;
+//   backgroundImg?: string;
+// }
 
 export class Tetris extends Component<TetrisProps> {
   private currentTetromino = this.getNextTetromino();
@@ -56,7 +51,7 @@ export class Tetris extends Component<TetrisProps> {
   private sendEnd;
   private cellSize = 50;
   private timestamp = 0;
-  private theme = 'classic';
+  private theme = 'light';
   private themeMusic: HTMLAudioElement = new Audio();
   private musicPreloaded = false;
   private themeSounds: {
@@ -67,17 +62,26 @@ export class Tetris extends Component<TetrisProps> {
     position?: HTMLAudioElement;
   } = {};
   private soundsPreloaded = false;
-  private themes: Record<string, ThemeProps> = {
-    shark: {
-      sounds: sharkSounds,
-      music: sharkMusic,
-      images: {
-        man: man,
-        shark: shark,
-      },
-      backgroundImg: '',
-    },
-  };
+  // private themes: Record<string, ThemeProps> = {
+  //   shark: {
+  //     sounds: sharkSounds,
+  //     music: sharkMusic,
+  //     images: {
+  //       man: man,
+  //       shark: shark,
+  //     },
+  //     backgroundImg: '',
+  //   },
+  //   light: {
+  //     sounds: lightSounds,
+  //     music: lightMusic,
+  //     backgroundImg: '',
+  //   },
+  // };
+  private themes = themes;
+  private userName: string;
+  private userAvatar: string;
+  private userID: number;
 
   // shark theme
   private manPic = 0;
@@ -95,7 +99,7 @@ export class Tetris extends Component<TetrisProps> {
 
   public constructor(props: TetrisProps) {
     super(props);
-    const { canvas, canvasFigure, getDataUp, sendEnd } = props;
+    const { canvas, canvasFigure, getDataUp, sendEnd, userProfile, theme } = props;
     this.canvas = canvas;
     this.canvasFigure = canvasFigure;
     this.width = 10;
@@ -105,6 +109,10 @@ export class Tetris extends Component<TetrisProps> {
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.ctxFigure = this.canvasFigure.getContext('2d') as CanvasRenderingContext2D;
     this.theme = 'shark';
+    this.userName = makeUserNameFromUser(userProfile);
+    this.userAvatar = makeUserAvatarFromUser(userProfile);
+    this.userID = userProfile.id;
+    this.theme = theme;
   }
 
   async preloadImages(images: Record<string, string>, target: Record<string, HTMLImageElement>) {
@@ -161,14 +169,17 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   componentDidMount(): void {
+    console.log('MOUNT');
     this.onKeypress();
-    if (!this.manPreloaded || !this.sharkPreloaded) {
-      this.preloadImages(man, this.manPics).then(() => {
-        this.manPreloaded = true;
-      });
-      this.preloadImages(shark, this.sharkPics).then(() => {
-        this.sharkPreloaded = true;
-      });
+    if (this.theme == 'shark') {
+      if (!this.manPreloaded || !this.sharkPreloaded) {
+        this.preloadImages(man, this.manPics).then(() => {
+          this.manPreloaded = true;
+        });
+        this.preloadImages(shark, this.sharkPics).then(() => {
+          this.sharkPreloaded = true;
+        });
+      }
     }
 
     if (!this.musicPreloaded) {
@@ -188,7 +199,11 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   componentWillUnmount(): void {
+    // как все отрубить при уходе со страницы???
+    console.log('UNMOUNT');
     this.removeKeypress();
+    this.themeMusic.pause();
+    this.themeMusic.currentTime = 0;
     this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
   }
 
@@ -423,8 +438,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private showGameOver() {
-    // this.themeSounds.end?.play();
-
+    this.themeSounds.end?.play();
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawWorld();
     for (let row = -2; row < 20; row++) {
@@ -435,10 +449,30 @@ export class Tetris extends Component<TetrisProps> {
         }
       }
     }
-    // this.themeMusic.pause();
-    // this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
-    this.sendEnd();
+    this.themeMusic.pause();
+    this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
+    this.sendResults();
     this.gameOver = true;
+    this.sendEnd();
+  }
+
+  private async sendResults() {
+    console.log('sending res');
+    const date = new Date();
+    const res: AddLeader = {
+      data: {
+        score: this.score,
+        user: {
+          avatar: this.userAvatar,
+          userName: this.userName,
+          id: this.userID,
+        },
+        date: date.toLocaleDateString('ru'),
+      },
+      ratingFieldName: 'score',
+      teamName: 'CodinskTest',
+    };
+    return await addToLeaderBoard(res);
   }
 
   private pause() {
