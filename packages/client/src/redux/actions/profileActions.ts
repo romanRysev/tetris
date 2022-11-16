@@ -11,8 +11,11 @@ import {
 export const setAvatar = createAsyncThunk('auth/user/avatar', async (data: FormData, thunkAPI) => {
   try {
     const res = await setAvatarRequest(data);
-    const user = await res.json();
-    return res.ok ? thunkAPI.fulfillWithValue({ ...user }) : thunkAPI.rejectWithValue('Не удалось загрузить аватар');
+    if ((res as Response)?.status === 401) {
+      return thunkAPI.rejectWithValue('unauthorized');
+    }
+    const user = await res?.json();
+    return res?.ok ? thunkAPI.fulfillWithValue({ ...user }) : thunkAPI.rejectWithValue('Не удалось загрузить аватар');
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось загрузить аватар');
   }
@@ -21,8 +24,11 @@ export const setAvatar = createAsyncThunk('auth/user/avatar', async (data: FormD
 export const setProfileInfo = createAsyncThunk('auth/user', async (data: IChangeInfo, thunkAPI) => {
   try {
     const res = await setProfileInfoRequest(data);
-    const user = await res.json();
-    return res.ok ? thunkAPI.fulfillWithValue({ ...user }) : thunkAPI.rejectWithValue('Не удалось обновить данные');
+    if ((res as Response)?.status === 401) {
+      return thunkAPI.rejectWithValue('unauthorized');
+    }
+    const user = await res?.json();
+    return res?.ok ? thunkAPI.fulfillWithValue({ ...user }) : thunkAPI.rejectWithValue('Не удалось обновить данные');
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось обновить данные');
   }
@@ -31,7 +37,10 @@ export const setProfileInfo = createAsyncThunk('auth/user', async (data: IChange
 export const setProfilePassword = createAsyncThunk('auth/user/password', async (data: IChangePassword, thunkAPI) => {
   try {
     const res = await setProfilePasswordRequest(data);
-    return res.ok ? thunkAPI.fulfillWithValue({}) : thunkAPI.rejectWithValue('Не удалось обновить пароль');
+    if ((res as Response)?.status === 401) {
+      return thunkAPI.rejectWithValue('unauthorized');
+    }
+    return res?.ok ? thunkAPI.fulfillWithValue({}) : thunkAPI.rejectWithValue('Не удалось обновить пароль');
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось обновить данные');
   }

@@ -22,6 +22,16 @@ export const Game: React.FC = () => {
   const [showError, setShowError] = useState(false);
   const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
+
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
     setLevel(level);
@@ -47,18 +57,25 @@ export const Game: React.FC = () => {
         ratingFieldName: 'score',
         teamName: 'CodinskTest',
       };
+
       const send = async (res: AddLeader) => {
         try {
           const result = await addToLeaderBoard(res);
-          const resp = await result.json();
-          if (resp.ok) {
+          const resp = result.ok ? '' : await result?.json();
+          if (result.ok) {
             setShowError(false);
+          } else if (result.status === 401) {
+            setShowError(true);
+            setErrorMsg(`Сервер говорит ${JSON.stringify(resp)}, переходим на страницу авторизации`);
+            setTimeout(() => {
+              navigate('/login');
+            }, 3000);
           } else {
             setShowError(true);
             setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
           }
         } catch (error) {
-          return;
+          alert((error as Error)?.message);
         }
       };
       send(res);
@@ -78,7 +95,7 @@ export const Game: React.FC = () => {
     if (isGameEnded) {
       sendResult();
     }
-  }, [isGameEnded, score, userAvatar, userName, userProfile.id]);
+  }, [isGameEnded, score, userAvatar, userName, userProfile.id, navigate]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -87,16 +104,6 @@ export const Game: React.FC = () => {
     setLineCount(0);
     setGameNo(gameNo + 1);
   }, [gameNo]);
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    const res = await dispatch(logout());
-    if (res.meta.requestStatus === 'fulfilled') {
-      navigate('/login');
-    }
-  };
 
   const handleNewGame = useCallback(() => {
     setGameEnded(false);
