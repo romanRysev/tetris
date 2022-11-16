@@ -89,6 +89,12 @@
     padding-top: 15%;
   }
 
+  &__sound-controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+
   &_theme_shark {
     background-color: rgba(255, 255, 255, .1);
   }
@@ -188,4 +194,57 @@
     background-repeat: no-repeat;
     background-size: cover;
   }
+}
+
+.select-theme {
+  padding-bottom: 20px;
+
+  &__select {
+    background: none;
+    border: none;
+
+  }
+}
+
+.sound-controls {
+  width: 20px;
+  height: 20px;
+  background-color: #333;
+  -webkit-mask-position-x: center;
+  -webkit-mask-position-y: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  cursor: pointer;
+  
+  &__sound {
+    -webkit-mask-image: url('./../../assets/volume-high-solid.svg');
+    mask-image: url('./../../assets/volume-high-solid.svg');
+  }
+
+  &__equalizer {
+    -webkit-mask-image: url('./../../assets/sliders-solid.svg');
+    mask-image: url('./../../assets/sliders-solid.svg');
+  }
+
+  &__music {
+    -webkit-mask-image: url('./../../assets/music-solid.svg');
+    mask-image: url('./../../assets/music-solid.svg');
+  }
+}
+
+.game-info__sound-controls_theme_shark,
+.game-info__p_theme_shark,
+.game-info__user-name_theme_shark{
+  width: 100%;
+  background-color: rgba(255, 255, 255, .4);
+}
+
+.game-menu_theme_shark,
+.game-info__next-figure_theme_shark {
+  background-color: rgba(255, 255, 255, .2);
+}
+
+.game-menu__link_accent {
+  color: #cb0000;
 }

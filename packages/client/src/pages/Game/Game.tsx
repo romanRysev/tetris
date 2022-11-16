@@ -5,6 +5,11 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
+import { setGameTheme } from '../../redux/actions/themeActions';
+import { ThemesNames } from '../../redux/reducers/themeSlice';
+import { store } from '../../redux/store';
+import classNames from 'classnames';
+import { themesOptions } from './themes';
 // import { AddLeader, addToLeaderBoard } from '../../utils/api';
 
 export const Game: React.FC = () => {
@@ -22,7 +27,11 @@ export const Game: React.FC = () => {
   const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
   // const [showError, setShowError] = useState(false);
   // const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
-  const [theme] = useState('shark');
+  const theme = useAppSelector((state) => state.theme.active);
+  const [isLevelsActive, setLevelsActive] = useState(false);
+
+  // под тему
+  const addThemeToClassName = `_theme_${theme}`;
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -110,6 +119,9 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
+    console.log(store.getState());
+    console.log(theme);
+    console.log(addThemeToClassName);
     // if (isGameEnded) {
     //   sendResult();
     //   console.log(isGameEnded, IsGameStarted);
@@ -117,12 +129,12 @@ export const Game: React.FC = () => {
     return () => {
       console.log('USEFFECT UNMOUNT');
     };
-  }, [IsGameStarted]);
+  }, [IsGameStarted, theme, addThemeToClassName]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
     setScore(0);
-    setLevel(1);
+    setLevel(0);
     setLineCount(0);
     setGameNo(gameNo + 1);
   }, [gameNo]);
@@ -149,12 +161,63 @@ export const Game: React.FC = () => {
   // const handleErrorMsg = useCallback(() => {
   //   setShowError(false);
   // }, []);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  // const themesOptions: Record<string, ThemesNames> = {
+  //   Классическая: 'classic',
+  //   Челюсти: 'shark',
+  // };
+  const handleThemeSelect = async () => {
+    const val = selectRef.current?.value;
+    console.log(val);
+    const req: ThemesNames = val ? themesOptions[val] : 'classic';
+    console.log(req);
+    return await dispatch(setGameTheme(req));
+  };
+
+  // контролы звука
+  const musicRef = useRef<HTMLDivElement>(null);
+  const levelsRef = useRef<HTMLDivElement>(null);
+  const soundRef = useRef<HTMLDivElement>(null);
+  const eqMusicRef = useRef<HTMLInputElement>(null);
+  const eqSoundsRef = useRef<HTMLInputElement>(null);
+
+  const [isMusicOn, setMusicOn] = useState(true);
+  const [isSoundOn, setSoundOn] = useState(true);
+  // const [musicLevel, setMusicLevel] = useState();
+  // const [soundLevel, setSoundLevel] = useState();
+
+  const toggleMusic = useCallback(() => {
+    setMusicOn(!isMusicOn);
+    console.log(isMusicOn);
+  }, [isMusicOn]);
+
+  const toggleSound = useCallback(() => {
+    setSoundOn(!isSoundOn);
+  }, [isSoundOn]);
+
+  const handleShowLevels = useCallback(() => {
+    setLevelsActive(true);
+  }, []);
+
+  const handleHideLevels = useCallback(() => {
+    setLevelsActive(false);
+  }, []);
 
   return (
     <div className="game">
       {theme === 'shark' && <div className="background background_theme_shark"></div>}
-      <div className="game-menu">
+      <div className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
         <h2 className="game-menu__header">Меню</h2>
+        <div className="select-theme">
+          <span>
+            Тема:{' '}
+            <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
+              {Object.keys(themesOptions).map((theme, index) => (
+                <option key={theme + index}>{theme}</option>
+              ))}
+            </select>
+          </span>
+        </div>
         <ul className="game-menu__submenu">
           <li className="game-menu__link" onClick={startGame}>
             Новая игра
@@ -186,7 +249,14 @@ export const Game: React.FC = () => {
           </li>
         </ul>
         <ul className="game-menu__submenu">
-          <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
+          <li
+            className={
+              theme === 'shark'
+                ? 'game-menu__link game-menu__link_theme_shark game-menu__link_accent'
+                : 'game-menu__link game-menu__link_color-red'
+            }
+            onClick={handleLogout}
+          >
             Выйти
           </li>
         </ul>
@@ -204,6 +274,8 @@ export const Game: React.FC = () => {
                 isAuthorized={isAuthorized}
                 userProfile={userProfile}
                 theme={theme}
+                musicOn={isMusicOn}
+                soundOn={isSoundOn}
               />
             </>
           )}
@@ -234,20 +306,41 @@ export const Game: React.FC = () => {
         )} */}
       </div>
       <div className="game-info">
-        <div className="game-info__next-figure">
+        <div className={classNames('game-info__next-figure', `game-info__next-figure${addThemeToClassName}`)}>
           <canvas className="game-info__canvas-figure" ref={canvasRefFigure} id="canvas-figure"></canvas>
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
           <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
-          <Link className="game-info__user-name" to="/profile">
+          <Link
+            className={classNames('game-info__user-name', `game-info__user-name${addThemeToClassName}`)}
+            to="/profile"
+          >
             {userName}
           </Link>
         </div>
         <div className="game-info__score">
-          <p>Счет: {score}</p>
-          <p>Уровень: {level}</p>
-          <p>Линии: {lineCount}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Счет: {score}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Уровень: {level}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Линии: {lineCount}</p>
+        </div>
+        <div
+          className={
+            theme === 'shark'
+              ? 'game-info__sound-controls game-info__sound-controls_theme_shark'
+              : 'game-info__sound-controls'
+          }
+        >
+          <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
+          <div className="sound-controls sound-controls__equalizer" ref={levelsRef} onClick={handleShowLevels}></div>
+          {isLevelsActive && (
+            <div className="levels">
+              <input type="range" ref={eqSoundsRef}></input>
+              <input type="range" ref={eqMusicRef}></input>
+              <div onClick={handleHideLevels}>X</div>
+            </div>
+          )}
+          <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
         </div>
       </div>
     </div>

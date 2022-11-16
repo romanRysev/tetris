@@ -14,6 +14,8 @@ type TetrisProps = {
   isAuthorized: boolean;
   userProfile: UserChars;
   theme: string;
+  musicOn: boolean;
+  soundOn: boolean;
 };
 
 type Playfield = (Sequence | undefined)[][];
@@ -51,7 +53,7 @@ export class Tetris extends Component<TetrisProps> {
   private sendEnd;
   private cellSize = 50;
   private timestamp = 0;
-  private theme = 'light';
+  private theme = 'classic';
   private themeMusic: HTMLAudioElement = new Audio();
   private musicPreloaded = false;
   private themeSounds: {
@@ -61,6 +63,11 @@ export class Tetris extends Component<TetrisProps> {
     line?: HTMLAudioElement;
     position?: HTMLAudioElement;
   } = {};
+  private musicVolume = 0.5;
+  private soundVolume = 0.5;
+  // private musicContentCreated = false;
+  // private musicTrack;
+
   private soundsPreloaded = false;
   // private themes: Record<string, ThemeProps> = {
   //   shark: {
@@ -72,9 +79,9 @@ export class Tetris extends Component<TetrisProps> {
   //     },
   //     backgroundImg: '',
   //   },
-  //   light: {
-  //     sounds: lightSounds,
-  //     music: lightMusic,
+  //   classic: {
+  //     sounds: classicSounds,
+  //     music: classicMusic,
   //     backgroundImg: '',
   //   },
   // };
@@ -153,6 +160,7 @@ export class Tetris extends Component<TetrisProps> {
     if (!sounds) {
       return;
     }
+    // переделать на промис.allSettled
     return await new Promise((resolve, reject) => {
       const soundsArray = Object.values(sounds);
       const soundsEvents = Object.keys(sounds);
@@ -160,8 +168,8 @@ export class Tetris extends Component<TetrisProps> {
         const sound = new Audio();
         sound.src = item;
         Object.assign(this.themeSounds, { [soundsEvents[index]]: sound });
-        this.themeMusic.onload = () => resolve(this.themeMusic);
-        this.themeMusic.onerror = (event) => reject(event);
+        sound.onload = () => resolve(this.themeMusic);
+        sound.onerror = (event) => reject(event);
       });
     }).catch((error) => {
       console.log(error.message);
@@ -171,6 +179,7 @@ export class Tetris extends Component<TetrisProps> {
   componentDidMount(): void {
     console.log('MOUNT');
     this.onKeypress();
+
     if (this.theme == 'shark') {
       if (!this.manPreloaded || !this.sharkPreloaded) {
         this.preloadImages(man, this.manPics).then(() => {
@@ -208,11 +217,27 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   componentDidUpdate(prevProps: Readonly<TetrisProps>): void {
+    console.log('update', this.props.musicOn);
     if (prevProps.gameNo != this.props.gameNo) {
       this.gameOver = false;
       this.nextTetromino = this.getNextTetromino();
       this.currentTetromino = this.nextTetromino;
       this.init();
+    }
+    if (!this.props.musicOn) {
+      this.themeMusic.volume = 0;
+    } else {
+      this.themeMusic.volume = this.musicVolume;
+    }
+
+    if (!this.props.soundOn) {
+      Object.values(this.themeSounds).map((sound) => {
+        sound.volume = 0;
+      });
+    } else {
+      Object.values(this.themeSounds).map((sound) => {
+        sound.volume = this.soundVolume;
+      });
     }
   }
 
@@ -232,12 +257,16 @@ export class Tetris extends Component<TetrisProps> {
       this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
     }
     this.ctx.stroke();
+    if (this.theme === 'shark') {
+      this.ctx.fillStyle = 'rgba(255, 255, 255, .2)';
+      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
   }
 
-  // для акул
+  // BEGIN для акул
 
   private drawWater(end: number) {
-    this.ctx.fillStyle = 'rgba(0, 188, 255, 0.1)';
+    this.ctx.fillStyle = 'rgba(0, 188, 255, 0.2)';
     this.ctx.fillRect(0, this.canvas.height - end + 15, this.canvas.width, this.canvas.height);
   }
 
@@ -322,12 +351,27 @@ export class Tetris extends Component<TetrisProps> {
     };
     step();
     this.makeManPic();
+    // if (this.musicContentCreated) return;
+    //   const musicAudioContext = new AudioContext();
+    //   this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
+    //   const gainNode = musicAudioContext.createGain();
+    //   this.musicTrack.connect(gainNode).connect(musicAudioContext.destination);
+    //   this.musicContentCreated = true;
+    //   if (musicAudioContext.state === "suspended") {
+    //     musicAudioContext.resume();
+    //   }
+
+    // и чего теперь с ним делать? может, и так как есть сойдет?
     // const audioContext = new AudioContext();
     // const track = audioContext.createMediaElementSource(this.themeMusic);
     this.themeMusic.currentTime = 0;
     this.themeMusic.play();
     this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
     this.themeSounds.start?.play();
+  }
+
+  public hallo() {
+    console.log('hya');
   }
 
   private generateSequence() {
@@ -391,6 +435,7 @@ export class Tetris extends Component<TetrisProps> {
 
   // установка фигуры
   private placeTetromino() {
+    this.themeSounds.position?.play();
     let linesAtOnce = 0;
     for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
       for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
@@ -405,9 +450,9 @@ export class Tetris extends Component<TetrisProps> {
     for (let row = this.playfield.length - 1; row >= 0; ) {
       // убираем линию
       if (this.playfield[row].every((cell) => !!cell)) {
+        this.themeSounds.line?.play();
         linesAtOnce++;
         this.lineCount++;
-        this.themeSounds.line?.play();
         if (this.lineCount >= 10 && this.lineCount % 10 == 0) {
           this.level++;
           this.speed -= 50;
@@ -422,10 +467,10 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
     // подсчитываем очки и отсылаем данные наверх
+
     const ratio = { 0: 0, 1: 40, 2: 100, 3: 300 }[linesAtOnce] ?? 1200;
     this.score += ratio * (this.level + 1);
     this.shareData(this.score, this.level, this.lineCount);
-    this.themeSounds.position?.play();
 
     // если на самом верхнем ряду есть фигура - заканчиваем игру
     for (let i = 0; i < this.playfield[0].length; i++) {
@@ -617,9 +662,9 @@ export class Tetris extends Component<TetrisProps> {
         }
 
         if (!this.isValidMove({})) {
+          this.themeSounds.fall?.play();
           this.currentTetromino.row--;
           this.placeTetromino();
-          this.themeSounds.fall?.play();
           this.shareData(this.score - 2, this.level, this.lineCount);
         }
         break;

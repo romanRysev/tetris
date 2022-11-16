@@ -55,9 +55,9 @@ export const sharkSounds = {
   line: swirl,
 };
 
-export const lightMusic = sandman;
+export const classicMusic = sandman;
 
-export const lightSounds = {
+export const classicSounds = {
   start: start,
   end: end,
   fall: position,
@@ -75,9 +75,16 @@ export const themes: Record<string, ThemeProps> = {
     },
     backgroundImg: '',
   },
-  light: {
-    sounds: lightSounds,
-    music: lightMusic,
+  classic: {
+    sounds: classicSounds,
+    music: classicMusic,
     backgroundImg: '',
   },
+};
+
+export type ThemesNames = 'classic' | 'shark';
+
+export const themesOptions: Record<string, ThemesNames> = {
+  Классическая: 'classic',
+  Челюсти: 'shark',
 };
