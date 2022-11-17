@@ -8,8 +8,7 @@ import { logout } from '../../redux/actions/singActions';
 import { setGameTheme } from '../../redux/actions/themeActions';
 import { ThemesNames } from '../../redux/reducers/themeSlice';
 import classNames from 'classnames';
-import { themesOptions } from './themes';
-// import { AddLeader, addToLeaderBoard } from '../../utils/api';
+import { themes, themesOptions } from './themes';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -24,8 +23,6 @@ export const Game: React.FC = () => {
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
   const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
-  // const [showError, setShowError] = useState(false);
-  // const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
   const theme = useAppSelector((state) => state.theme.active);
   const [isLevelsActive, setLevelsActive] = useState(false);
 
@@ -40,38 +37,6 @@ export const Game: React.FC = () => {
   const getEnd = useCallback(() => {
     setGameEnded(true);
   }, []);
-
-  // const sendResult = useCallback(() => {
-  //   const date = new Date();
-  //   const res: AddLeader = {
-  //     data: {
-  //       score: score,
-  //       user: {
-  //         avatar: userAvatar,
-  //         userName: userName,
-  //         id: userProfile.id,
-  //       },
-  //       date: date.toLocaleDateString('ru'),
-  //     },
-  //     ratingFieldName: 'score',
-  //     teamName: 'CodinskTest',
-  //   };
-  //   const send = async (res: AddLeader) => {
-  //     try {
-  //       const result = await addToLeaderBoard(res);
-  //       const resp = await result.json();
-  //       if (resp.ok) {
-  //         setShowError(false);
-  //       } else {
-  //         setShowError(true);
-  //         setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
-  //       }
-  //     } catch (error) {
-  //       return;
-  //     }
-  //   };
-  //   send(res);
-  // }, [score, userAvatar, userName, userProfile.id]);
 
   const startGame = useCallback(() => {
     setIsGameStarted(true);
@@ -100,19 +65,10 @@ export const Game: React.FC = () => {
     navigate('/profile');
   }, [navigate]);
 
-  // const handleErrorMsg = useCallback(() => {
-  //   setShowError(false);
-  // }, []);
   const selectRef = useRef<HTMLSelectElement>(null);
-  // const themesOptions: Record<string, ThemesNames> = {
-  //   Классическая: 'classic',
-  //   Челюсти: 'shark',
-  // };
   const handleThemeSelect = async () => {
     const val = selectRef.current?.value;
-    console.log(val);
     const req: ThemesNames = val ? themesOptions[val] : 'classic';
-    console.log(req);
     selectRef.current?.blur();
     canvasRef.current?.focus();
     return await dispatch(setGameTheme(req));
@@ -132,7 +88,6 @@ export const Game: React.FC = () => {
 
   const toggleMusic = useCallback(() => {
     setMusicOn(!isMusicOn);
-    console.log(isMusicOn);
   }, [isMusicOn]);
 
   const toggleSound = useCallback(() => {
@@ -158,38 +113,6 @@ export const Game: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    console.log('USEFFECT MOUNT');
-    // const sendResult = () => {
-    //   const date = new Date();
-    //   const res: AddLeader = {
-    //     data: {
-    //       score: score,
-    //       user: {
-    //         avatar: userAvatar,
-    //         userName: userName,
-    //         id: userProfile.id,
-    //       },
-    //       date: date.toLocaleDateString('ru'),
-    //     },
-    //     ratingFieldName: 'score',
-    //     teamName: 'CodinskTest',
-    //   };
-    //   const send = async (res: AddLeader) => {
-    //     try {
-    //       const result = await addToLeaderBoard(res);
-    //       const resp = await result.json();
-    //       if (resp.ok) {
-    //         setShowError(false);
-    //       } else {
-    //         setShowError(true);
-    //         setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
-    //       }
-    //     } catch (error) {
-    //       return;
-    //     }
-    //   };
-    //   send(res);
-    // };
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
     if (canvas && canvasFigure) {
@@ -202,24 +125,16 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    console.log(eqSoundsRef.current);
     eqMusicRef.current?.setAttribute('orient', 'vertical');
     eqSoundsRef.current?.setAttribute('orient', 'vertical');
-    // console.log(store.getState());
-    // console.log(theme);
-    // console.log(addThemeToClassName);
-    // if (isGameEnded) {
-    //   sendResult();
-    //   console.log(isGameEnded, IsGameStarted);
-    // }
-    // return () => {
-    //   console.log('USEFFECT UNMOUNT');
-    // };
   }, [IsGameStarted, theme, addThemeToClassName]);
 
   return (
     <div className="game">
-      {theme === 'shark' && <div className="background background_theme_shark"></div>}
+      <div
+        className={classNames('background', `background${addThemeToClassName}`)}
+        style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
+      ></div>
       <div className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
         <h2 className="game-menu__header">Меню</h2>
         <div className="select-theme">
@@ -311,15 +226,6 @@ export const Game: React.FC = () => {
             </button>
           </div>
         )}
-        {/* {showError && (
-          <div className="game-screen__error">
-            <h3 className="game-screen__h3">Ошибка с отправкой результатов</h3>
-            <p>{errorMsg}</p>
-            <button className="game-screen__error-button" onClick={handleErrorMsg}>
-              Понятно
-            </button>
-          </div>
-        )} */}
       </div>
       <div className="game-info">
         <div className={classNames('game-info__next-figure', `game-info__next-figure${addThemeToClassName}`)}>
@@ -362,7 +268,7 @@ export const Game: React.FC = () => {
                   className="sound-controls__input"
                   onChange={handleSoundVolume}
                 ></input>
-                <div className="sound-controls sound-controls__sound"></div>
+                <div className="levels__sound-controls levels__sound-controls_sound"></div>
               </div>
               <div className="levels__music">
                 <input
@@ -375,7 +281,7 @@ export const Game: React.FC = () => {
                   className="sound-controls__input"
                   onChange={handleMusicVolume}
                 ></input>
-                <div className="sound-controls sound-controls__music"></div>
+                <div className="levels__sound-controls levels__sound-controls_music"></div>
               </div>
               <div className="levels__hide" onClick={handleHideLevels}>
                 X

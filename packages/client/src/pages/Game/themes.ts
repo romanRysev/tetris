@@ -1,3 +1,21 @@
+/* Если кто-то будет добавлять тему
+ *
+ * Фоновая картинка, музыка (в количестве одного трека) и звуки (в количестве пяти вариаций
+ *  - ускоренное падение,
+ *  - падение,
+ *  - убирание ряда,
+ *  - начало игры,
+ *  - конец игры) добавляются полуавтоматически.
+ * Если нужны какие-то другие варианты звуков на события, либо анимация,
+ * то добавлять самостоятельно.
+ *
+ * Чтобы добавить тему фон + музыка + звуки, нужно
+ *  - поставить импорты звуков,
+ *  - дополнить константы themes, ThemesNames, themesOptions, musicTrackTime
+ * Вроде должно работать
+ *
+ */
+
 import manBasic from './../../assets/img/man/man-basic.png';
 import manHeadLeft from './../../assets/img/man/man-basic-head-left.png';
 import manLeftLegUP from './../../assets/img/man/man-left-leg-up.png';
@@ -30,10 +48,18 @@ import sandman from './../../assets/music/Mr. Sandman.mp3';
 export type StringObject = Record<string, string>;
 
 export interface ThemeProps {
-  sounds?: StringObject;
+  sounds?: ThemeSounds;
   music?: string;
   images?: Record<string, StringObject> | StringObject | string;
   backgroundImg?: string;
+}
+
+export interface ThemeSounds {
+  start?: string; // начало игры
+  end?: string; // конец игры
+  fall?: string; // быстрая установка (пробел)
+  position?: string; // обычная установка
+  line?: string; // собран ряд
 }
 
 export const man: Record<string, string> = {
@@ -77,13 +103,15 @@ export const classicSounds = {
 
 export const themes: Record<string, ThemeProps> = {
   shark: {
-    sounds: sharkSounds,
-    music: sharkMusic,
+    // обозначение темы
+    sounds: sharkSounds, // звуки в формате ThemeSounds
+    music: sharkMusic, // музыкальная запись 1 штука
     images: {
+      // картинки для анимации
       man: man,
       shark: shark,
     },
-    backgroundImg: '',
+    backgroundImg: './../src/assets/img/shark/beach.jpg', // картинка на фон
   },
   classic: {
     sounds: classicSounds,
@@ -95,6 +123,7 @@ export const themes: Record<string, ThemeProps> = {
 export type ThemesNames = 'classic' | 'shark';
 
 export const themesOptions: Record<string, ThemesNames> = {
+  // Обозначение в селекте тем : обозначение темы
   Классическая: 'classic',
   Челюсти: 'shark',
 };
@@ -103,3 +132,8 @@ export const musicTrackTime: Record<string, number> = {
   classic: 0,
   shark: 0,
 };
+
+export interface ThemeFlags {
+  classic?: boolean;
+  shark?: boolean;
+}

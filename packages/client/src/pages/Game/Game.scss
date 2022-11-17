@@ -190,7 +190,6 @@
   height: 100vh;
 
   &_theme_shark {
-    background-image: url('./../../assets/img/shark/beach.jpg');
     background-repeat: no-repeat;
     background-size: cover;
   }
@@ -209,7 +208,7 @@
 .sound-controls {
   width: 20px;
   height: 20px;
-  background-color: #333;
+  background-color: var(--color-backgrnd-gray-dark-theme);
   -webkit-mask-position-x: center;
   -webkit-mask-position-y: center;
   -webkit-mask-repeat: no-repeat;
@@ -228,6 +227,29 @@
   }
 
   &__music {
+    -webkit-mask-image: url('./../../assets/music-solid.svg');
+    mask-image: url('./../../assets/music-solid.svg');
+  }
+}
+
+.levels__sound-controls {
+  margin-left: 15px;
+  width: 15px;
+  height: 15px;
+  background-color: var(--color-dark-theme-mid-gray);
+  -webkit-mask-position-x: center;
+  -webkit-mask-position-y: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  cursor: pointer;
+  
+  &_sound {
+    -webkit-mask-image: url('./../../assets/volume-high-solid.svg');
+    mask-image: url('./../../assets/volume-high-solid.svg');
+  }
+
+  &_music {
     -webkit-mask-image: url('./../../assets/music-solid.svg');
     mask-image: url('./../../assets/music-solid.svg');
   }

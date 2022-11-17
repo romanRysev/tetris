@@ -3,7 +3,7 @@ import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
-import { man, shark, themes, musicTrackTime } from './themes';
+import { man, shark, themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames } from './themes';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -13,7 +13,7 @@ type TetrisProps = {
   gameNo: number;
   isAuthorized: boolean;
   userProfile: UserChars;
-  theme: string;
+  theme: ThemesNames;
   musicOn: boolean;
   soundOn: boolean;
   musicVolume?: string;
@@ -21,15 +21,6 @@ type TetrisProps = {
 };
 
 type Playfield = (Sequence | undefined)[][];
-
-// type StringObject = Record<string, string>;
-
-// interface ThemeProps {
-//   sounds?: StringObject;
-//   music?: string;
-//   images?: Record<string, StringObject> | StringObject | string;
-//   backgroundImg?: string;
-// }
 
 export class Tetris extends Component<TetrisProps> {
   private currentTetromino = this.getNextTetromino();
@@ -56,9 +47,12 @@ export class Tetris extends Component<TetrisProps> {
   private sendEnd;
   private cellSize = 50;
   private timestamp = 0;
-  private theme = 'classic';
+  private theme: ThemesNames = 'classic';
   private themeMusic: HTMLAudioElement = new Audio();
-  private musicPreloaded = false;
+  private musicPreloaded: ThemeFlags = {
+    classic: false,
+    shark: false,
+  };
   private themeSounds: {
     start?: HTMLAudioElement;
     end?: HTMLAudioElement;
@@ -73,7 +67,10 @@ export class Tetris extends Component<TetrisProps> {
   private musicGainNode: GainNode;
   private musicTrackTime: Record<string, number> = musicTrackTime;
 
-  private soundsPreloaded = false;
+  private soundsPreloaded: ThemeFlags = {
+    classic: false,
+    shark: false,
+  };
   private themes = themes;
   private userName: string;
   private userAvatar: string;
@@ -105,7 +102,6 @@ export class Tetris extends Component<TetrisProps> {
     this.sendEnd = sendEnd;
     this.ctx = this.canvas.getContext('2d') as CanvasRenderingContext2D;
     this.ctxFigure = this.canvasFigure.getContext('2d') as CanvasRenderingContext2D;
-    this.theme = 'shark';
     this.userName = makeUserNameFromUser(userProfile);
     this.userAvatar = makeUserAvatarFromUser(userProfile);
     this.userID = userProfile.id;
@@ -114,12 +110,10 @@ export class Tetris extends Component<TetrisProps> {
     /* вынесла в отдельный метод, но в конструкторе оставила так, 
     иначе ругается, что переменные не инициализируются */
     this.preloadMusic(this.themes[this.theme].music).then(() => {
-      console.log('музыка загрузилося');
-      this.musicPreloaded = true;
+      this.musicPreloaded[this.theme] = true;
     });
     this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-      console.log('звуки загрузилися');
-      this.soundsPreloaded = true;
+      this.soundsPreloaded[this.theme] = true;
     });
 
     const AudioContext = window.AudioContext;
@@ -159,7 +153,6 @@ export class Tetris extends Component<TetrisProps> {
     return await new Promise((resolve, reject) => {
       // const song = new Audio();
       this.themeMusic.src = src;
-      console.log(this.themeMusic);
       this.themeMusic.onload = () => resolve(this.themeMusic);
       this.themeMusic.onerror = (event) => reject(event);
     }).catch((error) => {
@@ -167,7 +160,7 @@ export class Tetris extends Component<TetrisProps> {
     });
   }
 
-  async preloadSounds(sounds?: Record<string, string>) {
+  async preloadSounds(sounds?: ThemeSounds) {
     if (!sounds) {
       return;
     }
@@ -188,14 +181,16 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   makeSoundNodes() {
-    this.preloadMusic(this.themes[this.theme].music).then(() => {
-      console.log('музыка загрузилося');
-      this.musicPreloaded = true;
-    });
-    this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-      console.log('звуки загрузилися');
-      this.soundsPreloaded = true;
-    });
+    if (!this.musicPreloaded[this.theme]) {
+      this.preloadMusic(this.themes[this.theme].music).then(() => {
+        this.musicPreloaded[this.theme] = true;
+      });
+    }
+    if (!this.soundsPreloaded[this.theme]) {
+      this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+        this.soundsPreloaded[this.theme] = true;
+      });
+    }
 
     const AudioContext = window.AudioContext;
     const musicAudioContext = new AudioContext();
@@ -209,36 +204,16 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   startThemeAudio() {
-    // this.preloadMusic(this.themes[this.theme].music).then(() => {
-    //   console.log('музыка загрузилося');
-    //   this.musicPreloaded = true;
-    // });
-    // this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-    //   console.log('звуки загрузилися');
-    //   this.soundsPreloaded = true;
-    // });
     this.themeMusic.currentTime = this.musicTrackTime[this.theme];
+    this.themeMusic.play().catch((e) => {
+      console.log(e);
+    });
     this.musicGainNode.gain.value = Number(this.musicVolume);
-    // this.themeMusic.play().catch((e) => console.log(e));
     this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
     if (!this.gameStarted) this.themeSounds.start?.play();
-
-    // ну предположим
-    // if (this.musicContentCreated) return;
-    // const AudioContext = window.AudioContext;
-    // const musicAudioContext = new AudioContext();
-    // this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
-    // this.musicGainNode = musicAudioContext.createGain();
-    // this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
-    // this.musicContentCreated = true;
-    // if (musicAudioContext.state === 'suspended') {
-    //   musicAudioContext.resume();
-    // }
-    this.themeMusic.play().catch((e) => console.log(e));
   }
 
   componentDidMount(): void {
-    console.log('MOUNT');
     this.onKeypress();
 
     if (this.theme == 'shark') {
@@ -254,25 +229,11 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
 
-    // if (!this.musicPreloaded) {
-    //   this.preloadMusic(this.themes[this.theme].music).then(() => {
-    //     console.log('музыка загрузилося');
-    //     this.musicPreloaded = true;
-    //   });
-    // }
-
-    // if (!this.soundsPreloaded) {
-    //   this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-    //     console.log('звуки загрузилися');
-    //     this.soundsPreloaded = true;
-    //   });
-    // }
     this.init();
   }
 
   componentWillUnmount(): void {
     // как все отрубить при уходе со страницы???
-    console.log('UNMOUNT');
     this.removeKeypress();
     this.themeMusic.pause();
     this.themeMusic.currentTime = 0;
@@ -280,7 +241,6 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   componentDidUpdate(prevProps: Readonly<TetrisProps>): void {
-    console.log('update', this.props.musicOn);
     if (prevProps.gameNo != this.props.gameNo) {
       this.gameOver = false;
       this.nextTetromino = this.getNextTetromino();
@@ -314,17 +274,6 @@ export class Tetris extends Component<TetrisProps> {
       this.makeSoundNodes();
       this.startThemeAudio();
     }
-
-    // if (prevProps.theme != this.props.theme) {
-    //   this.preloadMusic(this.themes[this.theme].music).then(() => {
-    //     console.log('музыка загрузилося');
-    //     this.musicPreloaded = true;
-    //   });
-    //   this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-    //     console.log('звуки загрузилися');
-    //     this.soundsPreloaded = true;
-    //   });
-    // }
 
     if (this.props.theme == 'shark') {
       // загрузка картинок для анимации
@@ -394,7 +343,6 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private drawManEnd() {
-    // if (this.sharkCoords.x < 0 || this.sharkCoords.y < 0) return;
     let img: HTMLImageElement = this.manPics.end2;
     const randomNo = this.manPic;
     if (randomNo < 0.5) {
@@ -416,7 +364,6 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private drawSharkEnd() {
-    // if (this.sharkCoords.x < 0 || this.sharkCoords.y < 0) return;
     let img: HTMLImageElement = this.sharkPics.end1;
     const randomNo = Math.random();
     if (randomNo < 0.5) {
@@ -480,34 +427,10 @@ export class Tetris extends Component<TetrisProps> {
     };
     step();
     this.makeManPic();
-    // this.themeMusic.play().catch((e) => console.log(e));
-    // this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
-    // this.themeSounds.start?.play();
-
-    // // ну предположим
-    // if (this.musicContentCreated) return;
-    // const AudioContext = window.AudioContext || window.webkitAudioContext;
-    // const musicAudioContext = new AudioContext();
-    // this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
-    // this.musicGainNode = musicAudioContext.createGain();
-    // this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
-    // this.musicContentCreated = true;
-    // if (musicAudioContext.state === 'suspended') {
-    //   musicAudioContext.resume();
-    // }
-    // this.themeMusic.play().catch((e) => console.log(e));
-    if (!this.musicPreloaded && !this.soundsPreloaded) {
+    if (!this.musicPreloaded[this.theme] && !this.soundsPreloaded[this.theme]) {
       this.startThemeAudio();
       this.gameStarted = true;
     }
-
-    // и чего теперь с ним делать? может, и так как есть сойдет?
-    // const audioContext = new AudioContext();
-    // const track = audioContext.createMediaElementSource(this.themeMusic);
-    // this.themeMusic.currentTime = 0;
-    // this.themeMusic.play();
-    // this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
-    // this.themeSounds.start?.play();
   }
 
   private generateSequence() {
@@ -620,23 +543,8 @@ export class Tetris extends Component<TetrisProps> {
 
   private showGameOver() {
     this.themeSounds.end?.play();
-    // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    // this.drawWorld();
     this.waterLevel = this.canvas.height - 15;
     this.drawEnd();
-    // for (let row = -2; row < 20; row++) {
-    //   for (let col = 0; col < 10; col++) {
-    //     if (this.playfield[row][col]) {
-    //       this.ctx.fillStyle = gray;
-    //       this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
-    //     }
-    //   }
-    // }
-    // if (this.theme === 'shark') {
-    //   const img: HTMLImageElement = this.manPics.end1;
-    //   this.ctx.drawImage(img, this.manCoords, 0);
-    //   this.drawManEnd();
-    // }
 
     this.themeMusic.pause();
     this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
@@ -659,8 +567,6 @@ export class Tetris extends Component<TetrisProps> {
     }
     if (this.theme === 'shark') {
       this.waterLevel -= 20;
-      // const img: HTMLImageElement = this.manPics.end1;
-      // this.ctx.drawImage(img, this.manCoords, 0);
       this.drawManEnd();
       this.drawSharkEnd();
       this.drawWater(this.waterLevel);
@@ -680,7 +586,6 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private async sendResults() {
-    console.log('sending res');
     const date = new Date();
     const res: AddLeader = {
       data: {
@@ -870,3 +775,7 @@ export class Tetris extends Component<TetrisProps> {
     return <div></div>;
   }
 }
+
+// TODO: забыли сделать контролы на звук! и подвинуть по ср с селектом
+
+// Я НЕ ПОНИМАЮ, не работает ни-чер-та. Раньше работало прекрасно всё.
