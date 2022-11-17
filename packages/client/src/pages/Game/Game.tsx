@@ -7,7 +7,6 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
 import { setGameTheme } from '../../redux/actions/themeActions';
 import { ThemesNames } from '../../redux/reducers/themeSlice';
-import { store } from '../../redux/store';
 import classNames from 'classnames';
 import { themesOptions } from './themes';
 // import { AddLeader, addToLeaderBoard } from '../../utils/api';
@@ -74,6 +73,90 @@ export const Game: React.FC = () => {
   //   send(res);
   // }, [score, userAvatar, userName, userProfile.id]);
 
+  const startGame = useCallback(() => {
+    setIsGameStarted(true);
+    setScore(0);
+    setLevel(0);
+    setLineCount(0);
+    setGameNo(gameNo + 1);
+  }, [gameNo]);
+
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
+
+  const handleNewGame = useCallback(() => {
+    setGameEnded(false);
+    startGame();
+  }, [startGame]);
+
+  const toProfile = useCallback(() => {
+    navigate('/profile');
+  }, [navigate]);
+
+  // const handleErrorMsg = useCallback(() => {
+  //   setShowError(false);
+  // }, []);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  // const themesOptions: Record<string, ThemesNames> = {
+  //   Классическая: 'classic',
+  //   Челюсти: 'shark',
+  // };
+  const handleThemeSelect = async () => {
+    const val = selectRef.current?.value;
+    console.log(val);
+    const req: ThemesNames = val ? themesOptions[val] : 'classic';
+    console.log(req);
+    selectRef.current?.blur();
+    canvasRef.current?.focus();
+    return await dispatch(setGameTheme(req));
+  };
+
+  // контролы звука
+  const musicRef = useRef<HTMLDivElement>(null);
+  const levelsRef = useRef<HTMLDivElement>(null);
+  const soundRef = useRef<HTMLDivElement>(null);
+  const eqMusicRef = useRef<HTMLInputElement>(null);
+  const eqSoundsRef = useRef<HTMLInputElement>(null);
+
+  const [isMusicOn, setMusicOn] = useState(true);
+  const [isSoundOn, setSoundOn] = useState(true);
+  const [musicLevel, setMusicLevel] = useState('0.5');
+  const [soundLevel, setSoundLevel] = useState('0.5');
+
+  const toggleMusic = useCallback(() => {
+    setMusicOn(!isMusicOn);
+    console.log(isMusicOn);
+  }, [isMusicOn]);
+
+  const toggleSound = useCallback(() => {
+    setSoundOn(!isSoundOn);
+  }, [isSoundOn]);
+
+  const handleSoundVolume = useCallback(() => {
+    const vol = eqSoundsRef.current?.value || '0.5';
+    setSoundLevel(vol);
+  }, []);
+
+  const handleMusicVolume = useCallback(() => {
+    const vol = eqMusicRef.current?.value || '0.5';
+    setMusicLevel(vol);
+  }, []);
+
+  const handleShowLevels = useCallback(() => {
+    setLevelsActive(true);
+  }, []);
+
+  const handleHideLevels = useCallback(() => {
+    setLevelsActive(false);
+  }, []);
+
   useEffect(() => {
     console.log('USEFFECT MOUNT');
     // const sendResult = () => {
@@ -119,89 +202,20 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    console.log(store.getState());
-    console.log(theme);
-    console.log(addThemeToClassName);
+    console.log(eqSoundsRef.current);
+    eqMusicRef.current?.setAttribute('orient', 'vertical');
+    eqSoundsRef.current?.setAttribute('orient', 'vertical');
+    // console.log(store.getState());
+    // console.log(theme);
+    // console.log(addThemeToClassName);
     // if (isGameEnded) {
     //   sendResult();
     //   console.log(isGameEnded, IsGameStarted);
     // }
-    return () => {
-      console.log('USEFFECT UNMOUNT');
-    };
+    // return () => {
+    //   console.log('USEFFECT UNMOUNT');
+    // };
   }, [IsGameStarted, theme, addThemeToClassName]);
-
-  const startGame = useCallback(() => {
-    setIsGameStarted(true);
-    setScore(0);
-    setLevel(0);
-    setLineCount(0);
-    setGameNo(gameNo + 1);
-  }, [gameNo]);
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    const res = await dispatch(logout());
-    if (res.meta.requestStatus === 'fulfilled') {
-      navigate('/login');
-    }
-  };
-
-  const handleNewGame = useCallback(() => {
-    setGameEnded(false);
-    startGame();
-  }, [startGame]);
-
-  const toProfile = useCallback(() => {
-    navigate('/profile');
-  }, [navigate]);
-
-  // const handleErrorMsg = useCallback(() => {
-  //   setShowError(false);
-  // }, []);
-  const selectRef = useRef<HTMLSelectElement>(null);
-  // const themesOptions: Record<string, ThemesNames> = {
-  //   Классическая: 'classic',
-  //   Челюсти: 'shark',
-  // };
-  const handleThemeSelect = async () => {
-    const val = selectRef.current?.value;
-    console.log(val);
-    const req: ThemesNames = val ? themesOptions[val] : 'classic';
-    console.log(req);
-    return await dispatch(setGameTheme(req));
-  };
-
-  // контролы звука
-  const musicRef = useRef<HTMLDivElement>(null);
-  const levelsRef = useRef<HTMLDivElement>(null);
-  const soundRef = useRef<HTMLDivElement>(null);
-  const eqMusicRef = useRef<HTMLInputElement>(null);
-  const eqSoundsRef = useRef<HTMLInputElement>(null);
-
-  const [isMusicOn, setMusicOn] = useState(true);
-  const [isSoundOn, setSoundOn] = useState(true);
-  // const [musicLevel, setMusicLevel] = useState();
-  // const [soundLevel, setSoundLevel] = useState();
-
-  const toggleMusic = useCallback(() => {
-    setMusicOn(!isMusicOn);
-    console.log(isMusicOn);
-  }, [isMusicOn]);
-
-  const toggleSound = useCallback(() => {
-    setSoundOn(!isSoundOn);
-  }, [isSoundOn]);
-
-  const handleShowLevels = useCallback(() => {
-    setLevelsActive(true);
-  }, []);
-
-  const handleHideLevels = useCallback(() => {
-    setLevelsActive(false);
-  }, []);
 
   return (
     <div className="game">
@@ -276,6 +290,8 @@ export const Game: React.FC = () => {
                 theme={theme}
                 musicOn={isMusicOn}
                 soundOn={isSoundOn}
+                soundVolume={soundLevel}
+                musicVolume={musicLevel}
               />
             </>
           )}
@@ -335,11 +351,38 @@ export const Game: React.FC = () => {
           <div className="sound-controls sound-controls__equalizer" ref={levelsRef} onClick={handleShowLevels}></div>
           {isLevelsActive && (
             <div className="levels">
-              <input type="range" ref={eqSoundsRef}></input>
-              <input type="range" ref={eqMusicRef}></input>
-              <div onClick={handleHideLevels}>X</div>
+              <div className="levels__sound">
+                <input
+                  type="range"
+                  min="0"
+                  max="2"
+                  defaultValue="1"
+                  step="0.01"
+                  ref={eqSoundsRef}
+                  className="sound-controls__input"
+                  onChange={handleSoundVolume}
+                ></input>
+                <div className="sound-controls sound-controls__sound"></div>
+              </div>
+              <div className="levels__music">
+                <input
+                  type="range"
+                  min="0"
+                  max="2"
+                  defaultValue="1"
+                  step="0.01"
+                  ref={eqMusicRef}
+                  className="sound-controls__input"
+                  onChange={handleMusicVolume}
+                ></input>
+                <div className="sound-controls sound-controls__music"></div>
+              </div>
+              <div className="levels__hide" onClick={handleHideLevels}>
+                X
+              </div>
             </div>
           )}
+          {isLevelsActive && <div className="levels-background" onClick={handleHideLevels}></div>}
           <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
         </div>
       </div>

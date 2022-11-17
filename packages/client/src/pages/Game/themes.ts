@@ -2,11 +2,16 @@ import manBasic from './../../assets/img/man/man-basic.png';
 import manHeadLeft from './../../assets/img/man/man-basic-head-left.png';
 import manLeftLegUP from './../../assets/img/man/man-left-leg-up.png';
 import manRightLegUp from './../../assets/img/man/man-right-leg-up.png';
+import manEnd1 from './../../assets/img/man/man-going-left.png';
+import manEnd2 from './../../assets/img/man/man-fist-1.png';
+import manEnd3 from './../../assets/img/man/man-fist-2.png';
 
 import shark1 from './../../assets/img/shark/shark-1.png';
 import shark2 from './../../assets/img/shark/shark-2.png';
 import sharkM1 from './../../assets/img/shark/shark-mirror-1.png';
 import sharkM2 from './../../assets/img/shark/shark-mirror-2.png';
+import sharkEnd1 from './../../assets/img/shark/shark-sad.png';
+import sharkEnd2 from './../../assets/img/shark/shark-sad-2.png';
 
 import splash from './../../assets/sounds/shark/splash.mp3';
 import splashSm from './../../assets/sounds/shark/splash-sm.mp3';
@@ -36,6 +41,9 @@ export const man: Record<string, string> = {
   head: manHeadLeft,
   leftLeg: manLeftLegUP,
   rightLeg: manRightLegUp,
+  end1: manEnd1,
+  end2: manEnd2,
+  end3: manEnd3,
 };
 
 export const shark: Record<string, string> = {
@@ -43,6 +51,8 @@ export const shark: Record<string, string> = {
   left: shark2,
   basicM: sharkM1,
   leftM: sharkM2,
+  end1: sharkEnd1,
+  end2: sharkEnd2,
 };
 
 export const sharkMusic = jaws;
@@ -87,4 +97,9 @@ export type ThemesNames = 'classic' | 'shark';
 export const themesOptions: Record<string, ThemesNames> = {
   Классическая: 'classic',
   Челюсти: 'shark',
+};
+
+export const musicTrackTime: Record<string, number> = {
+  classic: 0,
+  shark: 0,
 };

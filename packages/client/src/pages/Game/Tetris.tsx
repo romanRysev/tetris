@@ -3,7 +3,7 @@ import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
-import { man, shark, themes } from './themes';
+import { man, shark, themes, musicTrackTime } from './themes';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -16,6 +16,8 @@ type TetrisProps = {
   theme: string;
   musicOn: boolean;
   soundOn: boolean;
+  musicVolume?: string;
+  soundVolume?: string;
 };
 
 type Playfield = (Sequence | undefined)[][];
@@ -33,6 +35,7 @@ export class Tetris extends Component<TetrisProps> {
   private currentTetromino = this.getNextTetromino();
   private nextTetromino = this.getNextTetromino();
   private gameOver = false;
+  private gameStarted = false;
   private paused = false;
   private width: number;
   private height: number;
@@ -63,28 +66,14 @@ export class Tetris extends Component<TetrisProps> {
     line?: HTMLAudioElement;
     position?: HTMLAudioElement;
   } = {};
-  private musicVolume = 0.5;
-  private soundVolume = 0.5;
-  // private musicContentCreated = false;
-  // private musicTrack;
+  private musicVolume = '0.5';
+  private soundVolume = '0.5';
+  private musicContentCreated = false;
+  private musicTrack: MediaElementAudioSourceNode;
+  private musicGainNode: GainNode;
+  private musicTrackTime: Record<string, number> = musicTrackTime;
 
   private soundsPreloaded = false;
-  // private themes: Record<string, ThemeProps> = {
-  //   shark: {
-  //     sounds: sharkSounds,
-  //     music: sharkMusic,
-  //     images: {
-  //       man: man,
-  //       shark: shark,
-  //     },
-  //     backgroundImg: '',
-  //   },
-  //   classic: {
-  //     sounds: classicSounds,
-  //     music: classicMusic,
-  //     backgroundImg: '',
-  //   },
-  // };
   private themes = themes;
   private userName: string;
   private userAvatar: string;
@@ -103,6 +92,7 @@ export class Tetris extends Component<TetrisProps> {
   private sharkPreloaded = false;
   private manPics: Record<string, HTMLImageElement> = {};
   private sharkPics: Record<string, HTMLImageElement> = {};
+  private waterLevel = 0;
 
   public constructor(props: TetrisProps) {
     super(props);
@@ -120,6 +110,27 @@ export class Tetris extends Component<TetrisProps> {
     this.userAvatar = makeUserAvatarFromUser(userProfile);
     this.userID = userProfile.id;
     this.theme = theme;
+
+    /* вынесла в отдельный метод, но в конструкторе оставила так, 
+    иначе ругается, что переменные не инициализируются */
+    this.preloadMusic(this.themes[this.theme].music).then(() => {
+      console.log('музыка загрузилося');
+      this.musicPreloaded = true;
+    });
+    this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+      console.log('звуки загрузилися');
+      this.soundsPreloaded = true;
+    });
+
+    const AudioContext = window.AudioContext;
+    const musicAudioContext = new AudioContext();
+    this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
+    this.musicGainNode = musicAudioContext.createGain();
+    this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
+    this.musicContentCreated = true;
+    if (musicAudioContext.state === 'suspended') {
+      musicAudioContext.resume();
+    }
   }
 
   async preloadImages(images: Record<string, string>, target: Record<string, HTMLImageElement>) {
@@ -176,11 +187,63 @@ export class Tetris extends Component<TetrisProps> {
     });
   }
 
+  makeSoundNodes() {
+    this.preloadMusic(this.themes[this.theme].music).then(() => {
+      console.log('музыка загрузилося');
+      this.musicPreloaded = true;
+    });
+    this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+      console.log('звуки загрузилися');
+      this.soundsPreloaded = true;
+    });
+
+    const AudioContext = window.AudioContext;
+    const musicAudioContext = new AudioContext();
+    this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
+    this.musicGainNode = musicAudioContext.createGain();
+    this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
+    this.musicContentCreated = true;
+    if (musicAudioContext.state === 'suspended') {
+      musicAudioContext.resume();
+    }
+  }
+
+  startThemeAudio() {
+    // this.preloadMusic(this.themes[this.theme].music).then(() => {
+    //   console.log('музыка загрузилося');
+    //   this.musicPreloaded = true;
+    // });
+    // this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+    //   console.log('звуки загрузилися');
+    //   this.soundsPreloaded = true;
+    // });
+    this.themeMusic.currentTime = this.musicTrackTime[this.theme];
+    this.musicGainNode.gain.value = Number(this.musicVolume);
+    // this.themeMusic.play().catch((e) => console.log(e));
+    this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
+    if (!this.gameStarted) this.themeSounds.start?.play();
+
+    // ну предположим
+    // if (this.musicContentCreated) return;
+    // const AudioContext = window.AudioContext;
+    // const musicAudioContext = new AudioContext();
+    // this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
+    // this.musicGainNode = musicAudioContext.createGain();
+    // this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
+    // this.musicContentCreated = true;
+    // if (musicAudioContext.state === 'suspended') {
+    //   musicAudioContext.resume();
+    // }
+    this.themeMusic.play().catch((e) => console.log(e));
+  }
+
   componentDidMount(): void {
     console.log('MOUNT');
     this.onKeypress();
 
     if (this.theme == 'shark') {
+      // загрузка картинок для анимации
+      // TODO мемоизировать загрузки картинок и музыки
       if (!this.manPreloaded || !this.sharkPreloaded) {
         this.preloadImages(man, this.manPics).then(() => {
           this.manPreloaded = true;
@@ -191,19 +254,19 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
 
-    if (!this.musicPreloaded) {
-      this.preloadMusic(this.themes[this.theme].music).then(() => {
-        console.log('музыка загрузилося');
-        this.musicPreloaded = true;
-      });
-    }
+    // if (!this.musicPreloaded) {
+    //   this.preloadMusic(this.themes[this.theme].music).then(() => {
+    //     console.log('музыка загрузилося');
+    //     this.musicPreloaded = true;
+    //   });
+    // }
 
-    if (!this.soundsPreloaded) {
-      this.preloadSounds(this.themes[this.theme].sounds).then(() => {
-        console.log('звуки загрузилися');
-        this.soundsPreloaded = true;
-      });
-    }
+    // if (!this.soundsPreloaded) {
+    //   this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+    //     console.log('звуки загрузилися');
+    //     this.soundsPreloaded = true;
+    //   });
+    // }
     this.init();
   }
 
@@ -227,7 +290,7 @@ export class Tetris extends Component<TetrisProps> {
     if (!this.props.musicOn) {
       this.themeMusic.volume = 0;
     } else {
-      this.themeMusic.volume = this.musicVolume;
+      this.musicGainNode.gain.value = Number(this.musicVolume);
     }
 
     if (!this.props.soundOn) {
@@ -236,7 +299,51 @@ export class Tetris extends Component<TetrisProps> {
       });
     } else {
       Object.values(this.themeSounds).map((sound) => {
-        sound.volume = this.soundVolume;
+        sound.volume = Number(this.soundVolume);
+      });
+    }
+
+    if (prevProps.musicVolume != this.props.musicVolume) {
+      this.musicVolume = this.props.musicVolume || '';
+      this.musicGainNode.gain.value = Number(this.props.musicVolume);
+    }
+
+    if (prevProps.theme != this.props.theme) {
+      this.theme = this.props.theme;
+      this.musicTrackTime[prevProps.theme] = this.themeMusic.currentTime;
+      this.makeSoundNodes();
+      this.startThemeAudio();
+    }
+
+    // if (prevProps.theme != this.props.theme) {
+    //   this.preloadMusic(this.themes[this.theme].music).then(() => {
+    //     console.log('музыка загрузилося');
+    //     this.musicPreloaded = true;
+    //   });
+    //   this.preloadSounds(this.themes[this.theme].sounds).then(() => {
+    //     console.log('звуки загрузилися');
+    //     this.soundsPreloaded = true;
+    //   });
+    // }
+
+    if (this.props.theme == 'shark') {
+      // загрузка картинок для анимации
+      // TODO мемоизировать загрузки картинок и музыки
+      if (!this.manPreloaded || !this.sharkPreloaded) {
+        this.preloadImages(man, this.manPics).then(() => {
+          this.manPreloaded = true;
+        });
+        this.preloadImages(shark, this.sharkPics).then(() => {
+          this.sharkPreloaded = true;
+        });
+      }
+    }
+
+    if (this.paused) {
+      this.paused = false;
+      this.currentTetromino.row--;
+      setTimeout(() => {
+        this.pause();
       });
     }
   }
@@ -286,6 +393,16 @@ export class Tetris extends Component<TetrisProps> {
     this.ctx.drawImage(img, this.manCoords, 0);
   }
 
+  private drawManEnd() {
+    // if (this.sharkCoords.x < 0 || this.sharkCoords.y < 0) return;
+    let img: HTMLImageElement = this.manPics.end2;
+    const randomNo = this.manPic;
+    if (randomNo < 0.5) {
+      img = this.manPics.end1;
+    }
+    this.ctx.drawImage(img, this.manCoords, 0);
+  }
+
   private drawShark() {
     let img: HTMLImageElement = this.sharkPics.basicM;
     const randomNo = this.manPic;
@@ -295,6 +412,18 @@ export class Tetris extends Component<TetrisProps> {
       img = this.sharkForward ? this.sharkPics.leftM : this.sharkPics.left;
     }
 
+    this.ctx.drawImage(img, this.sharkCoords.x, this.sharkCoords.y);
+  }
+
+  private drawSharkEnd() {
+    // if (this.sharkCoords.x < 0 || this.sharkCoords.y < 0) return;
+    let img: HTMLImageElement = this.sharkPics.end1;
+    const randomNo = Math.random();
+    if (randomNo < 0.5) {
+      img = this.sharkPics.end2;
+    }
+    this.sharkCoords.y += this.sharkStep;
+    this.sharkCoords.x += this.sharkStep / 2;
     this.ctx.drawImage(img, this.sharkCoords.x, this.sharkCoords.y);
   }
 
@@ -351,27 +480,34 @@ export class Tetris extends Component<TetrisProps> {
     };
     step();
     this.makeManPic();
+    // this.themeMusic.play().catch((e) => console.log(e));
+    // this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
+    // this.themeSounds.start?.play();
+
+    // // ну предположим
     // if (this.musicContentCreated) return;
-    //   const musicAudioContext = new AudioContext();
-    //   this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
-    //   const gainNode = musicAudioContext.createGain();
-    //   this.musicTrack.connect(gainNode).connect(musicAudioContext.destination);
-    //   this.musicContentCreated = true;
-    //   if (musicAudioContext.state === "suspended") {
-    //     musicAudioContext.resume();
-    //   }
+    // const AudioContext = window.AudioContext || window.webkitAudioContext;
+    // const musicAudioContext = new AudioContext();
+    // this.musicTrack = musicAudioContext.createMediaElementSource(this.themeMusic);
+    // this.musicGainNode = musicAudioContext.createGain();
+    // this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
+    // this.musicContentCreated = true;
+    // if (musicAudioContext.state === 'suspended') {
+    //   musicAudioContext.resume();
+    // }
+    // this.themeMusic.play().catch((e) => console.log(e));
+    if (!this.musicPreloaded && !this.soundsPreloaded) {
+      this.startThemeAudio();
+      this.gameStarted = true;
+    }
 
     // и чего теперь с ним делать? может, и так как есть сойдет?
     // const audioContext = new AudioContext();
     // const track = audioContext.createMediaElementSource(this.themeMusic);
-    this.themeMusic.currentTime = 0;
-    this.themeMusic.play();
-    this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
-    this.themeSounds.start?.play();
-  }
-
-  public hallo() {
-    console.log('hya');
+    // this.themeMusic.currentTime = 0;
+    // this.themeMusic.play();
+    // this.themeMusic.addEventListener('ended', () => this.themeMusic.play());
+    // this.themeSounds.start?.play();
   }
 
   private generateSequence() {
@@ -484,6 +620,33 @@ export class Tetris extends Component<TetrisProps> {
 
   private showGameOver() {
     this.themeSounds.end?.play();
+    // this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    // this.drawWorld();
+    this.waterLevel = this.canvas.height - 15;
+    this.drawEnd();
+    // for (let row = -2; row < 20; row++) {
+    //   for (let col = 0; col < 10; col++) {
+    //     if (this.playfield[row][col]) {
+    //       this.ctx.fillStyle = gray;
+    //       this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
+    //     }
+    //   }
+    // }
+    // if (this.theme === 'shark') {
+    //   const img: HTMLImageElement = this.manPics.end1;
+    //   this.ctx.drawImage(img, this.manCoords, 0);
+    //   this.drawManEnd();
+    // }
+
+    this.themeMusic.pause();
+    this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
+    this.sendResults();
+    this.gameOver = true;
+    this.gameStarted = false;
+    this.sendEnd();
+  }
+
+  private drawEnd() {
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawWorld();
     for (let row = -2; row < 20; row++) {
@@ -494,11 +657,26 @@ export class Tetris extends Component<TetrisProps> {
         }
       }
     }
-    this.themeMusic.pause();
-    this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
-    this.sendResults();
-    this.gameOver = true;
-    this.sendEnd();
+    if (this.theme === 'shark') {
+      this.waterLevel -= 20;
+      // const img: HTMLImageElement = this.manPics.end1;
+      // this.ctx.drawImage(img, this.manCoords, 0);
+      this.drawManEnd();
+      this.drawSharkEnd();
+      this.drawWater(this.waterLevel);
+      if (
+        (this.sharkCoords.x > 0 &&
+          this.sharkCoords.y > 0 &&
+          this.sharkCoords.x < this.canvas.width &&
+          this.sharkCoords.y &&
+          this.canvas.height) ||
+        this.waterLevel > 0
+      ) {
+        setTimeout(() => {
+          this.drawEnd();
+        }, 20);
+      }
+    }
   }
 
   private async sendResults() {
