@@ -293,7 +293,7 @@ export class Tetris extends Component<TetrisProps> {
       }
     }
 
-    if (this.paused) {
+    if (this.paused && prevProps.theme != this.props.theme) {
       this.paused = false;
       this.currentTetromino.row--;
       setTimeout(() => {
