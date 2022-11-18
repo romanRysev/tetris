@@ -8,7 +8,7 @@ import { logout } from '../../redux/actions/singActions';
 import { setGameTheme } from '../../redux/actions/themeActions';
 import { ThemesNames } from '../../redux/reducers/themeSlice';
 import classNames from 'classnames';
-import { themes, themesOptions } from './themes';
+import { themes, themesOptions } from './themes/themes';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
