@@ -43,7 +43,7 @@ import position from './../../assets/sounds/light/position.mp3';
 import start from './../../assets/sounds/light/start.mp3';
 
 import jaws from './../../assets/music/jaws.mp3';
-import sandman from './../../assets/music/Mr. Sandman.mp3';
+import tetris from './../../assets/music/TECHNOTRIS.mp3';
 
 export type StringObject = Record<string, string>;
 
@@ -91,7 +91,7 @@ export const sharkSounds = {
   line: swirl,
 };
 
-export const classicMusic = sandman;
+export const classicMusic = tetris;
 
 export const classicSounds = {
   start: start,
@@ -128,7 +128,7 @@ export const themesOptions: Record<string, ThemesNames> = {
   Челюсти: 'shark',
 };
 
-export const musicTrackTime: Record<string, number> = {
+export const musicTrackTime: Record<ThemesNames, number> = {
   classic: 0,
   shark: 0,
 };
@@ -137,3 +137,9 @@ export interface ThemeFlags {
   classic?: boolean;
   shark?: boolean;
 }
+
+export type SoundControls = {
+  context: AudioContext;
+  track: MediaElementAudioSourceNode;
+  gainNode: GainNode;
+};

@@ -11,6 +11,16 @@
   padding: 2rem 2rem;
   height: 100%;
   max-height: 720px;
+
+  &_theme_classic {
+    font-family: 'PressStart', sans-serif;
+    font-size: smaller;
+  }
+
+  &_theme_shark {
+    font-family: 'RubikWetPaint', sans-serif;
+    font-size: 15px;
+  }
 }
 
 .game-menu {
@@ -47,6 +57,8 @@
 
   &_theme_shark {
     background-color: rgba(255, 255, 255, .1);
+    // font-family: 'PressStart', sans-serif;
+    // font-size: smaller;
   }
 }
 
@@ -77,8 +89,9 @@
 
   &__user-name {
     text-decoration: none;
-    line-height: 50px;
+    min-height: 50px;
     cursor: pointer;
+    margin-top: 10px;
   }
 
   &__score {
@@ -230,6 +243,10 @@
     -webkit-mask-image: url('./../../assets/music-solid.svg');
     mask-image: url('./../../assets/music-solid.svg');
   }
+
+  &_vol_mute {
+    background-color: var(--color-midgray);
+  }
 }
 
 .levels__sound-controls {
@@ -273,6 +290,7 @@
 
 .sound-controls__input {
   -webkit-appearance: slider-vertical;
+  appearance: slider-vertical;
   writing-mode: bt-lr;
   width: 50px;
 }

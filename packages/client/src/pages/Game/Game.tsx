@@ -130,7 +130,7 @@ export const Game: React.FC = () => {
   }, [IsGameStarted, theme, addThemeToClassName]);
 
   return (
-    <div className="game">
+    <div className={classNames('game', `game${addThemeToClassName}`)}>
       <div
         className={classNames('background', `background${addThemeToClassName}`)}
         style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
@@ -253,7 +253,16 @@ export const Game: React.FC = () => {
               : 'game-info__sound-controls'
           }
         >
-          <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
+          {isSoundOn && (
+            <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
+          )}
+          {!isSoundOn && (
+            <div
+              className="sound-controls sound-controls__sound sound-controls_vol_mute"
+              ref={soundRef}
+              onClick={toggleSound}
+            ></div>
+          )}
           <div className="sound-controls sound-controls__equalizer" ref={levelsRef} onClick={handleShowLevels}></div>
           {isLevelsActive && (
             <div className="levels">
@@ -262,7 +271,7 @@ export const Game: React.FC = () => {
                   type="range"
                   min="0"
                   max="2"
-                  defaultValue="1"
+                  defaultValue={soundLevel}
                   step="0.01"
                   ref={eqSoundsRef}
                   className="sound-controls__input"
@@ -275,7 +284,7 @@ export const Game: React.FC = () => {
                   type="range"
                   min="0"
                   max="2"
-                  defaultValue="1"
+                  defaultValue={musicLevel}
                   step="0.01"
                   ref={eqMusicRef}
                   className="sound-controls__input"
@@ -289,7 +298,16 @@ export const Game: React.FC = () => {
             </div>
           )}
           {isLevelsActive && <div className="levels-background" onClick={handleHideLevels}></div>}
-          <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
+          {isMusicOn && (
+            <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
+          )}
+          {!isMusicOn && (
+            <div
+              className="sound-controls sound-controls__music sound-controls_vol_mute"
+              ref={musicRef}
+              onClick={toggleMusic}
+            ></div>
+          )}
         </div>
       </div>
     </div>
