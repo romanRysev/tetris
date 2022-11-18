@@ -29,6 +29,16 @@ export const Game: React.FC = () => {
   // под тему
   const addThemeToClassName = `_theme_${theme}`;
 
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      navigate('/login');
+    }
+  };
+
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
     setLevel(level);
@@ -45,16 +55,6 @@ export const Game: React.FC = () => {
     setLineCount(0);
     setGameNo(gameNo + 1);
   }, [gameNo]);
-
-  const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    const res = await dispatch(logout());
-    if (res.meta.requestStatus === 'fulfilled') {
-      navigate('/login');
-    }
-  };
 
   const handleNewGame = useCallback(() => {
     setGameEnded(false);

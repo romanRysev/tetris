@@ -7,11 +7,11 @@ export const setLeaderBoard = createAsyncThunk(
   async (data: GetLeaders, thunkAPI) => {
     try {
       const res = await getLeaderBoard(data);
-      if (res.status === 401) {
+      if ((res as Response)?.status === 401) {
         return thunkAPI.rejectWithValue('unauthorized');
       }
-      const leaders = await res.json();
-      return res.ok
+      const leaders = await res?.json();
+      return res?.ok
         ? thunkAPI.fulfillWithValue({ ...leaders })
         : thunkAPI.rejectWithValue('Не удалось получить данные');
     } catch (e) {

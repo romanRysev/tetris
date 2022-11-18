@@ -34,38 +34,39 @@ function App() {
 
   return (
     <>
-      <div style={{ display: 'none' }}>Вот тут будет жить ваше приложение :)</div>
-      {isLoaded && (
-        <HashRouter>
-          <Suspense fallback={<Spinner />}>
-            <Routes>
-              <Route element={<ProtectedRoute />}>
-                <Route path="/" element={<Game />} />
-                <Route path="/profile" element={<ProfilePage />} />
-                <Route path="/leaderboard" element={<LeaderBoardPage />} />
-                <Route path="/phorum" element={<PhorumMainPage />} />
-                <Route
-                  path="/phorum/thread"
-                  element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
-                />
-                <Route
-                  path="/phorum/thread/:id"
-                  element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
-                />
-                <Route path="/game" element={<Game />} />
-                <Route path="/howto" element={<HowToPlay />} />
-                <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
-                <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
-              </Route>
-              <Route path="/login" element={<Login />} />
-              <Route path="/register" element={<Register />} />
+      <div id="app">
+        {isLoaded && (
+          <HashRouter>
+            <Suspense fallback={<Spinner />}>
+              <Routes>
+                <Route element={<ProtectedRoute />}>
+                  <Route path="/" element={<Game />} />
+                  <Route path="/profile" element={<ProfilePage />} />
+                  <Route path="/leaderboard" element={<LeaderBoardPage />} />
+                  <Route path="/phorum" element={<PhorumMainPage />} />
+                  <Route
+                    path="/phorum/thread"
+                    element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
+                  />
+                  <Route
+                    path="/phorum/thread/:id"
+                    element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
+                  />
+                  <Route path="/game" element={<Game />} />
+                  <Route path="/howto" element={<HowToPlay />} />
+                  <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />
+                  <Route path="/profile/change-info" element={<ProfileChangeInfoPage />} />
+                </Route>
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
 
-              <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
-              <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
-            </Routes>
-          </Suspense>
-        </HashRouter>
-      )}
+                <Route path="/500" element={<Error nameError="500" textError="Мы уже фиксим" />} />
+                <Route path="*" element={<Error nameError="404" textError="Не туда попали" />} />
+              </Routes>
+            </Suspense>
+          </HashRouter>
+        )}
+      </div>
     </>
   );
 }

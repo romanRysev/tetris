@@ -27,11 +27,13 @@ export interface UserChars {
 export interface ILeadersSlice {
   leaderList: Record<'data', ILeader>[] | [];
   date: number | undefined;
+  isAuthorized: boolean;
 }
 
 const leadersInitState: ILeadersSlice = {
   leaderList: [],
   date: undefined,
+  isAuthorized: true,
 };
 
 function convertUser(user: UserProps): UserChars {
@@ -115,8 +117,23 @@ export const authSlice = createSlice({
     [setAvatar.fulfilled.type]: (state, action) => {
       state.user.avatar = action.payload.avatar;
     },
+    [setAvatar.rejected.type]: (state, action) => {
+      if (action.payload == 'unauthorized') {
+        state.isAuthorized = false;
+      }
+    },
     [setProfileInfo.fulfilled.type]: (state, action) => {
       state.user = convertUser(action.payload);
+    },
+    [setProfileInfo.rejected.type]: (state, action) => {
+      if (action.payload == 'unauthorized') {
+        state.isAuthorized = false;
+      }
+    },
+    [setLeaderBoard.rejected.type]: (state, action) => {
+      if (action.payload == 'unauthorized') {
+        state.isAuthorized = false;
+      }
     },
   },
 });
@@ -129,6 +146,7 @@ export const leadersSlice = createSlice({
     [setLeaderBoard.fulfilled.type]: (state, action) => {
       state.leaderList = action.payload;
       state.date = Date.now();
+      state.isAuthorized = true;
     },
   },
 });
