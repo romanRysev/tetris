@@ -18,6 +18,8 @@ $color-dark-theme-dark-gray: #222 !default;
 $color-dark-theme-mid-gray: #444 !default;
 $color-dark-theme-links: #1D31AC !default;
 $color-dark-theme-danger: #d93737 !default;
+$color-red-light: #{$color-danger} !default;
+$color-red-dark: #{$color-dark-theme-danger} !default;
 
 $codinsk: (
         "color-messages": $color-messages,

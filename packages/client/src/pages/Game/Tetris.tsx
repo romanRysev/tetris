@@ -3,16 +3,8 @@ import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
-import {
-  man,
-  shark,
-  themes,
-  musicTrackTime,
-  ThemeSounds,
-  ThemeFlags,
-  ThemesNames,
-  SoundControls,
-} from './themes/themes';
+import { man, shark } from './themes/shark/shark-theme';
+import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from './themes/themes';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;

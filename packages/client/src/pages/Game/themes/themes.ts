@@ -16,34 +16,8 @@
  *
  */
 
-import manBasic from './shark/img/man/man-basic.png';
-import manHeadLeft from './shark/img/man/man-basic-head-left.png';
-import manLeftLegUP from './shark/img/man/man-left-leg-up.png';
-import manRightLegUp from './shark/img/man/man-right-leg-up.png';
-import manEnd1 from './shark/img/man/man-going-left.png';
-import manEnd2 from './shark/img/man/man-fist-1.png';
-import manEnd3 from './shark/img/man/man-fist-2.png';
-
-import shark1 from './shark/img/shark/shark-1.png';
-import shark2 from './shark/img/shark/shark-2.png';
-import sharkM1 from './shark/img/shark/shark-mirror-1.png';
-import sharkM2 from './shark/img/shark/shark-mirror-2.png';
-import sharkEnd1 from './shark/img/shark/shark-sad.png';
-import sharkEnd2 from './shark/img/shark/shark-sad-2.png';
-
-import splash from './shark/sounds/splash.mp3';
-import splashSm from './shark/sounds/splash-sm.mp3';
-import swirl from './shark/sounds/swirl.mp3';
-import laughter from './shark/sounds/villain-laughter.mp3';
-import pouring from './shark/sounds/water-pouring-a.mp3';
-
-import end from './classic/sounds/end.mp3';
-import line from './classic/sounds/line.mp3';
-import position from './classic/sounds/position.mp3';
-import start from './classic/sounds/start.mp3';
-
-import jaws from './shark/music/jaws.mp3';
-import tetris from './classic/music/TECHNOTRIS.mp3';
+import { classicMusic, classicSounds } from './classic/classic-theme';
+import { man, shark, sharkBackground, sharkMusic, sharkSounds } from './shark/shark-theme';
 
 export type StringObject = Record<string, string>;
 
@@ -62,45 +36,6 @@ export interface ThemeSounds {
   line?: string; // собран ряд
 }
 
-export const man: Record<string, string> = {
-  basic: manBasic,
-  head: manHeadLeft,
-  leftLeg: manLeftLegUP,
-  rightLeg: manRightLegUp,
-  end1: manEnd1,
-  end2: manEnd2,
-  end3: manEnd3,
-};
-
-export const shark: Record<string, string> = {
-  basic: shark1,
-  left: shark2,
-  basicM: sharkM1,
-  leftM: sharkM2,
-  end1: sharkEnd1,
-  end2: sharkEnd2,
-};
-
-export const sharkMusic = jaws;
-
-export const sharkSounds = {
-  start: pouring,
-  end: laughter,
-  fall: splash,
-  position: splashSm,
-  line: swirl,
-};
-
-export const classicMusic = tetris;
-
-export const classicSounds = {
-  start: start,
-  end: end,
-  fall: position,
-  position: position,
-  line: line,
-};
-
 export const themes: Record<string, ThemeProps> = {
   shark: {
     // обозначение темы
@@ -111,7 +46,7 @@ export const themes: Record<string, ThemeProps> = {
       man: man,
       shark: shark,
     },
-    backgroundImg: './../src/pages/Game/themes/shark/img/background/beach.jpg', // картинка на фон
+    backgroundImg: sharkBackground, // картинка на фон
   },
   classic: {
     sounds: classicSounds,

@@ -1,5 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
+import './Game_info.scss';
+import './Game_menu.scss';
+import './Game_screen.scss';
 import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
@@ -9,6 +12,10 @@ import { setGameTheme } from '../../redux/actions/themeActions';
 import { ThemesNames } from '../../redux/reducers/themeSlice';
 import classNames from 'classnames';
 import { themes, themesOptions } from './themes/themes';
+
+export interface IOrientedInputRange extends InputHTMLAttributes<HTMLInputElement> {
+  orient?: 'vertical' | 'horizontal';
+}
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -125,9 +132,7 @@ export const Game: React.FC = () => {
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    eqMusicRef.current?.setAttribute('orient', 'vertical');
-    eqSoundsRef.current?.setAttribute('orient', 'vertical');
-  }, [IsGameStarted, theme, addThemeToClassName]);
+  }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
 
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
@@ -142,7 +147,7 @@ export const Game: React.FC = () => {
             Тема:{' '}
             <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
               {Object.keys(themesOptions).map((theme, index) => (
-                <option key={theme + index}>{theme}</option>
+                <option key={index}>{theme}</option>
               ))}
             </select>
           </span>
@@ -178,14 +183,7 @@ export const Game: React.FC = () => {
           </li>
         </ul>
         <ul className="game-menu__submenu">
-          <li
-            className={
-              theme === 'shark'
-                ? 'game-menu__link game-menu__link_theme_shark game-menu__link_accent'
-                : 'game-menu__link game-menu__link_color-red'
-            }
-            onClick={handleLogout}
-          >
+          <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
             Выйти
           </li>
         </ul>
@@ -246,13 +244,7 @@ export const Game: React.FC = () => {
           <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Уровень: {level}</p>
           <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Линии: {lineCount}</p>
         </div>
-        <div
-          className={
-            theme === 'shark'
-              ? 'game-info__sound-controls game-info__sound-controls_theme_shark'
-              : 'game-info__sound-controls'
-          }
-        >
+        <div className={classNames('game-info__sound-controls', `game-info__sound-controls${addThemeToClassName}`)}>
           {isSoundOn && (
             <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
           )}
@@ -268,6 +260,7 @@ export const Game: React.FC = () => {
             <div className="levels">
               <div className="levels__sound">
                 <input
+                  {...{ orient: 'vertical' }}
                   type="range"
                   min="0"
                   max="2"
@@ -281,6 +274,7 @@ export const Game: React.FC = () => {
               </div>
               <div className="levels__music">
                 <input
+                  {...{ orient: 'vertical' }}
                   type="range"
                   min="0"
                   max="2"
