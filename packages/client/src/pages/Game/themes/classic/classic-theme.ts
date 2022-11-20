@@ -1,9 +1,9 @@
-import end from './../classic/sounds/end.mp3';
-import line from './../classic/sounds/line.mp3';
-import position from './../classic/sounds/position.mp3';
-import start from './../classic/sounds/start.mp3';
+import end from './sounds/end.mp3';
+import line from './sounds/line.mp3';
+import position from './sounds/position.mp3';
+import start from './sounds/start.mp3';
 
-import tetris from './../classic/music/TECHNOTRIS.mp3';
+import tetris from './music/TECHNOTRIS.mp3';
 
 export const classicMusic = tetris;
 
