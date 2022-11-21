@@ -41,7 +41,7 @@ export const colors: Record<Sequence, string> = {
   I: '#FFDD00',
   O: '#0DCAF0',
   T: '#EE82EE',
-  S: '#FF0000',
+  S: '#CB0000',
   Z: '#FFA500',
   J: '#0000FF',
   L: '#008000',

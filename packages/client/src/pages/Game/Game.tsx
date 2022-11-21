@@ -1,11 +1,21 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
+import './Game_info.scss';
+import './Game_menu.scss';
+import './Game_screen.scss';
 import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { AddLeader, addToLeaderBoard } from '../../utils/api';
+import { setGameTheme } from '../../redux/actions/themeActions';
+import { ThemesNames } from '../../redux/reducers/themeSlice';
+import classNames from 'classnames';
+import { themes, themesOptions } from './themes/themes';
+
+export interface IOrientedInputRange extends InputHTMLAttributes<HTMLInputElement> {
+  orient?: 'vertical' | 'horizontal';
+}
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -19,8 +29,12 @@ export const Game: React.FC = () => {
   const userProfile = useAppSelector((state) => state.auth.user);
   const userName = makeUserNameFromUser(userProfile);
   const userAvatar = makeUserAvatarFromUser(userProfile);
-  const [showError, setShowError] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('Что-то пошло не так :(');
+  const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
+  const theme = useAppSelector((state) => state.theme.active);
+  const [isLevelsActive, setLevelsActive] = useState(false);
+
+  // под тему
+  const addThemeToClassName = `_theme_${theme}`;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
@@ -41,66 +55,10 @@ export const Game: React.FC = () => {
     setGameEnded(true);
   }, []);
 
-  useEffect(() => {
-    const sendResult = () => {
-      const date = new Date();
-      const res: AddLeader = {
-        data: {
-          score: score,
-          user: {
-            avatar: userAvatar,
-            userName: userName,
-            id: userProfile.id,
-          },
-          date: date.toLocaleDateString('ru'),
-        },
-        ratingFieldName: 'score',
-        teamName: 'CodinskTest',
-      };
-
-      const send = async (res: AddLeader) => {
-        try {
-          const result = await addToLeaderBoard(res);
-          const resp = result.ok ? '' : await result?.json();
-          if (result.ok) {
-            setShowError(false);
-          } else if (result.status === 401) {
-            setShowError(true);
-            setErrorMsg(`Сервер говорит ${JSON.stringify(resp)}, переходим на страницу авторизации`);
-            setTimeout(() => {
-              navigate('/login');
-            }, 3000);
-          } else {
-            setShowError(true);
-            setErrorMsg(`Что-то пошло не так :( сервер говорит ${JSON.stringify(resp)}`);
-          }
-        } catch (error) {
-          alert((error as Error)?.message);
-        }
-      };
-      send(res);
-    };
-    const canvas = canvasRef.current;
-    const canvasFigure = canvasRefFigure.current;
-    if (canvas && canvasFigure) {
-      const context = canvas.getContext('2d');
-      const contextFigure = canvasFigure.getContext('2d');
-      if (context && contextFigure) {
-        context.fillStyle = '#eee';
-        context.strokeStyle = '#111';
-        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-        context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
-      }
-    }
-    if (isGameEnded) {
-      sendResult();
-    }
-  }, [isGameEnded, score, userAvatar, userName, userProfile.id, navigate]);
-
   const startGame = useCallback(() => {
     setIsGameStarted(true);
     setScore(0);
-    setLevel(1);
+    setLevel(0);
     setLineCount(0);
     setGameNo(gameNo + 1);
   }, [gameNo]);
@@ -114,14 +72,86 @@ export const Game: React.FC = () => {
     navigate('/profile');
   }, [navigate]);
 
-  const handleErrorMsg = useCallback(() => {
-    setShowError(false);
+  const selectRef = useRef<HTMLSelectElement>(null);
+  const handleThemeSelect = async () => {
+    const val = selectRef.current?.value;
+    const req: ThemesNames = val ? themesOptions[val] : 'classic';
+    selectRef.current?.blur();
+    canvasRef.current?.focus();
+    return await dispatch(setGameTheme(req));
+  };
+
+  // контролы звука
+  const musicRef = useRef<HTMLDivElement>(null);
+  const levelsRef = useRef<HTMLDivElement>(null);
+  const soundRef = useRef<HTMLDivElement>(null);
+  const eqMusicRef = useRef<HTMLInputElement>(null);
+  const eqSoundsRef = useRef<HTMLInputElement>(null);
+
+  const [isMusicOn, setMusicOn] = useState(true);
+  const [isSoundOn, setSoundOn] = useState(true);
+  const [musicLevel, setMusicLevel] = useState('0.5');
+  const [soundLevel, setSoundLevel] = useState('0.5');
+
+  const toggleMusic = useCallback(() => {
+    setMusicOn(!isMusicOn);
+  }, [isMusicOn]);
+
+  const toggleSound = useCallback(() => {
+    setSoundOn(!isSoundOn);
+  }, [isSoundOn]);
+
+  const handleSoundVolume = useCallback(() => {
+    const vol = eqSoundsRef.current?.value || '0.5';
+    setSoundLevel(vol);
   }, []);
 
+  const handleMusicVolume = useCallback(() => {
+    const vol = eqMusicRef.current?.value || '0.5';
+    setMusicLevel(vol);
+  }, []);
+
+  const handleShowLevels = useCallback(() => {
+    setLevelsActive(true);
+  }, []);
+
+  const handleHideLevels = useCallback(() => {
+    setLevelsActive(false);
+  }, []);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const canvasFigure = canvasRefFigure.current;
+    if (canvas && canvasFigure) {
+      const context = canvas.getContext('2d');
+      const contextFigure = canvasFigure.getContext('2d');
+      if (context && contextFigure) {
+        context.fillStyle = '#eee';
+        context.strokeStyle = '#111';
+        context.fillRect(0, 0, context.canvas.width, context.canvas.height);
+        context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
+      }
+    }
+  }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
+
   return (
-    <div className="game">
-      <div className="game-menu">
+    <div className={classNames('game', `game${addThemeToClassName}`)}>
+      <div
+        className={classNames('background', `background${addThemeToClassName}`)}
+        style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
+      ></div>
+      <div className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
         <h2 className="game-menu__header">Меню</h2>
+        <div className="select-theme">
+          <span>
+            Тема:{' '}
+            <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
+              {Object.keys(themesOptions).map((theme, index) => (
+                <option key={index}>{theme}</option>
+              ))}
+            </select>
+          </span>
+        </div>
         <ul className="game-menu__submenu">
           <li className="game-menu__link" onClick={startGame}>
             Новая игра
@@ -168,6 +198,13 @@ export const Game: React.FC = () => {
                 getDataUp={getData}
                 sendEnd={getEnd}
                 gameNo={gameNo}
+                isAuthorized={isAuthorized}
+                userProfile={userProfile}
+                theme={theme}
+                musicOn={isMusicOn}
+                soundOn={isSoundOn}
+                soundVolume={soundLevel}
+                musicVolume={musicLevel}
               />
             </>
           )}
@@ -187,31 +224,84 @@ export const Game: React.FC = () => {
             </button>
           </div>
         )}
-        {showError && (
-          <div className="game-screen__error">
-            <h3 className="game-screen__h3">Ошибка с отправкой результатов</h3>
-            <p>{errorMsg}</p>
-            <button className="game-screen__error-button" onClick={handleErrorMsg}>
-              Понятно
-            </button>
-          </div>
-        )}
       </div>
       <div className="game-info">
-        <div className="game-info__next-figure">
+        <div className={classNames('game-info__next-figure', `game-info__next-figure${addThemeToClassName}`)}>
           <canvas className="game-info__canvas-figure" ref={canvasRefFigure} id="canvas-figure"></canvas>
         </div>
         <p>Следующая фигура</p>
         <div className="game-info__user-info">
           <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
-          <Link className="game-info__user-name" to="/profile">
+          <Link
+            className={classNames('game-info__user-name', `game-info__user-name${addThemeToClassName}`)}
+            to="/profile"
+          >
             {userName}
           </Link>
         </div>
         <div className="game-info__score">
-          <p>Счет: {score}</p>
-          <p>Уровень: {level}</p>
-          <p>Линии: {lineCount}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Счет: {score}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Уровень: {level}</p>
+          <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Линии: {lineCount}</p>
+        </div>
+        <div className={classNames('game-info__sound-controls', `game-info__sound-controls${addThemeToClassName}`)}>
+          {isSoundOn && (
+            <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
+          )}
+          {!isSoundOn && (
+            <div
+              className="sound-controls sound-controls__sound sound-controls_vol_mute"
+              ref={soundRef}
+              onClick={toggleSound}
+            ></div>
+          )}
+          <div className="sound-controls sound-controls__equalizer" ref={levelsRef} onClick={handleShowLevels}></div>
+          {isLevelsActive && (
+            <div className="levels">
+              <div className="levels__sound">
+                <input
+                  {...{ orient: 'vertical' }}
+                  type="range"
+                  min="0"
+                  max="2"
+                  defaultValue={soundLevel}
+                  step="0.01"
+                  ref={eqSoundsRef}
+                  className="sound-controls__input"
+                  onChange={handleSoundVolume}
+                ></input>
+                <div className="levels__sound-controls levels__sound-controls_sound"></div>
+              </div>
+              <div className="levels__music">
+                <input
+                  {...{ orient: 'vertical' }}
+                  type="range"
+                  min="0"
+                  max="2"
+                  defaultValue={musicLevel}
+                  step="0.01"
+                  ref={eqMusicRef}
+                  className="sound-controls__input"
+                  onChange={handleMusicVolume}
+                ></input>
+                <div className="levels__sound-controls levels__sound-controls_music"></div>
+              </div>
+              <div className="levels__hide" onClick={handleHideLevels}>
+                X
+              </div>
+            </div>
+          )}
+          {isLevelsActive && <div className="levels-background" onClick={handleHideLevels}></div>}
+          {isMusicOn && (
+            <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
+          )}
+          {!isMusicOn && (
+            <div
+              className="sound-controls sound-controls__music sound-controls_vol_mute"
+              ref={musicRef}
+              onClick={toggleMusic}
+            ></div>
+          )}
         </div>
       </div>
     </div>
