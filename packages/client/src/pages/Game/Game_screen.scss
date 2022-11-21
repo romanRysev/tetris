@@ -11,6 +11,8 @@
   &__canvas {
     height: 100%;
     position: relative;
+    box-shadow: 0 0 6px 0 rgba(106, 139, 165, 0.58);
+    border-radius: 10px;
   }
 
   &__start-button {
@@ -78,16 +80,16 @@
   display: table-caption;
 }
 
-.background {
-  position: absolute;
-  z-index: -100;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+// .background {
+//   position: absolute;
+//   z-index: -100;
+//   top: 0;
+//   left: 0;
+//   width: 100vw;
+//   height: 100vh;
 
-  &_theme_shark {
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-}
+//   &_theme_shark {
+//     background-repeat: no-repeat;
+//     background-size: cover;
+//   }
+// }

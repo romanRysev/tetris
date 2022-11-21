@@ -3,9 +3,9 @@ import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
-import { colors, colorsDarkTheme } from './themes/classic/classic-theme';
-import { man, shark } from './themes/shark/shark-theme';
-import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from './themes/themes';
+import { colors, colorsDarkTheme } from '../../themes/classic/classic-theme';
+import { man, shark } from '../../themes/shark/shark-theme';
+import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from '../../themes/themes';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -329,9 +329,10 @@ export class Tetris extends Component<TetrisProps> {
       this.ctx.moveTo(0, this.cellSize * y);
       this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
     }
+    this.ctx.strokeStyle = this.theme === 'shark' ? '#eee' : '#aaa';
     this.ctx.stroke();
     if (this.theme === 'shark' || this.theme === 'dark') {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, .2)';
+      this.ctx.fillStyle = 'rgba(255, 255, 255, 0)';
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
   }

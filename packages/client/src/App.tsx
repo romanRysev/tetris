@@ -6,6 +6,9 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import { Spinner } from './components/Spinner/Spinner';
+import { initStateThemeDark, initStateThemeLight } from './themes/classic/classic-theme';
+import classNames from 'classnames';
+import { themes } from './themes/themes';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
@@ -24,9 +27,8 @@ const PhorumThreadPage = React.lazy(() => import('./pages/Phorum/PhorumThreadPag
 function App() {
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
-  const theme = useAppSelector((state) => state.theme.global);
-
-  // const [theme, setTheme] = useState('dark');
+  const theme = useAppSelector((state) => state.theme.active);
+  const addThemeToClassName = `_theme_${theme}`;
 
   useEffect(() => {
     (async () => {
@@ -36,19 +38,20 @@ function App() {
   }, [dispatch, isLoaded]);
 
   useEffect(() => {
-    console.log('2', theme);
-    const backgroundColor = `var(--body-bg-${theme})`;
-    const fontColor = `var(--body-color-${theme})`;
-    const links = `var(--color-links-${theme})`;
-    document.documentElement.style.setProperty('--body-bg', backgroundColor);
-    document.documentElement.style.setProperty('--body-color', fontColor);
-    document.documentElement.style.setProperty('--color-messages', fontColor);
-    document.documentElement.style.setProperty('--color-links', links);
+    const themeVars = theme === 'dark' ? initStateThemeDark : initStateThemeLight;
+    document.documentElement.style.setProperty('--body-bg', themeVars.backgroundColor);
+    document.documentElement.style.setProperty('--body-color', themeVars.fontColor);
+    document.documentElement.style.setProperty('--color-messages', themeVars.fontColor);
+    document.documentElement.style.setProperty('--color-links', themeVars.links);
   }, [theme]);
 
   return (
     <>
       <div id="app">
+        <div
+          className={classNames('background-common', `background-common${addThemeToClassName}`)}
+          style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
+        ></div>
         {isLoaded && (
           <HashRouter>
             <Suspense fallback={<Spinner />}>

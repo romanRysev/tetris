@@ -18,3 +18,17 @@
     background-color: var(--color-messages);
   }
 }
+
+.background-common {
+  position: absolute;
+  z-index: -100;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  &_theme_shark {
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

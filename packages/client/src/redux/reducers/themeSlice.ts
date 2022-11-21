@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { ThemesNames } from '../../pages/Game/themes/themes';
+import { ThemesNames } from '../../themes/themes';
 import { setDayOrNight, setGameTheme } from '../actions/themeActions';
 
 interface IThemeSlice {

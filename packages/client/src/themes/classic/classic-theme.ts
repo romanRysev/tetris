@@ -3,8 +3,11 @@ import line from './sounds/line.mp3';
 import position from './sounds/position.mp3';
 import start from './sounds/start.mp3';
 
+import lightBg from './light/img/background/light.jpg';
+import darkBg from './dark/img/background/dark.jpg';
+
 import tetris from './music/TECHNOTRIS.mp3';
-import { Sequence } from '../../constant';
+import { Sequence } from '../../pages/Game/constant';
 
 export const classicMusic = tetris;
 
@@ -14,6 +17,22 @@ export const classicSounds = {
   fall: position,
   position: position,
   line: line,
+};
+
+export const lightThemeBackground = lightBg;
+export const darkThemeBackground = darkBg;
+
+export const initStateThemeLight = {
+  backgroundColor: 'var(--body-bg-light)',
+  fontColor: 'var(--body-color-light)',
+  links: 'var(--color-links-light)',
+};
+// все-таки поменяем классическую на светлую
+
+export const initStateThemeDark = {
+  backgroundColor: 'var(--body-bg-dark)',
+  fontColor: 'var(--body-color-dark)',
+  links: 'var(--color-links-dark)',
 };
 
 export const colors: Record<Sequence, string> = {

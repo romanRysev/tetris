@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ThemesNames } from '../../pages/Game/themes/themes';
+import { ThemesNames } from '../../themes/themes';
 
 export const setGameTheme = createAsyncThunk('theme', async (data: ThemesNames, thunkAPI) => {
   try {

@@ -16,7 +16,7 @@
  *
  */
 
-import { classicMusic, classicSounds } from './classic/classic-theme';
+import { classicMusic, classicSounds, darkThemeBackground, lightThemeBackground } from './classic/classic-theme';
 import { man, shark, sharkBackground, sharkMusic, sharkSounds } from './shark/shark-theme';
 
 export type StringObject = Record<string, string>;
@@ -51,12 +51,12 @@ export const themes: Record<string, ThemeProps> = {
   classic: {
     sounds: classicSounds,
     music: classicMusic,
-    backgroundImg: '',
+    backgroundImg: lightThemeBackground,
   },
   dark: {
     sounds: classicSounds,
     music: classicMusic,
-    backgroundImg: '',
+    backgroundImg: darkThemeBackground,
   },
 };
 
@@ -66,6 +66,7 @@ export const themesOptions: Record<string, ThemesNames> = {
   // Обозначение в селекте тем : обозначение темы
   Классическая: 'classic',
   Челюсти: 'shark',
+  Темная: 'dark',
 };
 
 export const musicTrackTime: Record<ThemesNames, number> = {

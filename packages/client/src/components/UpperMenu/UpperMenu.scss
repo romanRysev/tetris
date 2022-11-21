@@ -15,4 +15,13 @@
     display: inline-block;
     list-style: none;
   }
+
+  &__theme {
+    font-weight: bold;
+  }
+
+  &__select {
+    background: none;
+    border: none;
+  }
 }

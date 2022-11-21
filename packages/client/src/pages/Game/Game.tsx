@@ -10,7 +10,7 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
 import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
 import classNames from 'classnames';
-import { themes, ThemesNames, themesOptions } from './themes/themes';
+import { ThemesNames, themesOptions } from '../../themes/themes';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -135,20 +135,16 @@ export const Game: React.FC = () => {
       const context = canvas.getContext('2d');
       const contextFigure = canvasFigure.getContext('2d');
       if (context && contextFigure) {
-        context.fillStyle = theme === 'dark' ? '#444' : '#eee';
-        context.strokeStyle = '#111';
+        context.fillStyle = 'rgba(255, 255, 255, 0)';
+        // context.strokeStyle = '#111';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-        context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
+        // context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
   }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
 
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
-      <div
-        className={classNames('background', `background${addThemeToClassName}`)}
-        style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
-      ></div>
       <div className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
         <h2 className="game-menu__header">Меню</h2>
         <div className="select-theme">
