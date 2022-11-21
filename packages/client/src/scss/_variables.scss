@@ -21,6 +21,7 @@ $color-dark-theme-danger: #d93737 !default;
 $color-red-light: #{$color-danger} !default;
 $color-red-dark: #{$color-dark-theme-danger} !default;
 
+
 $codinsk: (
         "color-messages": $color-messages,
         "color-links": $color-links,
@@ -223,7 +224,8 @@ $font-sizes: (
 // Body
 //
 
-$body-bg: $white !default;
+$body-bg-light: $white !default;
+$body-bg-dark: $black !default;
 $body-color: $high-emphasis !default;
 $body-text-align: null !default;
 

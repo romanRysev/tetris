@@ -2,7 +2,8 @@ import React, { Component, ReactNode } from 'react';
 import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
-import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
+import { gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
+import { colors, colorsDarkTheme } from './themes/classic/classic-theme';
 import { man, shark } from './themes/shark/shark-theme';
 import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from './themes/themes';
 
@@ -123,6 +124,10 @@ export class Tetris extends Component<TetrisProps> {
     this.musicTrack.connect(this.musicGainNode).connect(musicAudioContext.destination);
     if (musicAudioContext.state === 'suspended') {
       musicAudioContext.resume();
+    }
+
+    if (theme === 'dark') {
+      this.colors = colorsDarkTheme;
     }
   }
 
@@ -300,6 +305,12 @@ export class Tetris extends Component<TetrisProps> {
       setTimeout(() => {
         this.pause();
       });
+    }
+
+    if (this.props.theme != 'dark') {
+      this.colors = colors;
+    } else {
+      this.colors = colorsDarkTheme;
     }
   }
 

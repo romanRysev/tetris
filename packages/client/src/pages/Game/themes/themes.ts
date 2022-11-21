@@ -53,9 +53,14 @@ export const themes: Record<string, ThemeProps> = {
     music: classicMusic,
     backgroundImg: '',
   },
+  dark: {
+    sounds: classicSounds,
+    music: classicMusic,
+    backgroundImg: '',
+  },
 };
 
-export type ThemesNames = 'classic' | 'shark';
+export type ThemesNames = 'classic' | 'shark' | 'dark';
 
 export const themesOptions: Record<string, ThemesNames> = {
   // Обозначение в селекте тем : обозначение темы
@@ -66,11 +71,13 @@ export const themesOptions: Record<string, ThemesNames> = {
 export const musicTrackTime: Record<ThemesNames, number> = {
   classic: 0,
   shark: 0,
+  dark: 0,
 };
 
 export interface ThemeFlags {
   classic?: boolean;
   shark?: boolean;
+  dark?: boolean;
 }
 
 export type SoundControls = {

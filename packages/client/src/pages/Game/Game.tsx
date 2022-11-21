@@ -1,4 +1,4 @@
-import React, { InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
 import './Game_info.scss';
 import './Game_menu.scss';
@@ -8,14 +8,9 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { setGameTheme } from '../../redux/actions/themeActions';
-import { ThemesNames } from '../../redux/reducers/themeSlice';
+import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
 import classNames from 'classnames';
-import { themes, themesOptions } from './themes/themes';
-
-export interface IOrientedInputRange extends InputHTMLAttributes<HTMLInputElement> {
-  orient?: 'vertical' | 'horizontal';
-}
+import { themes, ThemesNames, themesOptions } from './themes/themes';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -119,6 +114,19 @@ export const Game: React.FC = () => {
     setLevelsActive(false);
   }, []);
 
+  const handleNightTheme = async () => {
+    if (theme === 'classic') {
+      await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight(false));
+    } else if (theme === 'dark') {
+      await dispatch(setGameTheme('classic'));
+      await dispatch(setDayOrNight(true));
+    } else if (!theme) {
+      await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight(false));
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
@@ -182,6 +190,16 @@ export const Game: React.FC = () => {
             </Link>
           </li>
         </ul>
+        {theme === 'classic' && (
+          <ul className="game-menu__submenu">
+            <li onClick={handleNightTheme}>Ночная тема</li>
+          </ul>
+        )}
+        {theme === 'dark' && (
+          <ul className="game-menu__submenu">
+            <li onClick={handleNightTheme}>Дневная тема</li>
+          </ul>
+        )}
         <ul className="game-menu__submenu">
           <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
             Выйти

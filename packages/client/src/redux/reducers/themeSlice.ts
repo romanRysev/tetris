@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ThemesNames } from '../../pages/Game/themes/themes';
 import { setDayOrNight, setGameTheme } from '../actions/themeActions';
-
-export type ThemesNames = 'classic' | 'shark';
 
 interface IThemeSlice {
   light: boolean;
