@@ -315,7 +315,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private createCanvas(): void {
-    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillStyle = this.theme === 'dark' ? '#eee' : '#FFFFFF';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
@@ -330,7 +330,7 @@ export class Tetris extends Component<TetrisProps> {
       this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
     }
     this.ctx.stroke();
-    if (this.theme === 'shark') {
+    if (this.theme === 'shark' || this.theme === 'dark') {
       this.ctx.fillStyle = 'rgba(255, 255, 255, .2)';
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }

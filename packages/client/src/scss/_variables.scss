@@ -1,7 +1,12 @@
 //Codinsk-team palette
 
+// $color-messages: #000 !default;
+$color-messages-dark: #aaa;
 $color-messages: #000 !default;
+$color-messages-light: #000 !default;
 $color-links: #3369F3 !default;
+$color-links-light: #3369F3 !default;
+$color-links-dark: #1D31Ac !default;
 $color-white: #FFF !default;
 $color-lightgray: #eee !default;
 $color-back-gray: #f8f8f8 !default;
@@ -41,6 +46,10 @@ $codinsk: (
         "color-dark-theme-mid-gray": $color-dark-theme-mid-gray,
         "color-dark-theme-links": $color-dark-theme-links,
         "color-dark-theme-danger": $color-dark-theme-danger,
+        "color-links-light": $color-links-light,
+        "color-links-dark": $color-links-dark,
+        "color-messages-light": $color-messages-light,
+        "color-messages-dark": $color-messages-dark,
 ) !default;
 
 // Color system
@@ -228,6 +237,10 @@ $body-bg-light: $white !default;
 $body-bg-dark: $black !default;
 $body-color: $high-emphasis !default;
 $body-text-align: null !default;
+$body-color-light: $color-messages !default;
+$body-bg-light: $white !default;
+$body-color-dark: $color-text-dark_theme !default;
+$body-bg-dark: $black !default;
 
 $spacer: 1rem !default;
 $spacers: (

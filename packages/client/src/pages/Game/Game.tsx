@@ -26,6 +26,7 @@ export const Game: React.FC = () => {
   const userAvatar = makeUserAvatarFromUser(userProfile);
   const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
   const theme = useAppSelector((state) => state.theme.active);
+  // const theme = 'dark';
   const [isLevelsActive, setLevelsActive] = useState(false);
 
   // под тему
@@ -117,13 +118,13 @@ export const Game: React.FC = () => {
   const handleNightTheme = async () => {
     if (theme === 'classic') {
       await dispatch(setGameTheme('dark'));
-      await dispatch(setDayOrNight(false));
+      await dispatch(setDayOrNight('dark'));
     } else if (theme === 'dark') {
       await dispatch(setGameTheme('classic'));
-      await dispatch(setDayOrNight(true));
+      await dispatch(setDayOrNight('light'));
     } else if (!theme) {
       await dispatch(setGameTheme('dark'));
-      await dispatch(setDayOrNight(false));
+      await dispatch(setDayOrNight('dark'));
     }
   };
 
@@ -134,7 +135,7 @@ export const Game: React.FC = () => {
       const context = canvas.getContext('2d');
       const contextFigure = canvasFigure.getContext('2d');
       if (context && contextFigure) {
-        context.fillStyle = '#eee';
+        context.fillStyle = theme === 'dark' ? '#444' : '#eee';
         context.strokeStyle = '#111';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
         context.strokeRect(0, 0, context.canvas.width, context.canvas.height);

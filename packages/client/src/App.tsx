@@ -3,7 +3,7 @@ import { Suspense, useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import { Spinner } from './components/Spinner/Spinner';
 
@@ -24,13 +24,27 @@ const PhorumThreadPage = React.lazy(() => import('./pages/Phorum/PhorumThreadPag
 function App() {
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const theme = useAppSelector((state) => state.theme.global);
+
+  // const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     (async () => {
       await dispatch(checkLogin());
       setIsLoaded(true);
     })();
-  }, [dispatch]);
+  }, [dispatch, isLoaded]);
+
+  useEffect(() => {
+    console.log('2', theme);
+    const backgroundColor = `var(--body-bg-${theme})`;
+    const fontColor = `var(--body-color-${theme})`;
+    const links = `var(--color-links-${theme})`;
+    document.documentElement.style.setProperty('--body-bg', backgroundColor);
+    document.documentElement.style.setProperty('--body-color', fontColor);
+    document.documentElement.style.setProperty('--color-messages', fontColor);
+    document.documentElement.style.setProperty('--color-links', links);
+  }, [theme]);
 
   return (
     <>

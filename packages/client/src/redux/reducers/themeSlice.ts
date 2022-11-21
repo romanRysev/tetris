@@ -3,12 +3,12 @@ import { ThemesNames } from '../../pages/Game/themes/themes';
 import { setDayOrNight, setGameTheme } from '../actions/themeActions';
 
 interface IThemeSlice {
-  light: boolean;
+  global: 'light' | 'dark';
   active: ThemesNames;
 }
 
 const themeInitState: IThemeSlice = {
-  light: true,
+  global: 'light',
   active: 'classic',
 };
 
@@ -21,7 +21,7 @@ export const themeSlice = createSlice({
       state.active = action.meta.arg;
     },
     [setDayOrNight.fulfilled.type]: (state, action) => {
-      state.light = action.meta.arg;
+      state.global = action.meta.arg;
     },
   },
 });
