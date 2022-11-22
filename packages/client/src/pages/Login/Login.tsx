@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 
 import './Login.scss';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
 import { login } from '../../redux/actions/singActions';
 import { Button } from '../../components/Button/Button';
@@ -82,9 +82,6 @@ const Login = () => {
             </Button>
           </div>
         </form>
-        <Link to="/register">
-          <Button backgroundOpacity={true}>Нет аккаунта?</Button>
-        </Link>
       </div>
     </div>
   );

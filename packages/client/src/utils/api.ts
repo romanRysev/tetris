@@ -16,6 +16,7 @@ export interface IChangeInfo {
   phone: string;
   display_name: string;
 }
+
 export interface IChangePassword {
   oldPassword: string;
   newPassword: string;
@@ -68,6 +69,13 @@ export const postLoginRequest = async (data: LoginForm) =>
 
 export const getProfileRequest = async () =>
   await fetch(APIurls.GETUSER, {
+    method: 'GET',
+    headers: { ...headers.get },
+    credentials: 'include',
+  });
+
+export const getProfileApiRequest = async () =>
+  await fetch('http://localhost:8080/api', {
     method: 'GET',
     headers: { ...headers.get },
     credentials: 'include',
