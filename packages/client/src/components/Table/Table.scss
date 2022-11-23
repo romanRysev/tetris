@@ -6,7 +6,7 @@
   &__row {
     display: flex;
     margin: 0;
-    border-bottom: 1px solid var(--color-lightgray);
+    border-bottom: 1px solid var(--color-midgray);
   }
 
   &__row:last-child {
@@ -21,6 +21,6 @@
 
   &__cell:nth-child(even) {
     text-align: right;
-    color: var(--color-midgray);
+    color: var(--color-controls-on);
   }
 }

@@ -1,11 +1,7 @@
 .upper-menu {
   display: block;
   width: 100%;
-  background-color: var(--color-backgrnd-gray);
-
-  &_theme_dark {
-    background-color: var(color-backgrnd-gray-dark-theme);
-  }
+  background-color: var(--color-light-gray);
 
   &__nav {
     display: inline-block;

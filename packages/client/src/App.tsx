@@ -51,6 +51,7 @@ function App() {
     document.documentElement.style.setProperty('--color-white-bg', themeVars.whiteBg);
     document.documentElement.style.setProperty('--color-controls-on', themeVars.controlsOn);
     document.documentElement.style.setProperty('--color-controls-off', themeVars.controlsOff);
+    document.documentElement.style.setProperty('--color-border-gray', themeVars.borderGray);
   }, [theme]);
 
   return (

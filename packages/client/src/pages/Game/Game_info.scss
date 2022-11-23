@@ -149,7 +149,7 @@
 .sound-controls {
   width: 20px;
   height: 20px;
-  background-color: var(--color-backgrnd-gray-dark-theme);
+  background-color: var(--color-controls-on);
   -webkit-mask-position-x: center;
   -webkit-mask-position-y: center;
   -webkit-mask-repeat: no-repeat;
@@ -173,7 +173,7 @@
   }
 
   &_vol_mute {
-    background-color: var(--color-midgray);
+    background-color: var(--color-controls-off);
   }
 
   &__input {

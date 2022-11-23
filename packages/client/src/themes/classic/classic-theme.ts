@@ -32,6 +32,7 @@ export const initStateThemeLight = {
   whiteBg: 'var(--color-white-bg-light)',
   controlsOn: 'var(--color-controls-on-light)',
   controlsOff: 'var(--color-controls-off-light)',
+  borderGray: 'var(--color-border-gray-light)',
 };
 // все-таки поменяем классическую на светлую
 
@@ -45,6 +46,7 @@ export const initStateThemeDark = {
   whiteBg: 'var(--color-white-bg-dark)',
   controlsOn: 'var(--color-controls-on-dark)',
   controlsOff: 'var(--color-controls-off-dark)',
+  borderGray: 'var(--color-border-gray-dark)',
 };
 
 export const colors: Record<Sequence, string> = {
