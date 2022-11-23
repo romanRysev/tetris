@@ -49,3 +49,5 @@ export const colors: Record<Sequence, string> = {
 
 export const gray = '#D9D9D9';
 export const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
+
+export const maxMobileWidth = 768;
