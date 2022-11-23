@@ -38,9 +38,9 @@
   font-size: 0.813rem;
   font-weight: 500;
   margin: 0;
+  background-color: transparent;
 
   &_opacity {
-    background-color: var(--white);
     color: var(--blue);
   }
 }

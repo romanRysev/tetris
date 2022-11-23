@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
 import './Game_info.scss';
 import './Game_menu.scss';
@@ -11,6 +11,11 @@ import { logout } from '../../redux/actions/singActions';
 import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
 import classNames from 'classnames';
 import { ThemesNames, themesOptions } from '../../themes/themes';
+import { GameControls } from '../../components/GameControls/GameControls';
+import { maxMobileWidth } from './constant';
+import menu from '../../assets/menu.svg';
+import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
+import { Button } from '../../components/Button/Button';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -28,12 +33,22 @@ export const Game: React.FC = () => {
   const theme = useAppSelector((state) => state.theme.active);
   // const theme = 'dark';
   const [isLevelsActive, setLevelsActive] = useState(false);
+  const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
+  const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [isPause, setIsPause] = useState(false);
 
+  const menuElem = useRef<HTMLInputElement>(null);
   // под тему
   const addThemeToClassName = `_theme_${theme}`;
 
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setIsMobile(document.documentElement.clientWidth <= maxMobileWidth);
+    });
+  }, []);
 
   const handleLogout = async () => {
     const res = await dispatch(logout());
@@ -52,6 +67,7 @@ export const Game: React.FC = () => {
   }, []);
 
   const startGame = useCallback(() => {
+    setShowMobileMenu(false);
     setIsGameStarted(true);
     setScore(0);
     setLevel(0);
@@ -115,6 +131,26 @@ export const Game: React.FC = () => {
     setLevelsActive(false);
   }, []);
 
+  const handleMenuOpen = useCallback(() => {
+    setShowMobileMenu(true);
+    setIsPause(true);
+  }, []);
+
+  const handleMenuClose = useCallback(() => {
+    setShowMobileMenu(false);
+    setIsPause(false);
+  }, []);
+
+  const handleScreenClick = useCallback(
+    (event: BaseSyntheticEvent) => {
+      const withinBoundaries = menuElem.current === event.target || menuElem.current?.contains(event.target);
+      if (!withinBoundaries) {
+        handleMenuClose();
+      }
+    },
+    [handleMenuClose],
+  );
+
   const handleNightTheme = async () => {
     if (theme === 'classic') {
       await dispatch(setGameTheme('dark'));
@@ -145,64 +181,71 @@ export const Game: React.FC = () => {
 
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
-      <div className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
-        <h2 className="game-menu__header">Меню</h2>
-        <div className="select-theme">
-          <span>
-            Тема:{' '}
-            <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
-              {Object.keys(themesOptions).map((theme, index) => (
-                <option key={index}>{theme}</option>
-              ))}
-            </select>
-          </span>
-        </div>
-        <ul className="game-menu__submenu">
-          <li className="game-menu__link" onClick={startGame}>
-            Новая игра
-          </li>
-          <li>
-            <Link className="game-menu__link" to="/howto">
-              Как играть
-            </Link>
-          </li>
+      {isMobile && <GameControls />}
+      {isMobile && showMobileMenu && <BackgroundBlur onClick={handleScreenClick} />}
+      {(!isMobile || (isMobile && showMobileMenu)) && (
+        <div ref={menuElem} className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
+          <h2 className="game-menu__header">Меню</h2>
+          <div className="select-theme">
+            <span>
+              Тема:{' '}
+              <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
+                {Object.keys(themesOptions).map((theme, index) => (
+                  <option key={index}>{theme}</option>
+                ))}
+              </select>
+            </span>
+          </div>
+          <ul className="game-menu__submenu">
+            <li className="game-menu__link" onClick={startGame}>
+              Новая игра
+            </li>
+            <li>
+              <Link className="game-menu__link" to="/howto">
+                Как играть
+              </Link>
+            </li>
 
-          <li>
-            <Link className="game-menu__link" to="/leaderboard">
-              Доска почета
-            </Link>
-          </li>
-        </ul>
-        <ul className="game-menu__submenu">
-          <li>
-            <Link className="game-menu__link" to="/profile">
-              Мой профиль
-            </Link>
-          </li>
-        </ul>
-        <ul className="game-menu__submenu">
-          <li>
-            <Link className="game-menu__link" to="/phorum">
-              Форум
-            </Link>
-          </li>
-        </ul>
-        {theme === 'classic' && (
-          <ul className="game-menu__submenu">
-            <li onClick={handleNightTheme}>Ночная тема</li>
+            <li>
+              <Link className="game-menu__link" to="/leaderboard">
+                Доска почета
+              </Link>
+            </li>
           </ul>
-        )}
-        {theme === 'dark' && (
           <ul className="game-menu__submenu">
-            <li onClick={handleNightTheme}>Дневная тема</li>
+            <li>
+              <Link className="game-menu__link" to="/profile">
+                Мой профиль
+              </Link>
+            </li>
           </ul>
-        )}
-        <ul className="game-menu__submenu">
-          <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
-            Выйти
-          </li>
-        </ul>
-      </div>
+          <ul className="game-menu__submenu">
+            <li>
+              <Link className="game-menu__link" to="/phorum">
+                Форум
+              </Link>
+            </li>
+          </ul>
+          {theme === 'classic' && (
+            <ul className="game-menu__submenu">
+              <li onClick={handleNightTheme}>Ночная тема</li>
+            </ul>
+          )}
+          {theme === 'dark' && (
+            <ul className="game-menu__submenu">
+              <li onClick={handleNightTheme}>Дневная тема</li>
+            </ul>
+          )}
+          <ul className="game-menu__submenu">
+            <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
+              Выйти
+            </li>
+          </ul>
+
+          {isMobile && <Button onClick={handleMenuClose}> Вернуться к игре </Button>}
+        </div>
+      )}
+
       <div className="game-screen">
         <canvas className="game-screen__canvas" ref={canvasRef} id="canvas" width={500} height={1000}>
           {IsGameStarted && canvasRef.current && canvasRefFigure.current && (
@@ -220,6 +263,7 @@ export const Game: React.FC = () => {
                 soundOn={isSoundOn}
                 soundVolume={soundLevel}
                 musicVolume={musicLevel}
+                isPause={isPause}
               />
             </>
           )}
@@ -241,18 +285,23 @@ export const Game: React.FC = () => {
         )}
       </div>
       <div className="game-info">
-        <div className={classNames('game-info__next-figure', `game-info__next-figure${addThemeToClassName}`)}>
-          <canvas className="game-info__canvas-figure" ref={canvasRefFigure} id="canvas-figure"></canvas>
-        </div>
-        <p>Следующая фигура</p>
-        <div className="game-info__user-info">
-          <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
-          <Link
-            className={classNames('game-info__user-name', `game-info__user-name${addThemeToClassName}`)}
-            to="/profile"
-          >
-            {userName}
-          </Link>
+        <div className="game-info__menu">
+          <button className="game-info__button" onClick={handleMenuOpen}>
+            <img className="game-info__button-img" src={menu} />
+          </button>
+          <div className={classNames('game-info__next-figure', `game-info__next-figure${addThemeToClassName}`)}>
+            <canvas className="game-info__canvas-figure" ref={canvasRefFigure} id="canvas-figure"></canvas>
+          </div>
+          {!isMobile && <p>Следующая фигура</p>}
+          <div className="game-info__user-info">
+            <img className="game-info__avatar" src={userAvatar} alt="" onClick={toProfile} />
+            <Link
+              className={classNames('game-info__user-name', `game-info__user-name${addThemeToClassName}`)}
+              to="/profile"
+            >
+              {userName}
+            </Link>
+          </div>
         </div>
         <div className="game-info__score">
           <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Счет: {score}</p>

@@ -6,7 +6,7 @@
 }
 
 .login__content {
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.14);
+  box-shadow: 0 0 6px var(--color-controls-off);
   border-radius: 12px;
   padding: 30px;
   width: 340px;
@@ -23,7 +23,6 @@
   margin: 0;
   font-weight: 500;
   font-size: 1.25rem;
-  color: #1e1e1e;
   padding-top: 20px;
   padding-bottom: 24px;
 }

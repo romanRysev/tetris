@@ -20,6 +20,7 @@ type TetrisProps = {
   soundOn: boolean;
   musicVolume?: string;
   soundVolume?: string;
+  isPause?: boolean;
 };
 
 type Playfield = (Sequence | undefined)[][];
@@ -108,7 +109,7 @@ export class Tetris extends Component<TetrisProps> {
     this.userID = userProfile.id;
     this.theme = theme;
 
-    /* вынесла в отдельный метод, но в конструкторе оставила так, 
+    /* вынесла в отдельный метод, но в конструкторе оставила так,
     иначе ругается, что переменные не инициализируются */
     this.preloadMusic(this.themes[this.theme].music).then(() => {
       this.musicPreloaded[this.theme] = true;
@@ -307,10 +308,19 @@ export class Tetris extends Component<TetrisProps> {
       });
     }
 
-    if (this.props.theme != 'dark') {
-      this.colors = colors;
-    } else {
-      this.colors = colorsDarkTheme;
+    if (prevProps.isPause !== this.props.isPause) {
+      if (this.props.isPause && !this.paused) {
+        this.pause();
+
+        if (this.props.theme != 'dark') {
+          this.colors = colors;
+        } else {
+          this.colors = colorsDarkTheme;
+        }
+        if (!this.props.isPause && this.paused) {
+          this.paused = false;
+        }
+      }
     }
   }
 

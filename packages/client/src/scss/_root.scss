@@ -53,5 +53,11 @@
   // --body-bg: #{$body-bg};
   --body-bg: #{$body-bg-light};
   --color-red: #{$color-red-light};
-  --color-messages:#{color-messages-light};
+  --color-messages:#{$color-messages-light};
+  --color-links:#{$color-links-light};
+  --color-white-text:#{$color-white-text-light};
+  --color-light-gray:#{$color-light-gray-light};
+  --color-white-bg:#{$color-white-bg-light};
+  --color-controls-on:#{$color-controls-on-light};
+  --color-controls-off:#{$color-controls-off-light};
 }

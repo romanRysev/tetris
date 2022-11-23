@@ -1,17 +1,11 @@
 .phorum-thread-list__item {
   display: grid;
   grid-template-columns: 6fr 2fr 4fr;
-  background-color: var(--color-back-blue);
-
-  &:nth-child(even) {
-    background-color: var(--color-back-gray);
-  }
+  border-bottom: 1px solid var(--color-midgray);
 }
 
 .thread {
   text-align: left;
-  border-right: 1px solid var(--white);
-  border-bottom: 1px solid var(--white);
   padding: 15px;
 
   &__info {
@@ -26,14 +20,11 @@
 
 .replies {
   text-align: left;
-  border-right: 1px solid var(--white);
-  border-bottom: 1px solid var(--white);
   padding: 15px;
 }
 
 .last-reply {
   text-align: left;
-  border-bottom: 1px solid var(--white);
   padding: 15px;
 
   &__user {

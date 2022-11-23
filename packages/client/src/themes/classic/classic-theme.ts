@@ -26,6 +26,12 @@ export const initStateThemeLight = {
   backgroundColor: 'var(--body-bg-light)',
   fontColor: 'var(--body-color-light)',
   links: 'var(--color-links-light)',
+  red: 'var(--color-red-light)',
+  whiteText: 'var(--color-white-text-light)',
+  lightGray: 'var(--color-light-gray-light)',
+  whiteBg: 'var(--color-white-bg-light)',
+  controlsOn: 'var(--color-controls-on-light)',
+  controlsOff: 'var(--color-controls-off-light)',
 };
 // все-таки поменяем классическую на светлую
 
@@ -33,6 +39,12 @@ export const initStateThemeDark = {
   backgroundColor: 'var(--body-bg-dark)',
   fontColor: 'var(--body-color-dark)',
   links: 'var(--color-links-dark)',
+  red: 'var(--color-red-dark)',
+  whiteText: 'var(--color-white-text-dark)',
+  lightGray: 'var(--color-light-gray-dark)',
+  whiteBg: 'var(--color-white-bg-dark)',
+  controlsOn: 'var(--color-controls-on-dark)',
+  controlsOff: 'var(--color-controls-off-dark)',
 };
 
 export const colors: Record<Sequence, string> = {

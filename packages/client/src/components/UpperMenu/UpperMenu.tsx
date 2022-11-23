@@ -48,6 +48,7 @@ export const UpperMenu: FC = () => {
   const handleThemeSelect = async () => {
     const val = selectRef.current?.value;
     const req: ThemesNames = val ? themesOptions[val] : 'classic';
+    selectRef.current?.blur();
     return await dispatch(setGameTheme(req));
   };
 

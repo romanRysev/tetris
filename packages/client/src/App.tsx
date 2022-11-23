@@ -28,6 +28,8 @@ function App() {
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const theme = useAppSelector((state) => state.theme.active);
+  // const theme = 'classic';
+  // const theme = 'dark';
   const addThemeToClassName = `_theme_${theme}`;
 
   useEffect(() => {
@@ -43,6 +45,12 @@ function App() {
     document.documentElement.style.setProperty('--body-color', themeVars.fontColor);
     document.documentElement.style.setProperty('--color-messages', themeVars.fontColor);
     document.documentElement.style.setProperty('--color-links', themeVars.links);
+    document.documentElement.style.setProperty('--color-red', themeVars.red);
+    document.documentElement.style.setProperty('--color-white-text', themeVars.whiteText);
+    document.documentElement.style.setProperty('--color-light-gray', themeVars.lightGray);
+    document.documentElement.style.setProperty('--color-white-bg', themeVars.whiteBg);
+    document.documentElement.style.setProperty('--color-controls-on', themeVars.controlsOn);
+    document.documentElement.style.setProperty('--color-controls-off', themeVars.controlsOff);
   }, [theme]);
 
   return (
