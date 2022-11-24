@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import React, { FC, MouseEventHandler } from 'react';
 import { NavLink } from 'react-router-dom';
 import './UpperMenu__Item.scss';
@@ -7,11 +8,12 @@ export type MenuItemProps = {
   onClick?: MouseEventHandler<HTMLLIElement>;
   link?: string;
   title?: string;
+  className?: string;
 };
 
-export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick }) => {
+export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick, className }) => {
   const item = link ? (
-    <NavLink to={link} className="upper-menu__link">
+    <NavLink to={link} className={classNames('upper-menu__link', className)}>
       {text}
     </NavLink>
   ) : (
@@ -19,7 +21,7 @@ export const UpperMenuItem: FC<MenuItemProps> = ({ text, link, title, onClick })
   );
 
   return (
-    <li className="upper-menu__item" onClick={onClick} title={title ?? text}>
+    <li className={classNames('upper-menu__item', className)} onClick={onClick} title={title ?? text}>
       {item}
     </li>
   );

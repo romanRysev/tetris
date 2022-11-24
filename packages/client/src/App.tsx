@@ -3,9 +3,12 @@ import { Suspense, useEffect, useState } from 'react';
 import { HashRouter, Route, Routes } from 'react-router-dom';
 import './scss/index.scss';
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
-import { useAppDispatch } from './redux/hooks';
+import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import { Spinner } from './components/Spinner/Spinner';
+import classNames from 'classnames';
+import { themes } from './themes/themes';
+import { setCSSProperties } from './utils/setCSSProperties';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
@@ -24,17 +27,28 @@ const PhorumThreadPage = React.lazy(() => import('./pages/Phorum/PhorumThreadPag
 function App() {
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const theme = useAppSelector((state) => state.theme.active);
+  const addThemeToClassName = `_theme_${theme}`;
 
   useEffect(() => {
     (async () => {
       await dispatch(checkLogin());
       setIsLoaded(true);
     })();
-  }, [dispatch]);
+  }, [dispatch, isLoaded]);
+
+  useEffect(() => {
+    const themeVar = theme === 'dark' ? 'dark' : 'light';
+    setCSSProperties(themeVar);
+  }, [theme]);
 
   return (
     <>
       <div id="app">
+        <div
+          className={classNames('background-common', `background-common${addThemeToClassName}`)}
+          style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
+        ></div>
         {isLoaded && (
           <HashRouter>
             <Suspense fallback={<Spinner />}>

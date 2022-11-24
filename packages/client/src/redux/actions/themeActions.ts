@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { ThemesNames } from '../reducers/themeSlice';
+import { ThemesNames } from '../../themes/themes';
 
 export const setGameTheme = createAsyncThunk('theme', async (data: ThemesNames, thunkAPI) => {
   try {
@@ -9,7 +9,7 @@ export const setGameTheme = createAsyncThunk('theme', async (data: ThemesNames, 
   }
 });
 
-export const setDayOrNight = createAsyncThunk('theme/light', async (data: boolean, thunkAPI) => {
+export const setDayOrNight = createAsyncThunk('theme/global', async (data: 'dark' | 'light', thunkAPI) => {
   try {
     thunkAPI.fulfillWithValue(data);
   } catch (e) {

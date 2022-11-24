@@ -3,8 +3,8 @@
   display: flex;
 
   &__button {
-    background: white;
-    border: 1px solid black;
+    background: var(--color-border-gray);
+    border: 1px solid var(--color-messages);
 
     &_vertical {
       height: 88px;

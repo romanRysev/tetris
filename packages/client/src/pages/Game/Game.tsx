@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, InputHTMLAttributes, useCallback, useEffect, useRef, useState } from 'react';
+import React, { BaseSyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import './Game.scss';
 import './Game_info.scss';
 import './Game_menu.scss';
@@ -8,19 +8,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { setGameTheme } from '../../redux/actions/themeActions';
-import { ThemesNames } from '../../redux/reducers/themeSlice';
+import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
 import classNames from 'classnames';
-import { themes, themesOptions } from './themes/themes';
+import { ThemesNames, themesOptions } from '../../themes/themes';
 import { GameControls } from '../../components/GameControls/GameControls';
 import { maxMobileWidth } from './constant';
 import menu from '../../assets/menu.svg';
 import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 import { Button } from '../../components/Button/Button';
-
-export interface IOrientedInputRange extends InputHTMLAttributes<HTMLInputElement> {
-  orient?: 'vertical' | 'horizontal';
-}
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -89,6 +84,15 @@ export const Game: React.FC = () => {
   }, [navigate]);
 
   const selectRef = useRef<HTMLSelectElement>(null);
+  const defaultSelectValue = () => {
+    let activeValue = '';
+    Object.values(themesOptions).map((value, index) => {
+      if (value == theme) {
+        activeValue = Object.keys(themesOptions)[index];
+      }
+    });
+    return activeValue;
+  };
   const handleThemeSelect = async () => {
     const val = selectRef.current?.value;
     const req: ThemesNames = val ? themesOptions[val] : 'classic';
@@ -155,6 +159,19 @@ export const Game: React.FC = () => {
     [handleMenuClose],
   );
 
+  const handleNightTheme = async () => {
+    if (theme === 'classic') {
+      await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight('dark'));
+    } else if (theme === 'dark') {
+      await dispatch(setGameTheme('classic'));
+      await dispatch(setDayOrNight('light'));
+    } else if (!theme) {
+      await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight('dark'));
+    }
+  };
+
   useEffect(() => {
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
@@ -162,10 +179,8 @@ export const Game: React.FC = () => {
       const context = canvas.getContext('2d');
       const contextFigure = canvasFigure.getContext('2d');
       if (context && contextFigure) {
-        context.fillStyle = '#eee';
-        context.strokeStyle = '#111';
+        context.fillStyle = 'rgba(255, 255, 255, 0)';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-        context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
   }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
@@ -173,10 +188,6 @@ export const Game: React.FC = () => {
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
       {isMobile && <GameControls />}
-      <div
-        className={classNames('background', `background${addThemeToClassName}`)}
-        style={{ backgroundImage: 'url(' + themes[theme].backgroundImg + ')' }}
-      ></div>
       {isMobile && showMobileMenu && <BackgroundBlur onClick={handleScreenClick} />}
       {(!isMobile || (isMobile && showMobileMenu)) && (
         <div ref={menuElem} className={classNames(['game-menu', `game-menu${addThemeToClassName}`])}>
@@ -184,7 +195,12 @@ export const Game: React.FC = () => {
           <div className="select-theme">
             <span>
               Тема:{' '}
-              <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
+              <select
+                value={defaultSelectValue()}
+                ref={selectRef}
+                onChange={handleThemeSelect}
+                className="select-theme__select"
+              >
                 {Object.keys(themesOptions).map((theme, index) => (
                   <option key={index}>{theme}</option>
                 ))}
@@ -221,6 +237,16 @@ export const Game: React.FC = () => {
               </Link>
             </li>
           </ul>
+          {theme === 'classic' && (
+            <ul className="game-menu__submenu">
+              <li onClick={handleNightTheme}>Ночная тема</li>
+            </ul>
+          )}
+          {theme === 'dark' && (
+            <ul className="game-menu__submenu">
+              <li onClick={handleNightTheme}>Дневная тема</li>
+            </ul>
+          )}
           <ul className="game-menu__submenu">
             <li className="game-menu__link game-menu__link_color-red" onClick={handleLogout}>
               Выйти

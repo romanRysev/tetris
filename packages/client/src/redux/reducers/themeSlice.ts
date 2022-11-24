@@ -1,15 +1,14 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { ThemesNames } from '../../themes/themes';
 import { setDayOrNight, setGameTheme } from '../actions/themeActions';
 
-export type ThemesNames = 'classic' | 'shark';
-
 interface IThemeSlice {
-  light: boolean;
+  global: 'light' | 'dark';
   active: ThemesNames;
 }
 
 const themeInitState: IThemeSlice = {
-  light: true,
+  global: 'light',
   active: 'classic',
 };
 
@@ -22,7 +21,7 @@ export const themeSlice = createSlice({
       state.active = action.meta.arg;
     },
     [setDayOrNight.fulfilled.type]: (state, action) => {
-      state.light = action.meta.arg;
+      state.global = action.meta.arg;
     },
   },
 });

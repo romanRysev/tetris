@@ -10,6 +10,6 @@ export default {
   },
   moduleNameMapper: {
     '^.+\\.(css|less|scss)$': 'babel-jest',
-    '^.+.(svg)$': 'jest-transform-stub',
+    '^.+.(svg|mp3|png|jpg)$': 'jest-transform-stub',
   },
 };
