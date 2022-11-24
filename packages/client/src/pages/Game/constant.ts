@@ -42,3 +42,5 @@ export const gray = '#D9D9D9';
 export const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
 export const maxMobileWidth = 768;
+
+export const fillGameCanvas = 'rgba(255, 255, 255, 0';

@@ -3,11 +3,11 @@
     display: inline-block;
     margin: 0px 10px;
     cursor: pointer;
+  }
 
-    &_logout {
-      color: var(--color-red);
-      font-weight: bold;
-    }
+  &__item-logout {
+    color: var(--color-red);
+    font-weight: bold;
   }
 
   &__link {

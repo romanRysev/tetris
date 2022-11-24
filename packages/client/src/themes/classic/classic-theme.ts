@@ -60,3 +60,8 @@ export const colorsDarkTheme: Record<Sequence, string> = {
   J: '#1D31AC',
   L: '#015800',
 };
+
+export const fillColorLight = '#FFFFFF';
+export const fillColorDark = '#EEEEEE';
+
+export const classicStroke = '#AAAAAA';

@@ -16,8 +16,19 @@
  *
  */
 
-import { classicMusic, classicSounds, darkThemeBackground, lightThemeBackground } from './classic/classic-theme';
-import { man, shark, sharkBackground, sharkMusic, sharkSounds } from './shark/shark-theme';
+import { Sequence } from '../pages/Game/constant';
+import {
+  classicMusic,
+  classicSounds,
+  classicStroke,
+  colors,
+  colorsDarkTheme,
+  darkThemeBackground,
+  fillColorDark,
+  fillColorLight,
+  lightThemeBackground,
+} from './classic/classic-theme';
+import { man, shark, sharkBackground, sharkMusic, sharkSounds, sharkStroke } from './shark/shark-theme';
 
 export type StringObject = Record<string, string>;
 
@@ -26,6 +37,9 @@ export interface ThemeProps {
   music?: string;
   images?: Record<string, StringObject> | StringObject | string;
   backgroundImg?: string;
+  fillCanvas?: string;
+  colors?: Record<Sequence, string>;
+  themeStroke?: string;
 }
 
 export interface ThemeSounds {
@@ -47,16 +61,23 @@ export const themes: Record<string, ThemeProps> = {
       shark: shark,
     },
     backgroundImg: sharkBackground, // картинка на фон
+    themeStroke: sharkStroke,
   },
   classic: {
     sounds: classicSounds,
     music: classicMusic,
     backgroundImg: lightThemeBackground,
+    fillCanvas: fillColorLight,
+    colors: colors,
+    themeStroke: classicStroke,
   },
   dark: {
     sounds: classicSounds,
     music: classicMusic,
     backgroundImg: darkThemeBackground,
+    fillCanvas: fillColorDark,
+    colors: colorsDarkTheme,
+    themeStroke: classicStroke,
   },
 };
 

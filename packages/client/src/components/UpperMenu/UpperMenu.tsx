@@ -89,7 +89,7 @@ export const UpperMenu: FC = () => {
               ))}
             </select>
           </span>
-          <UpperMenuItem text="Выйти" onClick={handleLogout} className="upper-menu__item_logout" key="logout" />
+          <UpperMenuItem text="Выйти" onClick={handleLogout} className="upper-menu__item-logout" key="logout" />
         </ul>
       </nav>
     </div>
