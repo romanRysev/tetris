@@ -34,8 +34,8 @@ $color-bg-dark: #000015 !default;
 $color-white-text-light: #fff !default;
 $color-white-text-dark: #aaa !default;
 
-$color-light-gray-light: #fbfbfb !default;
-$color-light-gray-dark: #333 !default;
+$color-light-gray-light: #fbfbfb99 !default;
+$color-light-gray-dark: #33333399 !default;
 
 $color-white-bg-light: #fff !default;
 $color-white-bg-dark: #333 !default;
@@ -48,6 +48,12 @@ $color-controls-off-dark: #333 !default;
 
 $color-border-gray-light: #eee !default;
 $color-border-gray-dark: #999 !default;
+
+$brightness-light: 100%;
+$brightness-dark: 70%;
+
+$color-bg-hamburger-light: rgba(255, 255, 255, 0);
+$color-bg-hamburger-dark: rgba(255, 255, 255, .6);
 
 $codinsk: (
   'color-messages': $color-messages,
@@ -89,6 +95,10 @@ $codinsk: (
   'color-controls-off-dark': $color-controls-off-dark,
   'color-border-gray-light': $color-border-gray-light,
   'color-border-gray-dark': $color-border-gray-dark,
+  'brightness-light': $brightness-light,
+  'brightness-dark': $brightness-dark,
+  'color-bg-hamburger-light': $color-bg-hamburger-light,
+  'color-bg-hamburger-dark': $color-bg-hamburger-dark,
 ) !default;
 
 // Color system

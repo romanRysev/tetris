@@ -31,7 +31,6 @@ export const Game: React.FC = () => {
   const userAvatar = makeUserAvatarFromUser(userProfile);
   const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
   const theme = useAppSelector((state) => state.theme.active);
-  // const theme = 'dark';
   const [isLevelsActive, setLevelsActive] = useState(false);
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -85,6 +84,15 @@ export const Game: React.FC = () => {
   }, [navigate]);
 
   const selectRef = useRef<HTMLSelectElement>(null);
+  const defaultSelectValue = () => {
+    let activeValue = '';
+    Object.values(themesOptions).map((value, index) => {
+      if (value == theme) {
+        activeValue = Object.keys(themesOptions)[index];
+      }
+    });
+    return activeValue;
+  };
   const handleThemeSelect = async () => {
     const val = selectRef.current?.value;
     const req: ThemesNames = val ? themesOptions[val] : 'classic';
@@ -172,9 +180,7 @@ export const Game: React.FC = () => {
       const contextFigure = canvasFigure.getContext('2d');
       if (context && contextFigure) {
         context.fillStyle = 'rgba(255, 255, 255, 0)';
-        // context.strokeStyle = '#111';
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
-        // context.strokeRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
   }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
@@ -189,7 +195,12 @@ export const Game: React.FC = () => {
           <div className="select-theme">
             <span>
               Тема:{' '}
-              <select ref={selectRef} onChange={handleThemeSelect} className="select-theme__select">
+              <select
+                value={defaultSelectValue()}
+                ref={selectRef}
+                onChange={handleThemeSelect}
+                className="select-theme__select"
+              >
                 {Object.keys(themesOptions).map((theme, index) => (
                   <option key={index}>{theme}</option>
                 ))}

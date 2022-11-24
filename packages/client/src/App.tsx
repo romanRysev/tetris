@@ -6,9 +6,9 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import { Spinner } from './components/Spinner/Spinner';
-import { initStateThemeDark, initStateThemeLight } from './themes/classic/classic-theme';
 import classNames from 'classnames';
 import { themes } from './themes/themes';
+import { setCSSProperties } from './utils/setCSSProperties';
 
 const Login = React.lazy(() => import('./pages/Login/Login'));
 const Register = React.lazy(() => import('./pages/Register/Register'));
@@ -28,8 +28,6 @@ function App() {
   const dispatch = useAppDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
   const theme = useAppSelector((state) => state.theme.active);
-  // const theme = 'classic';
-  // const theme = 'dark';
   const addThemeToClassName = `_theme_${theme}`;
 
   useEffect(() => {
@@ -40,18 +38,8 @@ function App() {
   }, [dispatch, isLoaded]);
 
   useEffect(() => {
-    const themeVars = theme === 'dark' ? initStateThemeDark : initStateThemeLight;
-    document.documentElement.style.setProperty('--body-bg', themeVars.backgroundColor);
-    document.documentElement.style.setProperty('--body-color', themeVars.fontColor);
-    document.documentElement.style.setProperty('--color-messages', themeVars.fontColor);
-    document.documentElement.style.setProperty('--color-links', themeVars.links);
-    document.documentElement.style.setProperty('--color-red', themeVars.red);
-    document.documentElement.style.setProperty('--color-white-text', themeVars.whiteText);
-    document.documentElement.style.setProperty('--color-light-gray', themeVars.lightGray);
-    document.documentElement.style.setProperty('--color-white-bg', themeVars.whiteBg);
-    document.documentElement.style.setProperty('--color-controls-on', themeVars.controlsOn);
-    document.documentElement.style.setProperty('--color-controls-off', themeVars.controlsOff);
-    document.documentElement.style.setProperty('--color-border-gray', themeVars.borderGray);
+    const themeVar = theme === 'dark' ? 'dark' : 'light';
+    setCSSProperties(themeVar);
   }, [theme]);
 
   return (

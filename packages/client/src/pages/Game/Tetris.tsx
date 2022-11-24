@@ -156,7 +156,6 @@ export class Tetris extends Component<TetrisProps> {
       return;
     }
     return await new Promise((resolve, reject) => {
-      // const song = new Audio();
       this.themeMusic.src = src;
       this.themeMusic.onload = () => resolve(this.themeMusic);
       this.themeMusic.onerror = (event) => reject(event);
@@ -181,7 +180,6 @@ export class Tetris extends Component<TetrisProps> {
         const track = actx.createMediaElementSource(sound);
         const gainNode = actx.createGain();
         track.connect(gainNode).connect(actx.destination);
-        // const indexS = Object.keys(this.themeSounds)[index];
         Object.assign(this.soundControls, {
           [soundsEvents[index]]: {
             context: actx,

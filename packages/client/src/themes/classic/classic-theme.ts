@@ -22,31 +22,23 @@ export const classicSounds = {
 export const lightThemeBackground = lightBg;
 export const darkThemeBackground = darkBg;
 
-export const initStateThemeLight = {
-  backgroundColor: 'var(--body-bg-light)',
-  fontColor: 'var(--body-color-light)',
-  links: 'var(--color-links-light)',
-  red: 'var(--color-red-light)',
-  whiteText: 'var(--color-white-text-light)',
-  lightGray: 'var(--color-light-gray-light)',
-  whiteBg: 'var(--color-white-bg-light)',
-  controlsOn: 'var(--color-controls-on-light)',
-  controlsOff: 'var(--color-controls-off-light)',
-  borderGray: 'var(--color-border-gray-light)',
-};
-// все-таки поменяем классическую на светлую
+export type ThemeColorsProps = 'light' | 'dark';
 
-export const initStateThemeDark = {
-  backgroundColor: 'var(--body-bg-dark)',
-  fontColor: 'var(--body-color-dark)',
-  links: 'var(--color-links-dark)',
-  red: 'var(--color-red-dark)',
-  whiteText: 'var(--color-white-text-dark)',
-  lightGray: 'var(--color-light-gray-dark)',
-  whiteBg: 'var(--color-white-bg-dark)',
-  controlsOn: 'var(--color-controls-on-dark)',
-  controlsOff: 'var(--color-controls-off-dark)',
-  borderGray: 'var(--color-border-gray-dark)',
+export const makeThemeColors = (theme: ThemeColorsProps) => {
+  return {
+    '--body-bg': `var(--body-bg-${theme})`,
+    '--color-messages': `var(--body-color-${theme})`,
+    '--color-links': `var(--color-links-${theme})`,
+    '--color-red': `var(--color-red-${theme})`,
+    '--color-white-text': `var(--color-white-text-${theme})`,
+    '--color-light-gray': `var(--color-light-gray-${theme})`,
+    '--color-white-bg': `var(--color-white-bg-${theme})`,
+    '--color-controls-on': `var(--color-controls-on-${theme})`,
+    '--color-controls-off': `var(--color-controls-off-${theme})`,
+    '--color-border-gray': `var(--color-border-gray-${theme})`,
+    '--brightness': `var(--brightness-${theme})`,
+    '--color-bg-hamburger': `var(--color-bg-hamburger-${theme})`,
+  };
 };
 
 export const colors: Record<Sequence, string> = {

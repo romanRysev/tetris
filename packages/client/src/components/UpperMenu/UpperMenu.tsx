@@ -32,7 +32,6 @@ const menuLinks: MenuItemProps[] = [
 ];
 
 export const UpperMenu: FC = () => {
-  // const [isNight, setIsNight] = useState(false);
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -52,6 +51,18 @@ export const UpperMenu: FC = () => {
     return await dispatch(setGameTheme(req));
   };
 
+  const themeActive = useAppSelector((state) => state.theme.active);
+
+  const defaultSelectValue = () => {
+    let activeValue = '';
+    Object.values(themesOptions).map((value, index) => {
+      if (value == themeActive) {
+        activeValue = Object.keys(themesOptions)[index];
+      }
+    });
+    return activeValue;
+  };
+
   const userProfile = useAppSelector((state) => state.auth.user);
 
   return (
@@ -65,9 +76,16 @@ export const UpperMenu: FC = () => {
           ))}
           <span className="upper-menu__theme">
             Тема:{' '}
-            <select ref={selectRef} onChange={handleThemeSelect} className="upper-menu__select">
+            <select
+              value={defaultSelectValue()}
+              ref={selectRef}
+              onChange={handleThemeSelect}
+              className="upper-menu__select"
+            >
               {Object.keys(themesOptions).map((theme, index) => (
-                <option key={index}>{theme}</option>
+                <option key={index} value={theme}>
+                  {theme}
+                </option>
               ))}
             </select>
           </span>
