@@ -6,7 +6,7 @@ const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: 'localhost',
+  host: process.env.PSQL_HOST || "localhost",
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
@@ -24,6 +24,6 @@ export async function dbConnect() {
     await sequelize.sync()
     console.log('Connection has been established successfully')
   } catch (e) {
-    console.error('Unable to connect to the database:', e)
+    console.error('Unable to connect to the database: ?', e)
   }
 }
