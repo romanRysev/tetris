@@ -20,6 +20,12 @@
   &__canvas {
     height: 100%;
     position: relative;
+    box-shadow: 0 0 6px 0 rgba(106, 139, 165, 0.58);
+    border-radius: 10px;
+
+    @media (max-width: $mobile-screen-max-width) {
+      border-radius: 3px;
+    }
   }
 
   &__start-button {
@@ -39,7 +45,6 @@
     align-items: center;
     justify-content: space-between;
     width: 233px;
-    height: 178px;
     border-radius: 10px;
     background-color: var(--white);
     position: absolute;
@@ -85,18 +90,4 @@
 
 .show {
   display: table-caption;
-}
-
-.background {
-  position: absolute;
-  z-index: -100;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-
-  &_theme_shark {
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
 }

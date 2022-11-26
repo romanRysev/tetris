@@ -2,26 +2,7 @@
   display: block;
   width: 670px;
   height: 66px;
-  background-color: var(--color-back-blue);
   text-align: justify;
-
-  &:nth-child(odd) {
-    background-color: var(--color-back-gray);
-  }
-
-  &_top {
-    &:nth-child(odd) {
-      background-color: var(--color-back-blue);
-    }
-  
-    &:nth-child(even) {
-      background-color: var(--color-back-gray);
-    }
-  }
-
-  &_theme_dark {
-    background-color: var(--color-dark-theme-dark-gray);
-  }
 
   &__avatar {
     margin: 8px;

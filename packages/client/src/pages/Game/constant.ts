@@ -37,17 +37,10 @@ export const tetrominos: Record<Sequence, TetrominoMatrix> = {
     [0, 0, 0],
   ],
 };
-export const colors: Record<Sequence, string> = {
-  I: '#FFDD00',
-  O: '#0DCAF0',
-  T: '#EE82EE',
-  S: '#CB0000',
-  Z: '#FFA500',
-  J: '#0000FF',
-  L: '#008000',
-};
 
 export const gray = '#D9D9D9';
 export const sequence = ['I', 'J', 'L', 'O', 'S', 'T', 'Z'];
 
 export const maxMobileWidth = 768;
+
+export const fillGameCanvas = 'rgba(255, 255, 255, 0';

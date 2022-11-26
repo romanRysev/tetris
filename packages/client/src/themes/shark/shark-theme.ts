@@ -53,3 +53,7 @@ export const sharkSounds = {
 };
 
 export const sharkBackground = beachImg;
+
+export const sharkStroke = '#EEEEEE';
+
+export const water = 'rgba(0, 188, 255, 0.2)';

@@ -1,13 +1,13 @@
 //Codinsk-team palette
 
 $color-messages: #000 !default;
-$color-links: #3369F3 !default;
-$color-white: #FFF !default;
+$color-links: #3369f3 !default;
+$color-white: #fff !default;
 $color-lightgray: #eee !default;
 $color-back-gray: #f8f8f8 !default;
 $color-back-blue: #e4edfd !default;
 $color-midgray: #999999 !default;
-$color-darkgray: #1E1E1E !default;
+$color-darkgray: #1e1e1e !default;
 $color-lightergrey: #efefef !default;
 $color-moregrey: #eaeaea !default;
 $color-backgrnd-gray: #fbfbfb !default;
@@ -16,30 +16,89 @@ $color-backgrnd-gray-dark-theme: #333 !default;
 $color-danger: #e55353 !default;
 $color-dark-theme-dark-gray: #222 !default;
 $color-dark-theme-mid-gray: #444 !default;
-$color-dark-theme-links: #1D31AC !default;
+$color-dark-theme-links: #1d31ac !default;
 $color-dark-theme-danger: #d93737 !default;
+
 $color-red-light: #{$color-danger} !default;
 $color-red-dark: #{$color-dark-theme-danger} !default;
 
+$color-messages-light: #000 !default;
+$color-messages-dark: #aaa;
+
+$color-links-light: #3369f3 !default;
+$color-links-dark: #1d31ac !default;
+
+$color-bg-light: #fff !default;
+$color-bg-dark: #000015 !default;
+
+$color-white-text-light: #fff !default;
+$color-white-text-dark: #aaa !default;
+
+$color-light-gray-light: #fbfbfb99 !default;
+$color-light-gray-dark: #33333399 !default;
+
+$color-white-bg-light: #fff !default;
+$color-white-bg-dark: #333 !default;
+
+$color-controls-on-light: #333 !default;
+$color-controls-on-dark: #999 !default;
+
+$color-controls-off-light: #999 !default;
+$color-controls-off-dark: #333 !default;
+
+$color-border-gray-light: #eee !default;
+$color-border-gray-dark: #999 !default;
+
+$brightness-light: 100%;
+$brightness-dark: 70%;
+
+$color-bg-hamburger-light: rgba(255, 255, 255, 0);
+$color-bg-hamburger-dark: rgba(255, 255, 255, .6);
+
 $codinsk: (
-        "color-messages": $color-messages,
-        "color-links": $color-links,
-        "color-lightgray": $color-lightgray,
-        "color-back-gray": $color-back-gray,
-        "color-back-blue": $color-back-blue,
-        "color-midgray": $color-midgray,
-        "color-darkgray": $color-darkgray,
-        "color-lightergrey":$color-lightergrey,
-        "color-moregrey": $color-moregrey,
-        "color-backgrnd-gray": $color-backgrnd-gray,
-        "color-danger": $color-danger,
-        "color-white": $color-white,
-        "color-text-dark_theme": $color-text-dark_theme,
-        "color-backgrnd-gray-dark-theme": $color-backgrnd-gray-dark-theme,
-        "color-dark-theme-dark-gray": $color-dark-theme-dark-gray,
-        "color-dark-theme-mid-gray": $color-dark-theme-mid-gray,
-        "color-dark-theme-links": $color-dark-theme-links,
-        "color-dark-theme-danger": $color-dark-theme-danger,
+  'color-messages': $color-messages,
+  'color-links': $color-links,
+  'color-lightgray': $color-lightgray,
+  'color-back-gray': $color-back-gray,
+  'color-back-blue': $color-back-blue,
+  'color-midgray': $color-midgray,
+  'color-darkgray': $color-darkgray,
+  'color-lightergrey': $color-lightergrey,
+  'color-moregrey': $color-moregrey,
+  'color-backgrnd-gray': $color-backgrnd-gray,
+  'color-danger': $color-danger,
+  'color-white': $color-white,
+  'color-text-dark_theme': $color-text-dark_theme,
+  'color-backgrnd-gray-dark-theme': $color-backgrnd-gray-dark-theme,
+  'color-dark-theme-dark-gray': $color-dark-theme-dark-gray,
+  'color-dark-theme-mid-gray': $color-dark-theme-mid-gray,
+  'color-dark-theme-links': $color-dark-theme-links,
+  'color-dark-theme-danger': $color-dark-theme-danger,
+
+  'color-links-light': $color-links-light,
+  'color-links-dark': $color-links-dark,
+  'color-messages-light': $color-messages-light,
+  'color-messages-dark': $color-messages-dark,
+  'color-red-light': $color-red-light,
+  'color-red-dark': $color-red-dark,
+  'color-bg-light': $color-bg-light,
+  'color-bg-dark': $color-bg-dark,
+  'color-white-text-light': $color-white-text-light,
+  'color-white-text-dark': $color-white-text-dark,
+  'color-light-gray-light': $color-light-gray-light,
+  'color-light-gray-dark': $color-light-gray-dark,
+  'color-white-bg-light': $color-white-bg-light,
+  'color-white-bg-dark': $color-white-bg-dark,
+  'color-controls-on-light': $color-controls-on-light,
+  'color-controls-on-dark': $color-controls-on-dark,
+  'color-controls-off-light': $color-controls-off-light,
+  'color-controls-off-dark': $color-controls-off-dark,
+  'color-border-gray-light': $color-border-gray-light,
+  'color-border-gray-dark': $color-border-gray-dark,
+  'brightness-light': $brightness-light,
+  'brightness-dark': $brightness-dark,
+  'color-bg-hamburger-light': $color-bg-hamburger-light,
+  'color-bg-hamburger-dark': $color-bg-hamburger-dark,
 ) !default;
 
 // Color system
@@ -183,12 +242,12 @@ $font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mon
 $font-family-base: var(--font-sans-serif) !default;
 $font-family-code: var(--font-monospace) !default;
 
-$font-size-root:              null !default;
-$font-size-base:              13px !default;
-// $font-size-base:              1rem !default; 
+$font-size-root: null !default;
+$font-size-base: 13px !default;
+// $font-size-base:              1rem !default;
 // Предполагается, что у браузера установлен по умолчанию, 16 пикселей
-$font-size-sm:                $font-size-base * .875 !default;
-$font-size-lg:                $font-size-base * 1.25 !default;
+$font-size-sm: $font-size-base * 0.875 !default;
+$font-size-lg: $font-size-base * 1.25 !default;
 
 $font-weight-lighter: lighter !default;
 $font-weight-light: 300 !default;
@@ -198,7 +257,7 @@ $font-weight-semibold: 600 !default;
 $font-weight-bold: 700 !default;
 $font-weight-bolder: bolder !default;
 
-$font-weight-base:            $font-weight-medium !default;
+$font-weight-base: $font-weight-medium !default;
 
 $line-height-base: 1.5 !default;
 $line-height-sm: 1.25 !default;
@@ -223,9 +282,14 @@ $font-sizes: (
 // Body
 //
 
-$body-bg: $white !default;
+$body-bg-light: $white !default;
+$body-bg-dark: $black !default;
 $body-color: $high-emphasis !default;
 $body-text-align: null !default;
+$body-color-light: $color-messages !default;
+$body-bg-light: $white !default;
+$body-color-dark: $color-text-dark_theme !default;
+$body-bg-dark: $black !default;
 
 $spacer: 1rem !default;
 $spacers: (

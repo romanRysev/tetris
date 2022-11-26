@@ -2,9 +2,11 @@ import React, { Component, ReactNode } from 'react';
 import { UserChars } from '../../redux/reducers/userSlice';
 import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
-import { colors, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
-import { man, shark } from './themes/shark/shark-theme';
-import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from './themes/themes';
+import { fillGameCanvas, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
+import { colors } from '../../themes/classic/classic-theme';
+import { man, shark, water } from '../../themes/shark/shark-theme';
+import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from '../../themes/themes';
+import { setThemeColors } from '../../utils/setThemeColors';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -125,6 +127,12 @@ export class Tetris extends Component<TetrisProps> {
     if (musicAudioContext.state === 'suspended') {
       musicAudioContext.resume();
     }
+
+    this.colors = setThemeColors(theme).colors;
+
+    // if (theme === 'dark') {
+    //   this.colors = colorsDarkTheme;
+    // }
   }
 
   private async preloadImages(images: Record<string, string>, target: Record<string, HTMLImageElement>) {
@@ -151,7 +159,6 @@ export class Tetris extends Component<TetrisProps> {
       return;
     }
     return await new Promise((resolve, reject) => {
-      // const song = new Audio();
       this.themeMusic.src = src;
       this.themeMusic.onload = () => resolve(this.themeMusic);
       this.themeMusic.onerror = (event) => reject(event);
@@ -176,7 +183,6 @@ export class Tetris extends Component<TetrisProps> {
         const track = actx.createMediaElementSource(sound);
         const gainNode = actx.createGain();
         track.connect(gainNode).connect(actx.destination);
-        // const indexS = Object.keys(this.themeSounds)[index];
         Object.assign(this.soundControls, {
           [soundsEvents[index]]: {
             context: actx,
@@ -277,6 +283,7 @@ export class Tetris extends Component<TetrisProps> {
 
     if (prevProps.theme != this.props.theme) {
       this.theme = this.props.theme;
+      this.colors = setThemeColors(this.props.theme).colors;
       this.musicTrackTime[prevProps.theme] = this.themeMusic.currentTime;
       this.makeSoundNodes();
       this.startThemeAudio();
@@ -314,7 +321,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private createCanvas(): void {
-    this.ctx.fillStyle = '#FFFFFF';
+    this.ctx.fillStyle = setThemeColors(this.theme).fill;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
@@ -328,17 +335,17 @@ export class Tetris extends Component<TetrisProps> {
       this.ctx.moveTo(0, this.cellSize * y);
       this.ctx.lineTo(this.width * this.cellSize, this.cellSize * y);
     }
+    this.ctx.strokeStyle = setThemeColors(this.theme).stroke;
     this.ctx.stroke();
-    if (this.theme === 'shark') {
-      this.ctx.fillStyle = 'rgba(255, 255, 255, .2)';
-      this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-    }
+
+    this.ctx.fillStyle = fillGameCanvas;
+    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   // BEGIN для акул
 
   private drawWater(end: number) {
-    this.ctx.fillStyle = 'rgba(0, 188, 255, 0.2)';
+    this.ctx.fillStyle = water;
     this.ctx.fillRect(0, this.canvas.height - end + 15, this.canvas.width, this.canvas.height);
   }
 

@@ -6,20 +6,12 @@
   cursor: pointer;
   height: 40px;
   width: 100%;
-
-  &_theme_light {
-    background-color: $button-light-background-color;
-    color: $button-light-text-color;
-  }
-
-  &_theme_dark {
-    background-color: $button-dark-background-color;
-    color: $button-dark-text-color;
-  }
+  background-color: var(--color-links);
+  color: var(--color-white-text);
 
   &_transparent {
     background-color: rgb(128 128 128 / 0%);
-    color: $button-transparent-text-color;
+    color: var(--color-links);
   }
 
   &_disabled {
@@ -38,9 +30,9 @@
   font-size: 0.813rem;
   font-weight: 500;
   margin: 0;
+  background-color: transparent;
 
   &_opacity {
-    background-color: var(--white);
     color: var(--blue);
   }
 }
