@@ -18,14 +18,6 @@ const sequelizeOptions: SequelizeOptions = {
 
 export const sequelize = new Sequelize(sequelizeOptions)
 
-export const db = {};
-
-// db.Sequelize = Sequelize;
-// db.sequelize = sequelize;
-
-// // eslint-disable-next-line @typescript-eslint/no-var-requires
-// db.users = require('./../models/user')(sequelize, Sequelize);
-
 export const User = sequelize.define('User', userModel, {})
 
 export async function dbConnect() {

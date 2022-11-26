@@ -50,11 +50,7 @@ export async function deleteAllUsers() {
 }
 
 export function startApp() {
-  dbConnect().then(
-  //   () => {
-  //   createUser('Nona', "Bogan", 16);
-  // }
-  )
+  dbConnect().then()
   /*
    * Запуск приложения только после старта БД
 

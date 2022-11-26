@@ -1,4 +1,4 @@
-import { User } from './../config/db.config'
+import { User } from '../config/db.config'
 import type { Request, Response } from 'express'
 import {
   createUser,
@@ -7,7 +7,7 @@ import {
   getAllUsers,
   getUserById,
   updateUserById,
-} from './../index'
+} from '../index'
 
 export const createUserRow = async (req: Request, res: Response) => {
   const { firstName, lastName, userID } = req.body
@@ -31,10 +31,13 @@ export const createUserRow = async (req: Request, res: Response) => {
 
 // это надо написать
 export const findAll = (req: Request, res: Response) => {
-  console.log(req)
   // теоретически там будет where
-  const { where } = req.params
-  const condition = where ? { where: where } : undefined
+  const { firstName, lastName, userID } = req.query
+  const condition = {
+    lastName: lastName || undefined,
+    firstName: firstName || undefined,
+    userID: userID || undefined,
+  }
 
   User.findAll({ where: condition })
     .then(data => {
