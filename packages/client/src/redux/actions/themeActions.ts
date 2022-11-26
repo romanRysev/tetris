@@ -8,11 +8,3 @@ export const setGameTheme = createAsyncThunk('theme', async (data: ThemesNames, 
     return thunkAPI.rejectWithValue('Не удалось поменять тему');
   }
 });
-
-export const setDayOrNight = createAsyncThunk('theme/light', async (data: boolean, thunkAPI) => {
-  try {
-    thunkAPI.fulfillWithValue(data);
-  } catch (e) {
-    return thunkAPI.rejectWithValue('Не удалось поменять тему');
-  }
-});
