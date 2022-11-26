@@ -1,31 +1,10 @@
-// import dotenv from 'dotenv'
-// import cors from 'cors'
-// import express from 'express'
-// import { startApp } from './app'
-
-// dotenv.config()
-
-// const app = express()
-// app.use(cors())
-// const port = Number(process.env.SERVER_PORT) || 3001
-
-// startApp()
-
-// app.get('/', (_, res) => {
-//   res.json('👋 Howdy from the server :)')
-// })
-
-// app.listen(port, () => {
-//   console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
-// })
-
 import dotenv from 'dotenv'
 import cors from 'cors'
-import express, { Request, Response } from 'express'
-import { createUser, deleteAllUsers, deleteUserById, getAllUsers, getUserById, startApp, updateUserById } from './app'
+import express from 'express'
+import { startApp } from './app'
 import bodyParser from 'body-parser'
-// import { userModel } from "./app/models/user";
-import 'reflect-metadata'
+import { createUserRow, deleteAll, deleteOne, findOne, getAll, update } from './app/controllers/tutorial.controller'
+
 
 dotenv.config()
 
@@ -34,7 +13,6 @@ app.use(cors())
 const port = Number(process.env.SERVER_PORT) || 3001
 
 app.use(bodyParser.json())
-// userModel.sequelize.sync();
 
 startApp()
 
@@ -43,106 +21,30 @@ app.get('/', (_, res) => {
 })
 
 // получить всех пользователей - работает
-app.get('/api/user', async (_, res) => {
-  await getAllUsers()
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || 'Some error occurred while getting the Users table.',
-      })
-    })
-})
+app.get('/api/user', getAll);
 
 // получить пользователя по id - работает
-app.get('/api/user/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await getUserById(Number(id))
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.sendStatus(500).send({
-        message:
-          err.message || 'Some error occurred while getting the User.',
-      })
-    })
-})
+app.get('/api/user/:id', findOne);
 
 // удалить пользователя по id - работает
-app.delete('/api/user/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await deleteUserById(Number(id))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.sendStatus(500).send({
-        message:
-          err.message || 'Some error occurred while deleting the User.',
-      })
-    })
-})
+app.delete('/api/user/:id', deleteOne);
 
 //удалить всех пользователей - работает
-app.delete('/api/user', async (_, res: Response) => {
-  await deleteAllUsers()
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.sendStatus(500).send({
-        message:
-          err.message || 'Some error occurred while deleting the Users.',
-      })
-    })
-})
+app.delete('/api/user', deleteAll);
 
 // найти по параметрам - с данными разобраться
 
 // обновить пользователя по id - работает
-app.put('/api/user/:id', async (req: Request, res: Response) => {
-  const { id } = req.params;
-  await updateUserById(Number(id), {...req.body})
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.sendStatus(500).send({
-        message:
-          err.message || 'Some error occurred while deleting the User.',
-      })
-    })
-})
+app.put('/api/user/:id', update);
 
 // создать пользователя - работает
-app.post('/api/user', async (req: Request, res: Response) => {
-  const { firstName, lastName, userID } = req.body
-  // надо ли верифицировать? у нас же тс
-  if (!firstName || !lastName || !userID) {
-    res.sendStatus(400).send({
-      message: 'First name and Last name can not be empty!',
-    })
-    return
-  }
-  await createUser(firstName, lastName, Number(userID))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.sendStatus(500).send({
-        message: err.message || 'Some error occurred while creating the User.',
-      })
-    })
-})
+app.post('/api/user', createUserRow);
 
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
 })
 
-
+//пример запроса
 // fetch('/api/user', {
 //   method: 'POST',
 //   headers: {
