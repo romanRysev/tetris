@@ -4,6 +4,7 @@ import type { ModelAttributes } from 'sequelize/types'
 export interface IUser {
   firstName: string
   lastName: string
+  userID: number
 }
 
 export const userModel: ModelAttributes<Model, IUser> = {
@@ -14,4 +15,8 @@ export const userModel: ModelAttributes<Model, IUser> = {
   lastName: {
     type: DataType.STRING,
   },
+  userID: {
+    type: DataType.INTEGER,
+    allowNull: false,
+  }
 }

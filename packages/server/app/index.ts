@@ -2,8 +2,8 @@ import { dbConnect, User } from './config/db.config'
 import type { IUser } from './models/user'
 
 // Создание пользователя
-export async function createUser(firstName: string, lastName: string) {
-  return User.create({ firstName, lastName })
+export async function createUser(firstName: string, lastName: string, userID: number) {
+  return User.create({ firstName, lastName, userID })
 }
 
 // Обновление пользователя по ID
@@ -21,13 +21,40 @@ export async function getUserById(id: number) {
   return User.findOne({ where: { id } })
 }
 
-// Получение пользователей по ID
+// Получение пользователей по имени
 export async function getUsersByFirstName(firstName: string) {
   return User.findAll({ where: { firstName } })
 }
 
+// Получение пользователей по имени | фамилии | userID
+export async function getUsersByParams(firstName?: string, lastName?: string, userID?: number) {
+  const conditions ={
+    firstName: firstName || undefined,
+    lastName: lastName || undefined,
+    userID: userID || undefined,
+  }
+  return User.findAll({ where: conditions })
+}
+
+// Получение всех пользователей
+export async function getAllUsers() {
+  return User.findAll()
+}
+
+// Удалить всех пользователей
+export async function deleteAllUsers() {
+  return User.destroy({
+    where: {},
+    truncate: false
+  })
+}
+
 export function startApp() {
-  dbConnect().then()
+  dbConnect().then(
+  //   () => {
+  //   createUser('Nona', "Bogan", 16);
+  // }
+  )
   /*
    * Запуск приложения только после старта БД
 

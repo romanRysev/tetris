@@ -6,15 +6,25 @@ const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: process.env.PSQL_HOST || "localhost",
+  host: "localhost",
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres',
   port: Number(POSTGRES_PORT),
+  ssl: false,  
+  dialectOptions: {},
 }
 
 export const sequelize = new Sequelize(sequelizeOptions)
+
+export const db = {};
+
+// db.Sequelize = Sequelize;
+// db.sequelize = sequelize;
+
+// // eslint-disable-next-line @typescript-eslint/no-var-requires
+// db.users = require('./../models/user')(sequelize, Sequelize);
 
 export const User = sequelize.define('User', userModel, {})
 
@@ -24,6 +34,6 @@ export async function dbConnect() {
     await sequelize.sync()
     console.log('Connection has been established successfully')
   } catch (e) {
-    console.error('Unable to connect to the database: ?', e)
+    console.error('Unable to connect to the database: и еще раз', e)
   }
 }

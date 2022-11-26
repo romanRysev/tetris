@@ -1,5 +1,4 @@
 import { User } from "./../config/db.config";
-// import { userModel } from "./../models/user";
 import type { Request, Response } from 'express';
 // import { Op } from 'sequelize';
 
@@ -7,13 +6,15 @@ import type { Request, Response } from 'express';
 // const db = require('../models')
 // const Tutorial = db.tutorials
 // const Op = db.Sequelize.Op
+// const db = User
 
 
 // exports.create = (req, res) => {
-  exports.create = async (req: Request, res: Response) => {
-    const {firstName, lastName, id} = req.params;
+  export const createUserRow = async (req: Request, res: Response) => {
+    console.log('а вот фиг вам');
+    const {firstName, lastName, userID} = req.params;
     // надо ли верифицировать? у нас же тс
-    if (!firstName || !lastName) {
+    if (!firstName || !lastName || !userID) {
         res.status(400).send({
             message: "First name and Last name can not be empty!"
           });
@@ -30,7 +31,7 @@ import type { Request, Response } from 'express';
     const user = {
         firstName: firstName,
         lastName: lastName,
-        userID: id,
+        userID: userID,
     }
 
   // Create a Tutorial
