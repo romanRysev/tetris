@@ -1,0 +1,102 @@
+@import "Game";
+
+.game-screen {
+  width: 300px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+
+  @media (max-width: $mobile-screen-max-width) {
+    height: calc(100vh - 220px);
+    max-height: 600px;
+    margin: 10px auto;
+    flex-grow: 1;
+  }
+
+  &__h3 {
+    text-align: center;
+  }
+
+  &__canvas {
+    height: 100%;
+    position: relative;
+  }
+
+  &__start-button {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-links);
+    color: var(--white);
+    position: absolute;
+    top: 300px;
+  }
+
+  &__game-end {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 233px;
+    height: 178px;
+    border-radius: 10px;
+    background-color: var(--white);
+    position: absolute;
+    top: 250px;
+    padding: 10px;
+    box-shadow: 0 0 6px 0 rgba(106, 139, 165, 0.58);
+  }
+
+  &__end-button,
+  &__error-button {
+    width: 200px;
+    height: 40px;
+    border: none;
+    border-radius: 8px;
+    background-color: var(--color-links);
+    color: var(--white);
+  }
+
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    width: 233px;
+    border-radius: 10px;
+    background-color: var(--white);
+    position: absolute;
+    top: 250px;
+    padding: 10px;
+    box-shadow: 0 0 6px 0 rgba(106, 139, 165, 0.58);
+  }
+}
+
+.game-over {
+  background: white;
+  height: 10rem;
+  width: 100%;
+  border-radius: 10px;
+  box-shadow: 0px 0px 13px 1px rgba(106, 139, 165, 0.58);
+  padding: 0rem 1rem;
+  display: none;
+}
+
+.show {
+  display: table-caption;
+}
+
+.background {
+  position: absolute;
+  z-index: -100;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+
+  &_theme_shark {
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+}

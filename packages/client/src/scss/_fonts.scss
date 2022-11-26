@@ -46,3 +46,22 @@
     /* Modern Browsers */ url('../assets/font/Inter/inter-v12-latin_cyrillic-700.ttf') format('truetype'),
     /* Safari, Android, iOS */ url('../assets/font/Inter/inter-v12-latin_cyrillic-700.svg#Inter') format('svg'); /* Legacy iOS */
 }
+
+/* Press Start 2P - cyrillic */
+@font-face {
+  font-family: 'PressStart';
+  src: url('./../assets/font/PressStart2P/PressStart2P-Regular.ttf');
+}
+
+/* Caveat cyrillic italic */
+@font-face {
+  font-family: 'Caveat';
+  font-style: italic;
+  src: url('./../assets/font/Caveat/Caveat-VariableFont_wght.ttf');
+}
+
+/* Rubik Wet Paint cyrillic regular */
+@font-face {
+  font-family: 'RubikWetPaint';
+  src: url('./../assets/font/RubikWetPaint/RubikWetPaint-Regular.ttf');
+}

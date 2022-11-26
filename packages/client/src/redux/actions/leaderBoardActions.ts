@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { getLeaderBoard, GetLeaders } from '../../utils/api';
+import { AddLeader, getLeaderBoard, GetLeaders, addToLeaderBoard } from '../../utils/api';
 import { RootState } from '../store';
 
 export const setLeaderBoard = createAsyncThunk(
@@ -29,3 +29,15 @@ export const setLeaderBoard = createAsyncThunk(
     },
   },
 );
+
+export const sendResultsToLeaderBoard = createAsyncThunk('leaders', async (data: AddLeader, thunkAPI) => {
+  try {
+    const res = await addToLeaderBoard(data);
+    if (res.status == 401) {
+      return thunkAPI.rejectWithValue('unauthorized');
+    }
+    return res.ok ? thunkAPI.fulfillWithValue(res) : thunkAPI.rejectWithValue('Не удалось отправить данные');
+  } catch (e) {
+    return thunkAPI.rejectWithValue('Не удалось отправить данные');
+  }
+});

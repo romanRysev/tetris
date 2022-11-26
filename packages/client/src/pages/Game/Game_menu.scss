@@ -1,0 +1,62 @@
+@import "Game";
+
+.game-menu {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  border-radius: 10px;
+  box-shadow: 0px 0px 13px 1px rgba(106, 139, 165, 0.58);
+  padding: 1rem;
+
+  @media (max-width: $mobile-screen-max-width) {
+    position: absolute;
+    top: 150px;
+    left: calc(50% - 100px);
+    background-color: white;
+    z-index: 100;
+  }
+
+  &__header {
+    color: var(--color-messages);
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+  }
+
+  &__submenu {
+    list-style: none;
+    padding: 0;
+  }
+
+  &__link {
+    color: var(--color-messages);
+    text-decoration: none;
+    cursor: pointer;
+
+    @media (max-width: $mobile-screen-max-width) {
+      font-size: 16px;
+      padding: 10px 0;
+    }
+
+    &_color-red {
+      color: var(--color-red);
+    }
+  }
+
+  &_theme_shark {
+    @media (max-width: $mobile-screen-max-width) {
+      background-color: white;
+    }
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}
+
+.select-theme {
+  padding-bottom: 20px;
+
+  &__select {
+    background: none;
+    border: none;
+  }
+}

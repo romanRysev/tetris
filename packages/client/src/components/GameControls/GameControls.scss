@@ -1,0 +1,40 @@
+.game-controls {
+  margin: auto;
+  display: flex;
+
+  &__button {
+    background: white;
+    border: 1px solid black;
+
+    &_vertical {
+      height: 88px;
+      width: 40px;
+      margin: 2px;
+    }
+
+    &_horizontal {
+      width: 110px;
+      height: 26px;
+    }
+
+    &_border-left {
+      border-radius: 10px 0 0 10px;
+    }
+
+    &_border-right {
+      border-radius: 0 10px 10px 0;
+    }
+  }
+
+  &__button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    margin: 2px;
+  }
+}
+
+.button__img {
+  width: 23px;
+  height: 23px;
+}
