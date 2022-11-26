@@ -33,7 +33,7 @@ app.delete('/api/user/:id', deleteOne);
 app.delete('/api/user', deleteAll);
 
 // найти по параметрам 
-app.post('api/user/params', findAll);
+app.get('api/user', findAll);
 
 // обновить пользователя по id 
 app.put('/api/user/:id', update);
@@ -52,9 +52,14 @@ app.listen(port, () => {
 //     'Content-Type': 'application/json'
 //   },
 //   body: JSON.stringify({
-//     firstName: 'asd',
-//     lastName: 'Fds',
-//     userID: 14,
+//     firstName: "Mort",
+//     secondName: "Emperorsson",
+//     id: "234",
+//     displayName: "",
+//     login: "mort",
+//     email: "mort@morty.mort",
+//     phone: "0987654321",
+//     avatar: "",
 //   })
 // })
 

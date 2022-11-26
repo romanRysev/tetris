@@ -10,15 +10,15 @@ import {
 } from '../index'
 
 export const createUserRow = async (req: Request, res: Response) => {
-  const { firstName, lastName, userID } = req.body
+  const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.body
   // надо ли верифицировать? у нас же тс
-  if (!firstName || !lastName || !userID) {
+  if (!firstName || !secondName || !id || !login || !email || !phone) {
     res.sendStatus(400).send({
-      message: 'First name and Last name can not be empty!',
+      message: 'firstName, secondName, id, login, email, phone can not be empty!',
     })
     return
   }
-  await createUser(firstName, lastName, Number(userID))
+  await createUser(firstName, secondName, Number(id), displayName, login, email, phone, avatar  )
     .then(data => {
       res.send(JSON.stringify(data))
     })
@@ -29,14 +29,18 @@ export const createUserRow = async (req: Request, res: Response) => {
     })
 }
 
-// это надо написать
 export const findAll = (req: Request, res: Response) => {
   // теоретически там будет where
-  const { firstName, lastName, userID } = req.query
+  const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.query
   const condition = {
-    lastName: lastName || undefined,
+    secondName: secondName || undefined,
     firstName: firstName || undefined,
-    userID: userID || undefined,
+    userID: id || undefined,
+    displayName: displayName || undefined,
+    login: login || undefined,
+    email: email || undefined,
+    phone: phone || undefined,
+    avatar: avatar || undefined,
   }
 
   User.findAll({ where: condition })
