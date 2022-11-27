@@ -18,7 +18,8 @@ export const createUserRow = async (req: Request, res: Response) => {
     })
     return
   }
-  await createUser(firstName, secondName, Number(id), displayName, login, email, phone, avatar  )
+  const userID = id;
+  await createUser(firstName, secondName, Number(userID), displayName, login, email, phone, avatar  )
     .then(data => {
       res.send(JSON.stringify(data))
     })

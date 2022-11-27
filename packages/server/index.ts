@@ -4,6 +4,7 @@ import express from 'express'
 import { startApp } from './app'
 import bodyParser from 'body-parser'
 import userRouter from './routes/userRoutes'
+import themeRouter from './routes/themeRoutes'
 
 dotenv.config()
 
@@ -14,6 +15,7 @@ const port = Number(process.env.SERVER_PORT) || 3001
 app.use(bodyParser.json())
 
 app.use('/api/user', userRouter);
+app.use('/api/theme', themeRouter);
 
 startApp()
 
@@ -24,6 +26,8 @@ app.get('/', (_, res) => {
 app.listen(port, () => {
   console.log(`  ➜ 🎸 Server is listening on port: ${port}`)
 })
+
+
 
 //пример запроса
 // fetch('/api/user', {
