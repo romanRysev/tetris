@@ -5,7 +5,7 @@ import type { IUser } from './models/user'
 
 // Создание пользователя
 export async function createUser(firstName: string, lastName: string, userID: number, displayName: string, login: string, email: string, phone: string, avatar: string ) {
-  return User.create({ firstName, lastName, userID, displayName, login, email, phone, avatar })
+  return User.create({ firstName, lastName, userID, displayName, login, email, phone, avatar, role: 'user' })
 }
 
 // Обновление пользователя по ID
