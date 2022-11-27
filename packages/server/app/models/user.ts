@@ -10,6 +10,7 @@ export interface IUser {
   email: string
   phone: string
   avatar: string
+  role: 'admin' | 'user'
 }
 
 export const userModel: ModelAttributes<Model, IUser> = {
@@ -44,4 +45,8 @@ export const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: true,
   },
+  role: {
+    type: DataType.STRING,
+    allowNull: true,
+  }
 }
