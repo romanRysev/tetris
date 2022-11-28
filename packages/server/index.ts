@@ -22,7 +22,7 @@ app.use('/api/forum', forumRouter);
 startApp()
 
 app.get('/', (_, res) => {
-  res.json('👋 Howdy from the server :) !')
+  res.json('👋 Howdy from the server :) ')
 })
 
 app.listen(port, () => {
