@@ -9,6 +9,7 @@ import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 import { loginRule, passwordRule, validation } from '../../helpers/validator';
 import classNames from 'classnames';
+import { Link } from '../../components/Link/Link';
 
 export type LoginForm = {
   login: string;
@@ -80,6 +81,9 @@ const Login = () => {
             >
               Авторизоваться
             </Button>
+            <Link to="/register">
+              <Button backgroundOpacity={true}>Нет аккаунта?</Button>
+            </Link>
           </div>
         </form>
       </div>
