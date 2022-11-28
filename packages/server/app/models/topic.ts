@@ -10,22 +10,21 @@ export interface ITopic {
 }
 
 export const topicModel: ModelAttributes<Model, ITopic> = {
-title: {
-  type: DataType.STRING,
-  allowNull: false,
-},
-authorID: {
-  type: DataType.INTEGER,
-  allowNull: false,
-},
-closed: {
-  type: DataType.BOOLEAN,
-  allowNull: true,
-  defaultValue: false,
-},
-lastReply: {
-  type: DataType.INTEGER,
-  allowNull: true,
-}
-  
+  title: {
+    type: DataType.STRING,
+    allowNull: false,
+  },
+  authorID: {
+    type: DataType.INTEGER,
+    allowNull: false,
+  },
+  closed: {
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+  },
+  lastReply: {
+    type: DataType.INTEGER,
+    allowNull: true,
+  },
 }

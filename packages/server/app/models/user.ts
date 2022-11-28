@@ -50,5 +50,5 @@ export const userModel: ModelAttributes<Model, IUser> = {
     type: DataType.STRING,
     allowNull: true,
     defaultValue: 'user',
-  }
+  },
 }

@@ -8,13 +8,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import {
-  setGameTheme,
-  setMusicVol,
-  setSoundVol,
-  toggleMusicOnOff,
-  toggleSoundOnOff,
-} from '../../redux/actions/themeActions';
+import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
 import classNames from 'classnames';
 import { ThemesNames, themesOptions } from '../../themes/themes';
 import { GameControls } from '../../components/GameControls/GameControls';
@@ -114,47 +108,28 @@ export const Game: React.FC = () => {
   const eqMusicRef = useRef<HTMLInputElement>(null);
   const eqSoundsRef = useRef<HTMLInputElement>(null);
 
-  // const { soundOn, musicOn, soundLevel, musicLevel } = useAppSelector((state) => state.theme);
-  const soundOn = useAppSelector((state) => state.theme.soundOn);
-  const musicOn = useAppSelector((state) => state.theme.musicOn);
-  const soundLevel = useAppSelector((state) => state.theme.soundLevel);
-  const musicLevel = useAppSelector((state) => state.theme.musicLevel);
-  // const [isMusicOn, setMusicOn] = useState(true);
-  // const [isSoundOn, setSoundOn] = useState(true);
-  // const [musicLevel, setMusicLevel] = useState('0.5');
-  // const [soundLevel, setSoundLevel] = useState('0.5');
+  const [isMusicOn, setMusicOn] = useState(true);
+  const [isSoundOn, setSoundOn] = useState(true);
+  const [musicLevel, setMusicLevel] = useState('0.5');
+  const [soundLevel, setSoundLevel] = useState('0.5');
 
-  const toggleMusic = useCallback(async () => {
-    return await dispatch(toggleMusicOnOff(!musicOn));
-  }, [dispatch, musicOn]);
+  const toggleMusic = useCallback(() => {
+    setMusicOn(!isMusicOn);
+  }, [isMusicOn]);
 
-  const toggleSound = useCallback(async () => {
-    return await dispatch(toggleSoundOnOff(!soundOn));
-  }, [dispatch, soundOn]);
+  const toggleSound = useCallback(() => {
+    setSoundOn(!isSoundOn);
+  }, [isSoundOn]);
 
-  const handleSoundVolume = useCallback(async () => {
+  const handleSoundVolume = useCallback(() => {
     const vol = eqSoundsRef.current?.value || '0.5';
-    return await dispatch(setSoundVol(vol));
-  }, [dispatch]);
+    setSoundLevel(vol);
+  }, []);
 
-  const handleMusicVolume = useCallback(async () => {
+  const handleMusicVolume = useCallback(() => {
     const vol = eqMusicRef.current?.value || '0.5';
-    return await dispatch(setMusicVol(Number(vol)));
-  }, [dispatch]);
-
-  // const toggleSound = useCallback(() => {
-  //   setSoundOn(!isSoundOn);
-  // }, [isSoundOn]);
-
-  // const handleSoundVolume = useCallback(() => {
-  //   const vol = eqSoundsRef.current?.value || '0.5';
-  //   setSoundLevel(vol);
-  // }, []);
-
-  // const handleMusicVolume = useCallback(() => {
-  //   const vol = eqMusicRef.current?.value || '0.5';
-  //   setMusicLevel(vol);
-  // }, []);
+    setMusicLevel(vol);
+  }, []);
 
   const handleShowLevels = useCallback(() => {
     setLevelsActive(true);
@@ -187,10 +162,13 @@ export const Game: React.FC = () => {
   const handleNightTheme = async () => {
     if (theme === 'classic') {
       await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight('dark'));
     } else if (theme === 'dark') {
       await dispatch(setGameTheme('classic'));
+      await dispatch(setDayOrNight('light'));
     } else if (!theme) {
       await dispatch(setGameTheme('dark'));
+      await dispatch(setDayOrNight('dark'));
     }
   };
 
@@ -205,7 +183,7 @@ export const Game: React.FC = () => {
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-  }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef, soundOn, musicOn, soundLevel, musicLevel]);
+  }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
 
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
@@ -292,8 +270,8 @@ export const Game: React.FC = () => {
                 isAuthorized={isAuthorized}
                 userProfile={userProfile}
                 theme={theme}
-                musicOn={musicOn}
-                soundOn={soundOn}
+                musicOn={isMusicOn}
+                soundOn={isSoundOn}
                 soundVolume={soundLevel}
                 musicVolume={musicLevel}
                 isPause={isPause}
@@ -342,8 +320,10 @@ export const Game: React.FC = () => {
           <p className={classNames('game-info__p', `game-info__p${addThemeToClassName}`)}>Линии: {lineCount}</p>
         </div>
         <div className={classNames('game-info__sound-controls', `game-info__sound-controls${addThemeToClassName}`)}>
-          {soundOn && <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>}
-          {!musicOn && (
+          {isSoundOn && (
+            <div className="sound-controls sound-controls__sound" ref={soundRef} onClick={toggleSound}></div>
+          )}
+          {!isSoundOn && (
             <div
               className="sound-controls sound-controls__sound sound-controls_vol_mute"
               ref={soundRef}
@@ -387,8 +367,10 @@ export const Game: React.FC = () => {
             </div>
           )}
           {isLevelsActive && <div className="levels-background" onClick={handleHideLevels}></div>}
-          {musicOn && <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>}
-          {!musicOn && (
+          {isMusicOn && (
+            <div className="sound-controls sound-controls__music" ref={musicRef} onClick={toggleMusic}></div>
+          )}
+          {!isMusicOn && (
             <div
               className="sound-controls sound-controls__music sound-controls_vol_mute"
               ref={musicRef}

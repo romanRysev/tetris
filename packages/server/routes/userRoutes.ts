@@ -18,10 +18,6 @@ router.delete('/:id', deleteOne);
 //удалить всех пользователей 
 router.delete('/', deleteAll);
 
-// найти по параметрам 
-// router.get('/', findAll);
-// router.post('/search', findUsersByParams);
-
 // обновить пользователя по id 
 router.put('/:id', update);
 

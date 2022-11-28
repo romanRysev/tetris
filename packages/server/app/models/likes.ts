@@ -9,22 +9,22 @@ export interface ILike {
 }
 
 export const likesModel: ModelAttributes<Model, ILike> = {
-authorID: {
-  type: DataType.INTEGER,
-  allowNull: false,
-},
-postID: {
-  type: DataType.INTEGER,
-  allowNull: false,
-},
-like: {
-  type: DataType.BOOLEAN,
-  allowNull: true,
-  defaultValue: false,
-},
-dislike: {
-  type: DataType.BOOLEAN,
-  allowNull: true,
-  defaultValue: false,
-},
+  authorID: {
+    type: DataType.INTEGER,
+    allowNull: false,
+  },
+  postID: {
+    type: DataType.INTEGER,
+    allowNull: false,
+  },
+  like: {
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+  },
+  dislike: {
+    type: DataType.BOOLEAN,
+    allowNull: true,
+    defaultValue: false,
+  },
 }

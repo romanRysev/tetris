@@ -30,44 +30,6 @@ export const createUserRow = async (req: Request, res: Response) => {
     })
 }
 
-// export const findAll = (req: Request, res: Response) => {
-//   // теоретически там будет where
-//   const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.body
-//   const condition = {
-//     secondName: secondName || undefined,
-//     firstName: firstName || undefined,
-//     id: id || undefined,
-//     displayName: displayName || undefined,
-//     login: login || undefined,
-//     email: email || undefined,
-//     phone: phone || undefined,
-//     avatar: avatar || undefined,
-//   }
-
-//   User.findAll({ where: condition })
-//     .then(data => {
-//       res.send(data)
-//     })
-//     .catch(err => {
-//       res.status(500).send({
-//         message: err.message || 'Some error occurred while retrieving users.',
-//       })
-//     })
-// }
-
-// export const findUsersByParams = async (req: Request, res: Response) => {
-//   const {firstName, secondName, displayName } = req.body;
-//   await getUsersByParams({firstName, secondName, displayName})
-//   .then(data => {
-//     res.send(data)
-//   })
-//   .catch(err => {
-//     res.status(500).send({
-//       message: err.message || 'Some error occurred while getting the Users.',
-//     })
-//   })
-// }
-
 export const findUserByNickName = async (req: Request, res: Response) => {
     const {displayName } = req.body;
     await getUsersByDisplayName(displayName)

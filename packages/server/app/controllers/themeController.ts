@@ -1,11 +1,25 @@
 import { Theme } from '../config/db.config'
 import type { Request, Response } from 'express'
-import { createTheme, deleteAllThemes, deleteThemeById, getAllThemes, getThemeById, updateThemeByUserID } from '../funcs/themeFunctions'
-
+import {
+  createTheme,
+  deleteAllThemes,
+  deleteThemeById,
+  getAllThemes,
+  getThemeById,
+  updateThemeByUserID,
+} from '../funcs/themeFunctions'
 
 export const createTHemeRow = async (req: Request, res: Response) => {
-  const {   themeActive, userID, soundOn, musicOn, soundLevel, musicLevel } = req.body
-  await createTheme({themeActive, userID, soundOn, musicOn, soundLevel, musicLevel})
+  const { themeActive, userID, soundOn, musicOn, soundLevel, musicLevel } =
+    req.body
+  await createTheme({
+    themeActive,
+    userID,
+    soundOn,
+    musicOn,
+    soundLevel,
+    musicLevel,
+  })
     .then(data => {
       res.send(JSON.stringify(data))
     })
@@ -18,7 +32,8 @@ export const createTHemeRow = async (req: Request, res: Response) => {
 
 export const findAll = (req: Request, res: Response) => {
   // теоретически там будет where
-  const { themeActive, userID, soundOn, musicOn, soundLevel, musicLevel } = req.query
+  const { themeActive, userID, soundOn, musicOn, soundLevel, musicLevel } =
+    req.query
   const condition = {
     themeActive: themeActive || undefined,
     userID: userID || undefined,
@@ -85,7 +100,8 @@ export const deleteAll = async (_: any, res: Response) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while deleting the Themes.',
+        message:
+          err.message || 'Some error occurred while deleting the Themes.',
       })
     })
 }

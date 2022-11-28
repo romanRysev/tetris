@@ -32,5 +32,4 @@ export const themeModel: ModelAttributes<Model, ITheme> = {
   musicLevel: {
     type: DataType.STRING,
   },
-  
 }

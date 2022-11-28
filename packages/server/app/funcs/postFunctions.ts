@@ -3,7 +3,7 @@ import { Post, Reaction, User } from '../config/db.config'
 
 // Создание записи
 export async function createPost(props: IPost) {
-   return Post.create({...props})
+  return Post.create({ ...props })
 }
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
@@ -23,45 +23,29 @@ export async function getPostById(id: number) {
 
 // Cкрытие записи
 export async function hidePostById(id: number) {
-  return Post.update({hide: true}, { where: { id } });
+  return Post.update({ hide: true }, { where: { id } })
 }
-
-// Поиск по параметрам
-// export async function getTopicsByParams(
-//   themeActive?: string,
-//   userID?: number,
-//   soundOn?: boolean,
-//   musicOn?: boolean,
-//   soundLevel?: string,
-//   musicLevel?: string,
-// ) {
-//   return Topic.findAll({ where: { firstName } })
-// }
 
 // поиск по автору
 export async function getPostsByAuthor(userID: number, topicID?: number) {
-  const  authorID = userID;
-  return Post.findAll({ 
+  const authorID = userID
+  return Post.findAll({
     where: { authorID, topicID },
-  include: [
-    {
-      model: User,
-      attributes: ['firstName', 'secondName', 'avatar', 'displayName'],
-      required: false,
-    }
-] })
+    include: [
+      {
+        model: User,
+        attributes: ['firstName', 'secondName', 'avatar', 'displayName'],
+        required: false,
+      },
+    ],
+  })
 }
-
-// поиск по ключевым словам
-// export async function getTopicsByName(searchString: string) {
-//   return Topic.findAll({ where: { userID } })
-// }
 
 // Удалить все записи
 export async function deleteAllPosts() {
   return Post.destroy({
     where: {},
-    truncate: false
+    truncate: false,
   })
 }
 
@@ -76,7 +60,7 @@ type groupPost = {
   limit?: number
 }
 export async function getPostsWithCount(props: groupPost, topicID: number) {
-  const { offset, limit } = props;
+  const { offset, limit } = props
   return Post.findAndCountAll({
     where: { topicID },
     offset: offset || 0,
@@ -89,7 +73,7 @@ export async function getPostsWithCount(props: groupPost, topicID: number) {
       {
         model: Reaction,
         attributes: ['like', 'dislike', 'authorID'],
-      }
+      },
     ],
   })
 }

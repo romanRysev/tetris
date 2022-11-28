@@ -10,13 +10,13 @@ const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
 
 const sequelizeOptions: SequelizeOptions = {
-  host: "localhost",
+  host: 'localhost',
   username: POSTGRES_USER,
   password: POSTGRES_PASSWORD,
   database: POSTGRES_DB,
   dialect: 'postgres',
   port: Number(POSTGRES_PORT),
-  ssl: false,  
+  ssl: false,
   dialectOptions: {},
 }
 
@@ -34,47 +34,46 @@ export const Reaction = sequelize.define('Reaction', likesModel, {})
 
 // отношения
 User.hasMany(Topic, {
-  foreignKey:'authorID',
-});
+  foreignKey: 'authorID',
+})
 Topic.belongsTo(User, {
   foreignKey: 'authorID',
-}
-);
+})
 
 User.hasOne(Theme, {
   foreignKey: 'userID',
-});
+})
 Theme.belongsTo(User, {
   foreignKey: 'userID',
-});
+})
 
 Topic.hasMany(Post, {
   foreignKey: 'topicID',
-});
+})
 Post.belongsTo(Topic, {
   foreignKey: 'topicID',
-});
+})
 
 User.hasMany(Post, {
   foreignKey: 'authorID',
-});
+})
 Post.belongsTo(User, {
   foreignKey: 'authorID',
-});
+})
 
 User.hasMany(Reaction, {
   foreignKey: 'authorID',
-});
+})
 Reaction.belongsTo(User, {
   foreignKey: 'authorID',
-});
+})
 
-Post.hasMany(Reaction,  {
+Post.hasMany(Reaction, {
   foreignKey: 'postID',
-});
+})
 Reaction.belongsTo(Post, {
   foreignKey: 'postID',
-});
+})
 
 export async function dbConnect() {
   try {
