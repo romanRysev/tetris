@@ -1,5 +1,5 @@
 import express from 'express'
-import { createUserRow, deleteAll, deleteOne, findAll, findOne, getAll, update } from './../app/controllers/userController'
+import { createUserRow, deleteAll, deleteOne, findOne, findUserByNickName, getAll, update } from './../app/controllers/userController'
 
 const router = express.Router();
 
@@ -9,6 +9,9 @@ router.get('/', getAll);
 // получить пользователя по id 
 router.get('/:id', findOne);
 
+// найти пользователя по никнейму
+router.post('/find', findUserByNickName);
+
 // удалить пользователя по id
 router.delete('/:id', deleteOne);
 
@@ -16,7 +19,8 @@ router.delete('/:id', deleteOne);
 router.delete('/', deleteAll);
 
 // найти по параметрам 
-router.get('/', findAll);
+// router.get('/', findAll);
+// router.post('/search', findUsersByParams);
 
 // обновить пользователя по id 
 router.put('/:id', update);

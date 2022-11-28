@@ -1,11 +1,11 @@
-import { dbConnect, User } from './config/db.config'
-import type { IUser } from './models/user'
+import { dbConnect, User } from './../config/db.config'
+import type { IUser } from './../models/user'
 
 
 
 // Создание пользователя
-export async function createUser(firstName: string, lastName: string, userID: number, displayName: string, login: string, email: string, phone: string, avatar: string ) {
-  return User.create({ firstName, lastName, userID, displayName, login, email, phone, avatar, role: 'user' })
+export async function createUser(firstName: string, secondName: string, userID: number, displayName: string, login: string, email: string, phone: string, avatar: string ) {
+  return User.create({ firstName, secondName, userID, displayName, login, email, phone, avatar })
 }
 
 // Обновление пользователя по ID
@@ -28,15 +28,28 @@ export async function getUsersByFirstName(firstName: string) {
   return User.findAll({ where: { firstName } })
 }
 
-// Получение пользователей по имени | фамилии | userID
-export async function getUsersByParams(firstName?: string, lastName?: string, userID?: number) {
-  const conditions ={
-    firstName: firstName || undefined,
-    lastName: lastName || undefined,
-    userID: userID || undefined,
-  }
-  return User.findAll({ where: conditions })
+// Поиск пользователей по никнейму
+export async function getUsersByDisplayName(displayName: string) {
+  return User.findAll({ where: { displayName } })
 }
+
+
+// Получение пользователей по имени | фамилии | никнейму - никак не получается
+// export async function getUsersByParams(params: { firstName?: string, secondName?: string, displayName?: string }) {
+//   const { firstName, secondName, displayName} = params;
+//   // const condition = {
+//   //   firstName: firstName || undefined,
+//   //   secondName: secondName || undefined,
+//   //   displayName: displayName || undefined,
+//   // }
+//   return User.findAll({ where: {[Op.or] : [
+//     {firstName},
+//     {secondName},
+//     {displayName},
+
+//   ] }})
+//   // return {firstName, secondName, displayName}
+// }
 
 // Получение всех пользователей
 export async function getAllUsers() {

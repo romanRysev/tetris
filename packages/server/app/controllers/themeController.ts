@@ -10,7 +10,7 @@ export const createTHemeRow = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while creating the Theme.',
       })
     })
@@ -46,7 +46,7 @@ export const findOne = async (req: Request, res: Response) => {
       res.send(data)
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while getting the Theme.',
       })
     })
@@ -59,7 +59,7 @@ export const update = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the Theme.',
       })
     })
@@ -72,7 +72,7 @@ export const deleteOne = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the Theme.',
       })
     })
@@ -84,7 +84,7 @@ export const deleteAll = async (_: any, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the Themes.',
       })
     })
@@ -96,7 +96,7 @@ export const getAll = async (_: any, res: Response) => {
       res.send(data)
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message:
           err.message || 'Some error occurred while getting the Themes table.',
       })

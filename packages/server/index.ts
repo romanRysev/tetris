@@ -1,10 +1,11 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
-import { startApp } from './app'
+import { startApp } from './app/funcs/userFunctions'
 import bodyParser from 'body-parser'
 import userRouter from './routes/userRoutes'
 import themeRouter from './routes/themeRoutes'
+import forumRouter from './routes/forumRoutes'
 
 dotenv.config()
 
@@ -16,6 +17,7 @@ app.use(bodyParser.json())
 
 app.use('/api/user', userRouter);
 app.use('/api/theme', themeRouter);
+app.use('/api/forum', forumRouter);
 
 startApp()
 

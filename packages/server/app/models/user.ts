@@ -2,9 +2,9 @@ import { DataType, Model } from 'sequelize-typescript'
 import type { ModelAttributes } from 'sequelize/types'
 
 export interface IUser {
+  userID: number
   firstName: string
   secondName: string
-  userID: number
   displayName: string
   login: string
   email: string
@@ -14,16 +14,17 @@ export interface IUser {
 }
 
 export const userModel: ModelAttributes<Model, IUser> = {
+  userID: {
+    type: DataType.INTEGER,
+    allowNull: false,
+    primaryKey: true,
+  },
   firstName: {
     type: DataType.STRING,
     allowNull: false,
   },
   secondName: {
     type: DataType.STRING,
-  },
-  userID: {
-    type: DataType.INTEGER,
-    allowNull: false,
   },
   displayName: {
     type: DataType.STRING,
@@ -48,5 +49,6 @@ export const userModel: ModelAttributes<Model, IUser> = {
   role: {
     type: DataType.STRING,
     allowNull: true,
+    defaultValue: 'user',
   }
 }

@@ -1,4 +1,3 @@
-import { User } from '../config/db.config'
 import type { Request, Response } from 'express'
 import {
   createUser,
@@ -6,14 +5,15 @@ import {
   deleteUserById,
   getAllUsers,
   getUserById,
+  getUsersByDisplayName,
   updateUserById,
-} from '../index'
+} from './../funcs/userFunctions'
 
 export const createUserRow = async (req: Request, res: Response) => {
   const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.body
   // надо ли верифицировать? у нас же тс
   if (!firstName || !secondName || !id || !login || !email || !phone) {
-    res.sendStatus(400).send({
+    res.status(400).send({
       message: 'firstName, secondName, id, login, email, phone can not be empty!',
     })
     return
@@ -24,36 +24,62 @@ export const createUserRow = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while creating the User.',
       })
     })
 }
 
-export const findAll = (req: Request, res: Response) => {
-  // теоретически там будет where
-  const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.query
-  const condition = {
-    secondName: secondName || undefined,
-    firstName: firstName || undefined,
-    userID: id || undefined,
-    displayName: displayName || undefined,
-    login: login || undefined,
-    email: email || undefined,
-    phone: phone || undefined,
-    avatar: avatar || undefined,
-  }
+// export const findAll = (req: Request, res: Response) => {
+//   // теоретически там будет where
+//   const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.body
+//   const condition = {
+//     secondName: secondName || undefined,
+//     firstName: firstName || undefined,
+//     id: id || undefined,
+//     displayName: displayName || undefined,
+//     login: login || undefined,
+//     email: email || undefined,
+//     phone: phone || undefined,
+//     avatar: avatar || undefined,
+//   }
 
-  User.findAll({ where: condition })
+//   User.findAll({ where: condition })
+//     .then(data => {
+//       res.send(data)
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: err.message || 'Some error occurred while retrieving users.',
+//       })
+//     })
+// }
+
+// export const findUsersByParams = async (req: Request, res: Response) => {
+//   const {firstName, secondName, displayName } = req.body;
+//   await getUsersByParams({firstName, secondName, displayName})
+//   .then(data => {
+//     res.send(data)
+//   })
+//   .catch(err => {
+//     res.status(500).send({
+//       message: err.message || 'Some error occurred while getting the Users.',
+//     })
+//   })
+// }
+
+export const findUserByNickName = async (req: Request, res: Response) => {
+    const {displayName } = req.body;
+    await getUsersByDisplayName(displayName)
     .then(data => {
       res.send(data)
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while retrieving users.',
+        message: err.message || 'Some error occurred while getting the Users.',
       })
     })
-}
+  }
 
 export const findOne = async (req: Request, res: Response) => {
   const { id } = req.params
@@ -62,7 +88,7 @@ export const findOne = async (req: Request, res: Response) => {
       res.send(data)
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while getting the User.',
       })
     })
@@ -75,7 +101,7 @@ export const update = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the User.',
       })
     })
@@ -88,7 +114,7 @@ export const deleteOne = async (req: Request, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the User.',
       })
     })
@@ -100,7 +126,7 @@ export const deleteAll = async (_: any, res: Response) => {
       res.send(JSON.stringify(data))
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message: err.message || 'Some error occurred while deleting the Users.',
       })
     })
@@ -112,7 +138,7 @@ export const getAll = async (_: any, res: Response) => {
       res.send(data)
     })
     .catch(err => {
-      res.sendStatus(500).send({
+      res.status(500).send({
         message:
           err.message || 'Some error occurred while getting the Users table.',
       })
