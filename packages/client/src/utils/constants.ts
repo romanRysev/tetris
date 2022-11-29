@@ -21,3 +21,9 @@ export enum APIurls {
   SEEKUSER = 'https://ya-praktikum.tech/api/v2/user/search',
   LEADERBOARD = 'https://ya-praktikum.tech/api/v2/leaderboard',
 }
+
+export enum backEndUrls {
+  USER = '/api/user',
+  FORUM = '/api/forum',
+  THEME = '/api/theme',
+}

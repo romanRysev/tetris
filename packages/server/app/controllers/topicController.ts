@@ -18,7 +18,8 @@ export const createTopicRow = async (req: Request, res: Response) => {
 
 // редактировать тему (последний ответ)
 export const setLastReply = async (req: Request, res: Response) => {
-  const { lastReply, id } = req.body;
+  const { lastReply, topicID } = req.body;
+  const id = topicID;
   await topicFuncs
     .updateTopicByID(id, lastReply)
     .then(data => {

@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ThemesNames } from '../../themes/themes';
 import {
-  setDayOrNight,
+  // setDayOrNight,
   setGameTheme,
   setMusicVol,
   setSoundVol,
@@ -9,8 +9,7 @@ import {
   toggleSoundOnOff,
 } from '../actions/themeActions';
 
-interface IThemeSlice {
-  global: 'light' | 'dark';
+export interface IThemeSlice {
   active: ThemesNames;
   soundOn: boolean;
   musicOn: boolean;
@@ -19,7 +18,6 @@ interface IThemeSlice {
 }
 
 const themeInitState: IThemeSlice = {
-  global: 'light',
   active: 'classic',
   soundOn: true,
   musicOn: true,
@@ -35,9 +33,6 @@ export const themeSlice = createSlice({
     [setGameTheme.fulfilled.type]: (state, action) => {
       state.active = action.meta.arg;
     },
-    [setDayOrNight.fulfilled.type]: (state, action) => {
-      state.global = action.meta.arg;
-    },
     [toggleMusicOnOff.fulfilled.type]: (state, action) => {
       state.musicOn = action.meta.arg;
     },
@@ -45,6 +40,7 @@ export const themeSlice = createSlice({
       state.soundOn = action.meta.arg;
     },
     [setMusicVol.fulfilled.type]: (state, action) => {
+      console.log(action);
       state.musicLevel = action.meta.arg;
     },
     [setSoundVol.fulfilled.type]: (state, action) => {

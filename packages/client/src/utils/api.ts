@@ -74,13 +74,6 @@ export const getProfileRequest = async () =>
     credentials: 'include',
   });
 
-export const getProfileApiRequest = async () =>
-  await fetch('http://localhost:8080/api', {
-    method: 'GET',
-    headers: { ...headers.get },
-    credentials: 'include',
-  });
-
 export const setAvatarRequest = async (data: FormData) =>
   await fetch(APIurls.CHANGEAVATAR, {
     method: 'PUT',

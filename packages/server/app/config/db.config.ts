@@ -84,3 +84,7 @@ export async function dbConnect() {
     console.error('Unable to connect to the database: ', e)
   }
 }
+
+export function startApp() {
+  dbConnect().then()
+}

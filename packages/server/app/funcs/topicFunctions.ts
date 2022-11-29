@@ -68,7 +68,6 @@ type groupTopic = {
 export async function getTopicsWithCount(props: groupTopic) {
   const { offset, limit } = props;
   return Topic.findAndCountAll({
-    // order: sequelize.literal('max(lastReply) DESC'),
     offset: offset || 0,
     limit: limit || 20,
     include: [

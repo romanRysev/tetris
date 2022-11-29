@@ -36,6 +36,7 @@ const Login = () => {
     e.preventDefault();
     const res = await dispatch(login(form));
     if (res.meta.requestStatus === 'fulfilled') {
+      // здесь надо проверить есть ли юзер в базе, если есть - обновить юзера и взять тему, если нет - сделать юзера и тему
       navigate('/game');
     } else {
       setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);

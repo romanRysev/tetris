@@ -3,7 +3,6 @@ import type { ITheme } from './../models/themes'
 
 // Создание записи
 export async function createTheme(props: ITheme) {
-  // const {  themeActive, userID, soundOn, musicOn, soundLevel, musicLevel} = props;
   return Theme.create({ ...props })
 }
 

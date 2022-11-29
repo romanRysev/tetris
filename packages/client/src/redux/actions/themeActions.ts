@@ -9,15 +9,17 @@ export const setGameTheme = createAsyncThunk('theme', async (data: ThemesNames, 
   }
 });
 
-export const setDayOrNight = createAsyncThunk('theme/global', async (data: 'dark' | 'light', thunkAPI) => {
-  try {
-    thunkAPI.fulfillWithValue(data);
-  } catch (e) {
-    return thunkAPI.rejectWithValue('Не удалось поменять тему');
-  }
-});
+// надо бы убрать
+// export const setDayOrNight = createAsyncThunk('theme/global', async (data: 'dark' | 'light', thunkAPI) => {
+//   try {
+//     thunkAPI.fulfillWithValue(data);
+//   } catch (e) {
+//     return thunkAPI.rejectWithValue('Не удалось поменять тему');
+//   }
+// });
 
-export const toggleMusicOnOff = createAsyncThunk('theme', async (data: boolean, thunkAPI) => {
+export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: boolean, thunkAPI) => {
+  console.log(data);
   try {
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -25,7 +27,7 @@ export const toggleMusicOnOff = createAsyncThunk('theme', async (data: boolean, 
   }
 });
 
-export const toggleSoundOnOff = createAsyncThunk('theme', async (data: boolean, thunkAPI) => {
+export const toggleSoundOnOff = createAsyncThunk('theme/soundOn', async (data: boolean, thunkAPI) => {
   try {
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -33,17 +35,15 @@ export const toggleSoundOnOff = createAsyncThunk('theme', async (data: boolean, 
   }
 });
 
-export const setMusicVol = createAsyncThunk('theme', async (data: number, thunkAPI) => {
-  console.log('set');
+export const setMusicVol = createAsyncThunk('theme/musicLevel', async (data: string, thunkAPI) => {
   try {
     thunkAPI.fulfillWithValue(data);
-    console.log(data);
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось установить громкость музыки');
   }
 });
 
-export const setSoundVol = createAsyncThunk('theme', async (data: string, thunkAPI) => {
+export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: string, thunkAPI) => {
   try {
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
