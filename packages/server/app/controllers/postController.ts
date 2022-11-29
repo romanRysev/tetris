@@ -1,3 +1,4 @@
+import { processResult } from '../utils/processResult'
 import type { Request, Response } from 'express'
 import * as postFuncs from '../funcs/postFunctions'
 
@@ -5,90 +6,45 @@ import * as postFuncs from '../funcs/postFunctions'
 export const createNewPost = async (req: Request, res: Response) => {
   const { authorID, message, parentID } = req.body
   const { topicID } = req.params
-  await postFuncs
-    .createPost({ authorID, topicID: Number(topicID), message, parentID })
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while creating the post.',
-      })
-    })
+  await processResult(() => {
+    return postFuncs.createPost({ authorID, topicID: Number(topicID), message, parentID })
+  }, res, 'Some error occurred while creating the post.');
 }
 
 // получить список постов темы с пагинацией - параметры в урл
 export const getPostListForTopic = async (req: Request, res: Response) => {
   const { topicID } = req.params
-  await postFuncs
-    .getPostsWithCount({ ...req.query }, Number(topicID))
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || 'Some error occurred while getting the Posts table.',
-      })
-    })
+  await processResult(() => {
+    return postFuncs.getPostsWithCount({ ...req.query }, Number(topicID))
+  }, res, 'Some error occurred while getting the Posts table.');
 }
 
 // получить список постов юзера, опционально в теме - параметры в урл
 export const getPostListByAuthor = async (req: Request, res: Response) => {
   const { userID, topicID } = req.query
-  await postFuncs
-    .getPostsByAuthor(Number(userID), Number(topicID))
-    .then(data => {
-      res.send(data)
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || 'Some error occurred while getting the Posts table.',
-      })
-    })
+  await processResult(() => {
+    return postFuncs.getPostsByAuthor(Number(userID), Number(topicID))
+  }, res, 'Some error occurred while getting the Posts table.');
 }
 
 // удалить пост
 export const deleteOne = async (req: Request, res: Response) => {
   const { id } = req.params
-  await postFuncs
-    .deletePostById(Number(id))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while deleting the Theme.',
-      })
-    })
+  await processResult(() => {
+    return postFuncs.deletePostById(Number(id))
+  }, res, 'Some error occurred while deleting the Theme.');
 }
 
 // удалить все посты
 export const deleteAll = async (_: any, res: Response) => {
-  await postFuncs
-    .deleteAllPosts()
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message:
-          err.message || 'Some error occurred while deleting the Topics.',
-      })
-    })
+  await processResult(() => {
+    return postFuncs.deleteAllPosts()
+  }, res, 'Some error occurred while deleting the Topics.');
 }
 
 // получить список всех постов
 export const getAll = async (_: any, res: Response) => {
-  await postFuncs
-    .getAllPosts()
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message,
-      })
-    })
+  await processResult(() => {
+    return postFuncs.getAllPosts()
+  }, res, 'Some error occurred while fetching the Posts.');
 }

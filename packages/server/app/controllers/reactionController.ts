@@ -1,77 +1,43 @@
+import { processResult } from '../utils/processResult';
 import type { Request, Response } from 'express'
 import * as reactionFuncs from '../funcs/reactionFunctions'
 
 // поставить / снять лайк - PUT
 export const reactionLike = async (req: Request, res: Response) => {
   const { authorID, postID, like } = req.body
-  await reactionFuncs
-    .toggleLike({ authorID, postID, like })
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while setting like.',
-      })
-    })
+  await processResult(() => {
+    return reactionFuncs.toggleLike({ authorID, postID, like })
+  }, res, 'Some error occurred while setting like.');
 }
 
 // поставить / снять дизлайк - PUT
 export const reactionDislike = async (req: Request, res: Response) => {
   const { authorID, postID, dislike } = req.body
-  await reactionFuncs
-    .toggleDislike({ authorID, postID, dislike })
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while setting dislike.',
-      })
-    })
+  await processResult(() => {
+    return reactionFuncs.toggleDislike({ authorID, postID, dislike })
+  }, res, 'Some error occurred while setting dislike.');
 }
 
 // получить реакции поста
 export const getReactionsByPostID = async (req: Request, res: Response) => {
   const { postID } = req.query
-  await reactionFuncs
-    .getReactionsForPost(Number(postID))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while fetching reactions.',
-      })
-    })
+  await processResult(() => {
+    return reactionFuncs.getReactionsForPost(Number(postID))
+  }, res, 'Some error occurred while fetching reactions.');
 }
 
 // получить лайки поста
 export const getLikesByPostID = async (req: Request, res: Response) => {
   const { postID } = req.query
-  await reactionFuncs
-    .getLikesForPost(Number(postID))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while fetching likes.',
-      })
-    })
+  await processResult(() => {
+    return reactionFuncs.getLikesForPost(Number(postID))
+  }, res, 'Some error occurred while fetching likes.');
 }
 
 // получить дизлайки поста
 export const getDislikesByPostID = async (req: Request, res: Response) => {
   const { postID } = req.query
-  await reactionFuncs
-    .getDislikesForPost(Number(postID))
-    .then(data => {
-      res.send(JSON.stringify(data))
-    })
-    .catch(err => {
-      res.status(500).send({
-        message: err.message || 'Some error occurred while fetching dislikes.',
-      })
-    })
+  await processResult(() => {
+    return reactionFuncs.getDislikesForPost(Number(postID))
+  }, res, 'Some error occurred while fetching dislikes.');
 }

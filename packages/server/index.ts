@@ -1,7 +1,7 @@
 import dotenv from 'dotenv'
 import cors from 'cors'
 import express from 'express'
-import { startApp } from './app/funcs/userFunctions'
+import { startApp } from './app/config/db.config'
 import bodyParser from 'body-parser'
 import userRouter from './routes/userRoutes'
 import themeRouter from './routes/themeRoutes'
