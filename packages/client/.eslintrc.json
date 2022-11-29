@@ -22,10 +22,23 @@
     "ecmaVersion": 12,
     "sourceType": "module"
   },
-  "plugins": ["react", "@typescript-eslint", "prettier"],
+  "plugins": [
+    "react",
+    "@typescript-eslint",
+    "prettier"
+  ],
   "rules": {
-    "quotes": ["error", "single"],
-    "prettier/prettier": ["error", { "singleQuote": true }],
-    "require-jsdoc": "off"
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "prettier/prettier": [
+      "error",
+      {
+        "singleQuote": true
+      }
+    ],
+    "require-jsdoc": "off",
+    "@typescript-eslint/no-var-requires": 0
   }
 }

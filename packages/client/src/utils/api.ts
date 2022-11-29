@@ -16,6 +16,7 @@ export interface IChangeInfo {
   phone: string;
   display_name: string;
 }
+
 export interface IChangePassword {
   oldPassword: string;
   newPassword: string;
