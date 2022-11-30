@@ -1,5 +1,5 @@
 import { Theme } from './../config/db.config'
-import type { ITheme } from './../models/themes'
+import type { ITheme, IThemeUpdate } from './../models/themes'
 
 // Создание записи
 export async function createTheme(props: ITheme) {
@@ -7,7 +7,8 @@ export async function createTheme(props: ITheme) {
 }
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
-export async function updateThemeByUserID(userID: number, data: ITheme) {
+export async function updateThemeByUserID(userID: number, data: IThemeUpdate) {
+  console.log(data);
   return Theme.update(data, { where: { userID } })
 }
 

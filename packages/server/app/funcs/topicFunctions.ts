@@ -1,4 +1,4 @@
-import { Topic, User } from '../config/db.config'
+import { Post, Topic, User } from '../config/db.config'
 import type { ITopic } from '../models/topic'
 
 // Создание записи
@@ -74,6 +74,16 @@ export async function getTopicsWithCount(props: groupTopic) {
       {
         model: User,
         attributes: ['firstName', 'secondName', 'avatar', 'displayName'],
+      },
+      {
+        model: Post,
+        attributes: ['message', 'id'],
+        include: [
+          {
+            model: User,
+            attributes: ['firstName', 'secondName', 'avatar', 'displayName'],
+          }
+        ]
       }
     ],
   })

@@ -58,14 +58,8 @@ function App() {
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/leaderboard" element={<LeaderBoardPage />} />
                   <Route path="/phorum" element={<PhorumMainPage />} />
-                  <Route
-                    path="/phorum/thread"
-                    element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
-                  />
-                  <Route
-                    path="/phorum/thread/:id"
-                    element={<PhorumThreadPage title="Какие у вас любимые стратегии игры в тетрис?" />}
-                  />
+                  <Route path="/phorum/thread" element={<PhorumThreadPage />} />
+                  <Route path="/phorum/thread/:id" element={<PhorumThreadPage />} />
                   <Route path="/game" element={<Game />} />
                   <Route path="/howto" element={<HowToPlay />} />
                   <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />

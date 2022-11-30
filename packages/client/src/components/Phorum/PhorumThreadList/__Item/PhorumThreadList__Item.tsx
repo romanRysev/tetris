@@ -12,20 +12,21 @@ export interface ThreadListItemProps {
   replies: string;
   lastReplyUser: string;
   lastReplyDate: string;
+  threadID: number;
 }
 
 export const PhorumThreadListItem: FC<ThreadListItemProps> = (props) => {
-  const { thread, pageCount, replies, lastReplyUser, lastReplyDate, author, startDate } = props;
+  console.log(props);
+  const { thread, pageCount, replies, lastReplyUser, lastReplyDate, author, startDate, threadID } = props;
   const navigate = useNavigate();
-  const handleThreadClick = useCallback(() => {
-    // TODO: отправить данные
-    navigate('/phorum/thread/1');
-  }, [navigate]);
+  const handleThreadClick = useCallback(async () => {
+    navigate(`/phorum/thread/#${threadID}`);
+  }, [navigate, threadID]);
   // TODO привесить отправку на профиль ? и отправку к последнему сообщению
   return (
     <li className="phorum-thread-list__item">
       <div className="thread">
-        <span className="thread__text" onClick={handleThreadClick}>
+        <span className="thread__text" onClick={handleThreadClick} title={`/phorum/thread/${threadID}`}>
           {thread}
         </span>{' '}
         <PhorumThreadListPageCounter pages={pageCount} />

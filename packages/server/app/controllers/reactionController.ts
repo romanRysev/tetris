@@ -33,7 +33,7 @@ export const reactionDislike = async (req: Request, res: Response) => {
 
 // получить реакции поста
 export const getReactionsByPostID = async (req: Request, res: Response) => {
-  const { postID } = req.query
+  const { postID } = req.params
   await reactionFuncs
     .getReactionsForPost(Number(postID))
     .then(data => {

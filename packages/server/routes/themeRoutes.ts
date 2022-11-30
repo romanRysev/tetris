@@ -18,8 +18,8 @@ router.delete('/', themeController.deleteAll);
 // найти по параметрам 
 router.get('/', themeController.findAll);
 
-// обновить запись по id 
-router.put('/:id', themeController.update);
+// обновить запись по id пользователя
+router.put('/:userID', themeController.update);
 
 // создать запись 
 router.post('/', themeController.createTHemeRow);

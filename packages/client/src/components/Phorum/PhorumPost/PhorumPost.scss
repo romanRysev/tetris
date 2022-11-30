@@ -1,12 +1,8 @@
 .phorum-post {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  background-color: var(--color-back-gray);
+  background-color: var(--color-light-gray);
   border-bottom: 1px solid var(--white);
-
-  &:nth-child(even) {
-    background-color: var(--color-back-blue);
-  }
 
   &__userinfo {
     border-right: 1px solid var(--white);
@@ -44,7 +40,21 @@
   }
 
   &__reactions {
-    display: inline-block;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+  }
+
+  &__likes,
+  &__dislikes {
+    display: flex;
+    width: 100px;
+    flex-direction: row;
+    justify-content: space-evenly;
+    background-color: var(--color-light-gray);
+    border: 1px solid var(--color-controls-off);
+    border-radius: 10px;
+    padding: 3px; margin-right: 10px;
   }
 
   &__date {
@@ -52,4 +62,34 @@
     text-align: end;
     color: var(--color-midgray);
   }
+}
+
+.reaction {
+  display: flex;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+
+  &-like {
+    background-image: url('./../../../assets/thumbs-up-regular.svg');
+
+    &_active {
+      background-image: url('./../../../assets/thumbs-up-solid.svg');
+    }
+  }
+
+  &-dislike {
+    background-image: url('./../../../assets/thumbs-down-regular.svg');
+
+    &_active {
+      background-image: url('./../../../assets/thumbs-down-solid.svg');
+    }
+  }
+}
+
+.reaction-count {
+  color: var(--color-controls-on);
 }

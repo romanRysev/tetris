@@ -5,6 +5,7 @@ import {
   setGameTheme,
   setMusicVol,
   setSoundVol,
+  setTheme,
   toggleMusicOnOff,
   toggleSoundOnOff,
 } from '../actions/themeActions';
@@ -17,7 +18,7 @@ export interface IThemeSlice {
   musicLevel: string;
 }
 
-const themeInitState: IThemeSlice = {
+export const themeInitState: IThemeSlice = {
   active: 'classic',
   soundOn: true,
   musicOn: true,
@@ -40,11 +41,18 @@ export const themeSlice = createSlice({
       state.soundOn = action.meta.arg;
     },
     [setMusicVol.fulfilled.type]: (state, action) => {
-      console.log(action);
       state.musicLevel = action.meta.arg;
     },
     [setSoundVol.fulfilled.type]: (state, action) => {
       state.soundLevel = action.meta.arg;
+    },
+    [setTheme.fulfilled.type]: (state, action) => {
+      const { soundOn, musicOn, musicLevel, soundLevel, themeActive } = action.payload;
+      state.active = themeActive;
+      state.soundOn = soundOn;
+      state.musicOn = musicOn;
+      state.soundLevel = soundLevel;
+      state.musicLevel = musicLevel;
     },
   },
 });

@@ -1,53 +1,48 @@
-import React, { FC, useRef, useState } from 'react';
-import { useAppSelector } from '../../../redux/hooks';
-import { makeUserNameFromUser } from '../../../utils/makeUserProps';
+import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
+import { getTopics, newTopic } from '../../../redux/actions/forumActions';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { getTopicList } from '../../../utils/backEndApi';
 import { Popup } from '../../Popup/Popup';
 import { PhorumMainListHeader } from '../PhorumMainListHeader/PhorumMainListHeader';
 import { PhorumThreadList } from '../PhorumThreadList/PhorumThreadList';
-import { ThreadListItemProps } from '../PhorumThreadList/__Item/PhorumThreadList__Item';
 import './PhorumMainPageContent.scss';
 
 type PhorumThreadListProps = {
   title?: string;
 };
 
-const dummyList: ThreadListItemProps[] = [
-  {
-    thread: 'Как вы ставите палку - горизонтально или вертикально?',
-    author: 'Душка Фулгрим!!',
-    startDate: '28-09-22',
-    pageCount: 13,
-    replies: '237 ответов',
-    lastReplyUser: 'Сангвиний',
-    lastReplyDate: '30 сен 2022 18:53',
-  },
-  {
-    thread: 'На какой планете вас нашли!!!',
-    pageCount: 5,
-    author: 'Фабиуссс',
-    startDate: '26-09-22',
-    replies: '45 ответов',
-    lastReplyUser: 'Перт Железная Башка',
-    lastReplyDate: '30 сен 2022 17:42',
-  },
-  {
-    thread: 'Киса ты с какова горада?',
-    pageCount: 2,
-    author: 'Злютик Незабутик',
-    startDate: '27-09-22',
-    replies: '45 ответов',
-    lastReplyUser: 'Феррус',
-    lastReplyDate: '28 сен 2022 13:02',
-  },
-];
-
 export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Форум' }) => {
   // TODO прикрутить валидацию
-  const [list, setList] = useState(dummyList);
+  // const [topics, setTopics] = useState({ count: 0, rows: [] });
   const [isNew, setIsNew] = useState(false);
+  const [isFetched, setFetched] = useState(false);
   const inputElem = useRef<HTMLInputElement>(null);
   const textAreaElem = useRef<HTMLTextAreaElement>(null);
   const userProfile = useAppSelector((state) => state.auth.user);
+  const topics = useAppSelector((state) => state.forum.topics);
+  const isFetchedTopics = useAppSelector((state) => state.forum.isTopicsFetched);
+
+  const dispatch = useAppDispatch();
+
+  const handleNewThread = useCallback(async () => {
+    const title = inputElem.current?.value || 'Новая тема';
+    const message = textAreaElem.current?.value || '';
+    const authorID = userProfile.id;
+    console.log(message);
+    await dispatch(newTopic({ title, authorID, message }));
+    setFetched(false);
+    setIsNew(false);
+  }, [dispatch, userProfile.id]);
+
+  useEffect(() => {
+    if (!isFetched) {
+      (async () => {
+        const res = await getTopicList();
+        await dispatch(getTopics(await res.json()));
+      })();
+      setFetched(true);
+    }
+  }, [dispatch, topics, isFetchedTopics, isNew, isFetched]);
 
   return (
     <div className="phorum-main-page-content">
@@ -58,32 +53,13 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
         </div>{' '}
       </div>
       <PhorumMainListHeader />
-      <PhorumThreadList {...list} />
+      {topics.rows.length > 0 && <PhorumThreadList {...topics.rows} />}
 
       {!!isNew && (
         <Popup
           title="Новая тема"
           buttonText="Создать новую тему"
-          onClick={() => {
-            const threadName = inputElem.current?.value;
-            // TODO передавать данные для новой страницы
-            const userName = makeUserNameFromUser(userProfile);
-            const date = new Date();
-            if (threadName) {
-              list.push({
-                thread: threadName,
-                pageCount: 0,
-                author: userName,
-                startDate: date.toLocaleDateString('ru'),
-                replies: '0 ответов',
-                lastReplyUser: userName,
-                lastReplyDate: date.toLocaleDateString('ru'),
-              });
-            }
-            // тут я хотела поинтересоваться - так можно делать, или это совсем дно? Так в список темы добавляются, потом это будет по-другому (наверное)
-            setList(list);
-            setIsNew(false);
-          }}
+          onClick={handleNewThread}
           showValidation={false}
           validationText=""
           className="new-thread__popup"

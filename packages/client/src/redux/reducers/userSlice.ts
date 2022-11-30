@@ -81,7 +81,6 @@ export const authSlice = createSlice({
     [login.fulfilled.type]: (state, action) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
-      state.user = convertUser(dummyUser);
       state.isFetching = false;
     },
     [login.pending.type]: (state) => {

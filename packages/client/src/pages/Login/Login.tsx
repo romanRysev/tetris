@@ -4,7 +4,7 @@ import './Login.scss';
 
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
-import { login } from '../../redux/actions/singActions';
+import { checkLogin, login } from '../../redux/actions/singActions';
 import { Button } from '../../components/Button/Button';
 import { Input } from '../../components/Input/Input';
 import { loginRule, passwordRule, validation } from '../../helpers/validator';
@@ -36,14 +36,14 @@ const Login = () => {
     e.preventDefault();
     const res = await dispatch(login(form));
     if (res.meta.requestStatus === 'fulfilled') {
-      // здесь надо проверить есть ли юзер в базе, если есть - обновить юзера и взять тему, если нет - сделать юзера и тему
+      await dispatch(checkLogin());
       navigate('/game');
     } else {
       setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);
     }
   };
 
-  const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
+  const checkLogins = (e: React.FocusEvent<HTMLInputElement>) => {
     setErrorLogin(validation(e.target.value, [loginRule]).errorMessages[0] ?? '');
   };
 
@@ -63,7 +63,7 @@ const Login = () => {
             type="text"
             name="login"
             onChange={onFieldChange}
-            onBlur={checkLogin}
+            onBlur={checkLogins}
             errorText={errorLogin}
           />
           <Input

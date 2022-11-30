@@ -3,14 +3,10 @@ import { PhorumThreadPageContent } from '../../../components/Phorum/PhorumThread
 import { StaticLayout } from '../../../components/StaticLayout/StaticLayout';
 import './PhorumThreadPage.scss';
 
-interface PhorumThreadPageProps {
-  title: string;
-}
-
-export const PhorumThreadPage: React.FC<PhorumThreadPageProps> = ({ title }) => {
+export const PhorumThreadPage: React.FC = () => {
   return (
     <StaticLayout>
-      <PhorumThreadPageContent title={title} />
+      <PhorumThreadPageContent />
     </StaticLayout>
   );
 };

@@ -62,6 +62,9 @@ type groupPost = {
 export async function getPostsWithCount(props: groupPost, topicID: number) {
   const { offset, limit } = props
   return Post.findAndCountAll({
+    order: [
+      ['id', 'ASC'],
+    ],
     where: { topicID },
     offset: offset || 0,
     limit: limit || 20,

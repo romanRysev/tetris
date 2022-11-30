@@ -75,7 +75,7 @@ export const update = async (req: Request, res: Response) => {
     })
     .catch(err => {
       res.status(500).send({
-        message: err.message || 'Some error occurred while deleting the Theme.',
+        message: err.message || 'Some error occurred while updating the Theme.',
       })
     })
 }

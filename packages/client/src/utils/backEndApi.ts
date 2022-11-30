@@ -22,11 +22,21 @@ export interface IThemeProps {
   musicLevel: string;
 }
 
+export interface IThemeUdpateProps {
+  themeActive?: string;
+  userID?: number;
+  soundOn?: boolean;
+  musicOn?: boolean;
+  soundLevel?: string;
+  musicLevel?: string;
+}
+
 export interface ITopicProps {
   title: string;
   authorID: number;
   closed?: boolean;
   lastReply?: number;
+  message?: string;
 }
 
 export interface IPostProps {
@@ -75,69 +85,64 @@ export const sendThemeToDB = async (data: IThemeProps) =>
     // credentials: 'include',
   });
 
-export const getTopicList = async (data: { offset?: number; limit?: number }) => {
-  const { offset, limit } = data;
-  // я знаю за существование URLSearchParams, но у них
-  // конфликт с эксплорером и тайпскрипт ругается
-  let query = '';
-  if (offset) {
-    query += `?offset=${offset}`;
-    if (limit) {
-      query += `&limit=${limit}`;
-    }
-  } else if (limit) {
-    query += `?limit=${limit}`;
-  }
-  await fetch(`${backEndUrls.FORUM}${query}`, {
+export const updateTheme = async (data: IThemeUdpateProps, userID: number) =>
+  await fetch(`${host}${backEndUrls.THEME}/${userID}`, {
+    method: 'PUT',
+    headers: headers.put,
+    body: JSON.stringify(data),
+    // credentials: 'include',
+  });
+
+export const getTopicList = async (data = '') =>
+  await fetch(`${host}${backEndUrls.FORUM}${data}`, {
     method: 'GET',
     headers: headers.url,
-    credentials: 'include',
+    // credentials: 'include',
   });
-};
 
 export const makeNewTopic = async (data: ITopicProps) =>
-  await fetch(backEndUrls.FORUM, {
+  await fetch(`${host}${backEndUrls.FORUM}`, {
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
-    credentials: 'include',
+    // credentials: 'include',
   });
 
 export const changeLastReply = async (lastReply: number, topicID: number) =>
-  await fetch(`${backEndUrls.FORUM}/${topicID}`, {
+  await fetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify({ lastReply, topicID }),
-    credentials: 'include',
+    // credentials: 'include',
   });
 
 export const getPostsForTopic = async (topicID: number) =>
-  await fetch(`${backEndUrls.FORUM}/${topicID}`, {
+  await fetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
     method: 'GET',
     headers: headers.get,
-    credentials: 'include',
+    // credentials: 'include',
   });
 
-export const makeNewPost = async (data: Omit<IPostProps, 'topicID'>, topicID: number) =>
-  await fetch(`${backEndUrls.FORUM}/${topicID}`, {
+export const makeNewPost = async (data: IPostProps) =>
+  await fetch(`${host}${backEndUrls.FORUM}/${Number(data.topicID)}`, {
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
-    credentials: 'include',
+    // credentials: 'include',
   });
 
 export const reactWithLike = async (data: IReactionProps) =>
-  await fetch(`${backEndUrls.FORUM}/like`, {
+  await fetch(`${host}${backEndUrls.FORUM}/like`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    credentials: 'include',
+    // credentials: 'include',
   });
 
-export const reactWithDisike = async (data: IReactionProps) =>
-  await fetch(`${backEndUrls.FORUM}/dislike`, {
+export const reactWithDislike = async (data: IReactionProps) =>
+  await fetch(`${host}${backEndUrls.FORUM}/dislike`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    credentials: 'include',
+    // credentials: 'include',
   });
