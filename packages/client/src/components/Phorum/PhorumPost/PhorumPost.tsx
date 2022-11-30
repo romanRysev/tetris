@@ -1,10 +1,10 @@
 import classNames from 'classnames';
 import React, { FC, useCallback, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { defaulAvatar } from '../../../consts/prefix';
 import { useAppSelector } from '../../../redux/hooks';
 import { reactWithDislike, reactWithLike } from '../../../utils/backEndApi';
 import './PhorumPost.scss';
+import defaultAvatar from './../../../assets/avatar.svg';
 
 export type PhorumPostProps = {
   userName: string;
@@ -20,7 +20,7 @@ export type PhorumPostProps = {
 };
 
 export const PhorumPost: FC<PhorumPostProps> = ({
-  userAvatar = defaulAvatar,
+  userAvatar = defaultAvatar,
   userName,
   text,
   postDate,

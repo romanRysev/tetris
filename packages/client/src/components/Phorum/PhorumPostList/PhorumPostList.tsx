@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { filePrefix } from '../../../consts/prefix';
 import { useAppSelector } from '../../../redux/hooks';
-import { defaulAvatar } from '../../../utils/constants';
+import defaultAvatar from './../../../assets/avatar.svg';
 import { PhorumPost } from '../PhorumPost/PhorumPost';
 import './PhorumPostList.scss';
 
@@ -70,7 +70,7 @@ export const PhorumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[])
     <ul className="phorum-post-list">
       {list.map((item, index) => (
         <PhorumPost
-          userAvatar={`${filePrefix}${item.User.avatar}` || defaulAvatar}
+          userAvatar={`${filePrefix}${item.User.avatar}` || defaultAvatar}
           userName={item.User.displayName || `${item.User.firstName} ${item.User.secondName}`}
           text={item.message}
           postDate={item.createdAt.slice(0, 10)}
