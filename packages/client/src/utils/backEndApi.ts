@@ -59,7 +59,6 @@ export const getUserFromDB = async (id: number) =>
   await fetch(`${host}${backEndUrls.USER}/${id}`, {
     method: 'GET',
     headers: headers.get,
-    // credentials: 'include',
   });
 
 export const sendUserToDB = async (data: UserChars) =>
@@ -67,14 +66,12 @@ export const sendUserToDB = async (data: UserChars) =>
     method: 'PUT',
     headers: headers.post,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const getTheme = async (userID: number) =>
   await fetch(`${host}${backEndUrls.THEME}/${userID}`, {
     method: 'GET',
     headers: headers.get,
-    // credentials: 'include',
   });
 
 export const sendThemeToDB = async (data: IThemeProps) =>
@@ -82,7 +79,6 @@ export const sendThemeToDB = async (data: IThemeProps) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const updateTheme = async (data: IThemeUdpateProps, userID: number) =>
@@ -90,14 +86,12 @@ export const updateTheme = async (data: IThemeUdpateProps, userID: number) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const getTopicList = async (data = '') =>
   await fetch(`${host}${backEndUrls.FORUM}${data}`, {
     method: 'GET',
     headers: headers.url,
-    // credentials: 'include',
   });
 
 export const makeNewTopic = async (data: ITopicProps) =>
@@ -105,7 +99,6 @@ export const makeNewTopic = async (data: ITopicProps) =>
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const changeLastReply = async (lastReply: number, topicID: number) =>
@@ -113,14 +106,12 @@ export const changeLastReply = async (lastReply: number, topicID: number) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify({ lastReply, topicID }),
-    // credentials: 'include',
   });
 
 export const getPostsForTopic = async (topicID: number) =>
   await fetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
     method: 'GET',
     headers: headers.get,
-    // credentials: 'include',
   });
 
 export const makeNewPost = async (data: IPostProps) =>
@@ -128,7 +119,6 @@ export const makeNewPost = async (data: IPostProps) =>
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const reactWithLike = async (data: IReactionProps) =>
@@ -136,7 +126,6 @@ export const reactWithLike = async (data: IReactionProps) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });
 
 export const reactWithDislike = async (data: IReactionProps) =>
@@ -144,5 +133,4 @@ export const reactWithDislike = async (data: IReactionProps) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
-    // credentials: 'include',
   });

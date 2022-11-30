@@ -2,7 +2,6 @@ import { DataType, Model } from 'sequelize-typescript'
 import type { ModelAttributes } from 'sequelize/types'
 
 export interface IUser {
-  // userID: number
   firstName: string
   secondName: string
   displayName: string
@@ -14,11 +13,6 @@ export interface IUser {
 }
 
 export const userModel: ModelAttributes<Model, IUser> = {
-  // userID: {
-  //   type: DataType.INTEGER,
-  //   allowNull: false,
-  //   primaryKey: true,
-  // },
   firstName: {
     type: DataType.STRING,
     allowNull: false,
