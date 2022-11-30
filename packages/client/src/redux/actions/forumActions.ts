@@ -3,7 +3,7 @@ import { topicsIncoming } from '../../components/Phorum/PhorumThreadList/PhorumT
 import { changeLastReply, ITopicProps, makeNewPost, makeNewTopic } from '../../utils/backEndApi';
 
 export const getTopics = createAsyncThunk(
-  'forum/topic/get',
+  'forum/topic',
   async (
     data: {
       count: number;
