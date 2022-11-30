@@ -9,10 +9,10 @@ import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUs
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
 import {
+  putTheme,
   setGameTheme,
   setMusicVol,
   setSoundVol,
-  setTheme,
   toggleMusicOnOff,
   toggleSoundOnOff,
 } from '../../redux/actions/themeActions';
@@ -23,8 +23,7 @@ import { maxMobileWidth } from './constant';
 import menu from '../../assets/menu.svg';
 import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 import { Button } from '../../components/Button/Button';
-import { sendThemeToDB, sendUserToDB, updateTheme } from '../../utils/backEndApi';
-import { store } from '../../redux/store';
+import { sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -49,7 +48,6 @@ export const Game: React.FC = () => {
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isPause, setIsPause] = useState(false);
-  const [gotTheme, setGotTheme] = useState(false);
 
   const menuElem = useRef<HTMLInputElement>(null);
   // под тему
@@ -187,15 +185,6 @@ export const Game: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!gotTheme) {
-      (async () => {
-        await dispatch(setTheme(userProfile));
-      })();
-      setGotTheme(true);
-    }
-  }, [dispatch, userProfile, theme, gotTheme]);
-
-  useEffect(() => {
     const canvas = canvasRef.current;
     const canvasFigure = canvasRefFigure.current;
     if (canvas && canvasFigure) {
@@ -206,13 +195,16 @@ export const Game: React.FC = () => {
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-    console.log(store.getState().theme);
     return () => {
-      const { soundOn, musicOn, musicLevel, soundLevel } = userTheme;
+      const { soundOn, musicOn, musicLevel, soundLevel, isFetched } = userTheme;
       const { id } = userProfile;
-      dispatch(setMusicVol(musicLevel));
-      dispatch(setSoundVol(soundLevel)); // тут апдейт ннада
-      updateTheme({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id }, id);
+      if (isFetched != 0) {
+        (async () => {
+          await dispatch(setMusicVol(musicLevel));
+          await dispatch(setSoundVol(soundLevel)); // тут апдейт ннада
+          await dispatch(putTheme({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id }));
+        })();
+      }
     };
   }, [
     userProfile,

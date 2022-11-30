@@ -10,6 +10,7 @@ import { Input } from '../../components/Input/Input';
 import { loginRule, passwordRule, validation } from '../../helpers/validator';
 import classNames from 'classnames';
 import { Link } from '../../components/Link/Link';
+import { setTheme } from '../../redux/actions/themeActions';
 
 export type LoginForm = {
   login: string;
@@ -37,6 +38,7 @@ const Login = () => {
     const res = await dispatch(login(form));
     if (res.meta.requestStatus === 'fulfilled') {
       await dispatch(checkLogin());
+      await dispatch(setTheme());
       navigate('/game');
     } else {
       setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);

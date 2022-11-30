@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import './Register.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '../../redux/hooks';
-import { register } from '../../redux/actions/singActions';
+import { checkLogin, register } from '../../redux/actions/singActions';
 import {
   comparePasswordsRules,
   emailRule,
@@ -17,6 +17,7 @@ import {
 import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import classNames from 'classnames';
+import { setTheme } from '../../redux/actions/themeActions';
 
 export type RegisterForm = {
   login: string;
@@ -62,6 +63,8 @@ const Register = () => {
     const res = await dispatch(register(form));
 
     if (res.meta.requestStatus === 'fulfilled') {
+      await dispatch(checkLogin());
+      await dispatch(setTheme());
       navigate('/game');
     } else {
       setFormError(`Ошибка регистрации. ${(res.payload as Error)?.message}`);
@@ -76,7 +79,7 @@ const Register = () => {
     setErrorEmail(validation(e.target.value, [emailRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
-  const checkLogin = (e: React.FocusEvent<HTMLInputElement>) => {
+  const checkLogins = (e: React.FocusEvent<HTMLInputElement>) => {
     setErrorLogin(validation(e.target.value, [loginRule, requiredRule]).errorMessages.join('\n') ?? '');
   };
 
@@ -135,7 +138,7 @@ const Register = () => {
             type="text"
             name="login"
             onChange={onFieldChange}
-            onBlur={checkLogin}
+            onBlur={checkLogins}
             errorText={errorLogin}
           />
           <Input

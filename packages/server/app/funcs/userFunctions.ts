@@ -5,7 +5,6 @@ import type { IUser } from './../models/user'
 export async function createUser(
   firstName: string,
   secondName: string,
-  // userID: number,
   displayName: string,
   login: string,
   email: string,
@@ -13,17 +12,33 @@ export async function createUser(
   avatar: string,
   id: number
 ) {
-  return User.findOrCreate({where: { id }, defaults: {
-    firstName,
-    secondName,
-    // userID,
-    displayName,
-    login,
-    email,
-    phone,
-    avatar,
-    id
-  }})
+  return User.findOrCreate({
+    where: { id },
+    defaults: {
+      firstName,
+      secondName,
+      displayName,
+      login,
+      email,
+      phone,
+      avatar,
+      id,
+    },
+  }).then(() => {
+    User.update(
+      {
+        firstName,
+        secondName,
+        displayName,
+        login,
+        email,
+        phone,
+        avatar,
+        id,
+      },
+      { where: { id } }
+    )
+  })
 }
 
 // Обновление пользователя по ID

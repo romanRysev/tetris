@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ThemesNames } from '../../themes/themes';
 import {
-  // setDayOrNight,
+  putTheme,
   setGameTheme,
   setMusicVol,
   setSoundVol,
@@ -16,6 +16,7 @@ export interface IThemeSlice {
   musicOn: boolean;
   soundLevel: string;
   musicLevel: string;
+  isFetched: number;
 }
 
 export const themeInitState: IThemeSlice = {
@@ -24,6 +25,7 @@ export const themeInitState: IThemeSlice = {
   musicOn: true,
   soundLevel: '0.5',
   musicLevel: '0.5',
+  isFetched: 0,
 };
 
 export const themeSlice = createSlice({
@@ -53,6 +55,10 @@ export const themeSlice = createSlice({
       state.musicOn = musicOn;
       state.soundLevel = soundLevel;
       state.musicLevel = musicLevel;
+      state.isFetched = Date.now();
+    },
+    [putTheme.fulfilled.type]: (state, action) => {
+      state.isFetched = Date.now();
     },
   },
 });

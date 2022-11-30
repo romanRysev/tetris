@@ -13,7 +13,6 @@ type PhorumThreadListProps = {
 
 export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Форум' }) => {
   // TODO прикрутить валидацию
-  // const [topics, setTopics] = useState({ count: 0, rows: [] });
   const [isNew, setIsNew] = useState(false);
   const [isFetched, setFetched] = useState(false);
   const inputElem = useRef<HTMLInputElement>(null);
@@ -28,7 +27,6 @@ export const PhorumMainPageContent: FC<PhorumThreadListProps> = ({ title = 'Фо
     const title = inputElem.current?.value || 'Новая тема';
     const message = textAreaElem.current?.value || '';
     const authorID = userProfile.id;
-    console.log(message);
     await dispatch(newTopic({ title, authorID, message }));
     setFetched(false);
     setIsNew(false);

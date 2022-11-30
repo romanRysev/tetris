@@ -64,7 +64,7 @@ export const getUserFromDB = async (id: number) =>
 
 export const sendUserToDB = async (data: UserChars) =>
   await fetch(`${host}${backEndUrls.USER}`, {
-    method: 'POST',
+    method: 'PUT',
     headers: headers.post,
     body: JSON.stringify(data),
     // credentials: 'include',
@@ -79,8 +79,8 @@ export const getTheme = async (userID: number) =>
 
 export const sendThemeToDB = async (data: IThemeProps) =>
   await fetch(`${host}${backEndUrls.THEME}`, {
-    method: 'POST',
-    headers: headers.post,
+    method: 'PUT',
+    headers: headers.put,
     body: JSON.stringify(data),
     // credentials: 'include',
   });

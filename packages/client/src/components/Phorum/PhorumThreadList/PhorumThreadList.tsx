@@ -28,10 +28,7 @@ export interface topicsIncoming {
   }[];
 }
 
-// {"id":2,"title":"ПРЕВЕД МЕДВЕДЫ","authorID":84900,"closed":false,"lastReply":null,"createdAt":"2022-11-29T14:35:52.609Z","updatedAt":"2022-11-29T14:35:52.609Z","User":{"firstName":"Mortarion","secondName":"Emperorsson","avatar":"/333c170a-5070-4269-abb6-eeaef3159744/158145e4-92a2-4dd3-a09d-37fd43a7049b_mort.png","displayName":null},"Posts":[]}]}
-
 export const PhorumThreadList: FC<topicsIncoming[]> = (list: Record<number, topicsIncoming>) => {
-  console.log(list, 'list');
   const postList = Object.values(list);
   return (
     <ul className="phorum-thread-list">

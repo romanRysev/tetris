@@ -34,7 +34,6 @@ export const PhorumReply: FC<ReplyProps> = ({
     (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       const message = textAreaElem.current?.value.replace(/<[^>]+(>|$)/g, ' ') || '';
-      console.log(topicID);
       (async () => {
         await makeNewPost({
           authorID: userProfile.id,

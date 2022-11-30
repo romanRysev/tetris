@@ -1,8 +1,8 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThemesNames } from '../../themes/themes';
-import { getTheme, getUserFromDB, sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
+import { getTheme, IThemeProps, sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
 import { UserChars } from '../reducers/userSlice';
-import { store } from '../store';
+import { RootState, store } from '../store';
 
 export const setGameTheme = createAsyncThunk('theme/active', async (data: ThemesNames, thunkAPI) => {
   try {
@@ -13,7 +13,6 @@ export const setGameTheme = createAsyncThunk('theme/active', async (data: Themes
 });
 
 export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: boolean, thunkAPI) => {
-  console.log(data);
   try {
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -45,29 +44,25 @@ export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: str
   }
 });
 
-export const setTheme = createAsyncThunk('theme/set', async (data: UserChars, thunkAPI) => {
+export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
   try {
-    const { id } = data;
-    const res = await getUserFromDB(id);
-    if (res?.ok && res?.text.length > 0) {
-      console.log(res.text);
-      const user = await res.json();
-      if (user.id) {
-        console.log('есть id');
-        const userTheme = await getTheme(id);
-        if (userTheme?.ok) {
-          return thunkAPI.fulfillWithValue(await userTheme.json());
+    const userProfile: UserChars = store.getState().auth.user;
+    const { id } = userProfile;
+    const res = await sendUserToDB(userProfile);
+    if (res?.ok) {
+      const userTheme = await getTheme(id);
+      if (userTheme?.ok) {
+        const isTheme = await userTheme.json();
+        if (isTheme != null) {
+          return thunkAPI.fulfillWithValue(isTheme);
+        } else {
+          const initTheme = store.getState().theme;
+          const { soundOn, musicOn, musicLevel, soundLevel, active } = initTheme;
+          await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
         }
-      } else if (res?.ok) {
-        const userTheme = store.getState().theme;
-        const userProfile = store.getState().auth.user;
-        const { soundOn, musicOn, musicLevel, soundLevel, active } = userTheme;
-        const { id } = userProfile;
-        await sendUserToDB(userProfile);
-        await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
-      } else {
-        console.log('не прошло');
       }
+    } else {
+      throw new Error('не прошло');
     }
     const err = await res?.json();
     throw new Error(err.reason);
@@ -75,3 +70,27 @@ export const setTheme = createAsyncThunk('theme/set', async (data: UserChars, th
     return thunkAPI.rejectWithValue(e);
   }
 });
+
+export const putTheme = createAsyncThunk(
+  'theme/put',
+  async (data: IThemeProps, thunkAPI) => {
+    try {
+      const res = await sendThemeToDB({ ...data });
+      if (res?.ok) {
+        return thunkAPI.fulfillWithValue(data);
+      }
+    } catch (e) {
+      return thunkAPI.rejectWithValue('Не удалось отправить тему на сервер');
+    }
+  },
+  {
+    condition: (data, { getState, extra }) => {
+      const { theme } = getState() as RootState;
+      const date = theme.isFetched;
+      const now = Date.now();
+      if (date && date - now < 100000) {
+        return false;
+      }
+    },
+  },
+);

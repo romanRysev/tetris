@@ -129,10 +129,6 @@ export class Tetris extends Component<TetrisProps> {
     }
 
     this.colors = setThemeColors(theme).colors;
-
-    // if (theme === 'dark') {
-    //   this.colors = colorsDarkTheme;
-    // }
   }
 
   private async preloadImages(images: Record<string, string>, target: Record<string, HTMLImageElement>) {

@@ -16,7 +16,6 @@ export interface ThreadListItemProps {
 }
 
 export const PhorumThreadListItem: FC<ThreadListItemProps> = (props) => {
-  console.log(props);
   const { thread, pageCount, replies, lastReplyUser, lastReplyDate, author, startDate, threadID } = props;
   const navigate = useNavigate();
   const handleThreadClick = useCallback(async () => {
