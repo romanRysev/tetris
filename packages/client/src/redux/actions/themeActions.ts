@@ -3,10 +3,10 @@ import { ThemesNames } from '../../themes/themes';
 import { getTheme, IThemeProps, sendThemeToDB, sendUserToDB, updateTheme } from '../../utils/backEndApi';
 import { UserChars } from '../reducers/userSlice';
 import { RootState, store } from '../store';
-const userProfile: UserChars = store.getState().auth.user;
 
 export const setGameTheme = createAsyncThunk('theme/active', async (data: ThemesNames, thunkAPI) => {
   try {
+    const userProfile: UserChars = store.getState().auth.user;
     await updateTheme({ themeActive: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -16,6 +16,7 @@ export const setGameTheme = createAsyncThunk('theme/active', async (data: Themes
 
 export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: boolean, thunkAPI) => {
   try {
+    const userProfile: UserChars = store.getState().auth.user;
     await updateTheme({ musicOn: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -25,6 +26,7 @@ export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: b
 
 export const toggleSoundOnOff = createAsyncThunk('theme/soundOn', async (data: boolean, thunkAPI) => {
   try {
+    const userProfile: UserChars = store.getState().auth.user;
     await updateTheme({ soundOn: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
@@ -50,6 +52,7 @@ export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: str
 
 export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
   try {
+    const userProfile: UserChars = store.getState().auth.user;
     const { id } = userProfile;
     const res = await sendUserToDB(userProfile);
     if (res?.ok) {
