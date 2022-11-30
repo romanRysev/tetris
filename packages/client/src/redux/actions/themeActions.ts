@@ -1,11 +1,13 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import { ThemesNames } from '../../themes/themes';
-import { getTheme, IThemeProps, sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
+import { getTheme, IThemeProps, sendThemeToDB, sendUserToDB, updateTheme } from '../../utils/backEndApi';
 import { UserChars } from '../reducers/userSlice';
 import { RootState, store } from '../store';
+const userProfile: UserChars = store.getState().auth.user;
 
 export const setGameTheme = createAsyncThunk('theme/active', async (data: ThemesNames, thunkAPI) => {
   try {
+    await updateTheme({ themeActive: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось поменять тему');
@@ -14,6 +16,7 @@ export const setGameTheme = createAsyncThunk('theme/active', async (data: Themes
 
 export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: boolean, thunkAPI) => {
   try {
+    await updateTheme({ musicOn: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось включить/выключить музыку');
@@ -22,6 +25,7 @@ export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: b
 
 export const toggleSoundOnOff = createAsyncThunk('theme/soundOn', async (data: boolean, thunkAPI) => {
   try {
+    await updateTheme({ soundOn: data }, userProfile.id);
     thunkAPI.fulfillWithValue(data);
   } catch (e) {
     return thunkAPI.rejectWithValue('Не удалось включить/выключить звук');
@@ -46,7 +50,6 @@ export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: str
 
 export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
   try {
-    const userProfile: UserChars = store.getState().auth.user;
     const { id } = userProfile;
     const res = await sendUserToDB(userProfile);
     if (res?.ok) {
