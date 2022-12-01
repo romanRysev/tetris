@@ -21,8 +21,8 @@ const ProfileChangePasswordPage = React.lazy(
 const Game = React.lazy(() => import('./pages/Game/Game'));
 const HowToPlay = React.lazy(() => import('./pages/HowTo/HowToPlayPage'));
 const LeaderBoardPage = React.lazy(() => import('./pages/LeaderBoardPage/LeaderBoardPage'));
-const PhorumMainPage = React.lazy(() => import('./pages/Phorum/PhorumMainPage/PhorumMainPage'));
-const PhorumThreadPage = React.lazy(() => import('./pages/Phorum/PhorumThreadPage/PhorumThreadPage'));
+const ForumMainPage = React.lazy(() => import('./pages/Forum/ForumMainPage/ForumMainPage'));
+const ForumThreadPage = React.lazy(() => import('./pages/Forum/ForumThreadPage/ForumThreadPage'));
 
 function App() {
   const dispatch = useAppDispatch();
@@ -57,9 +57,9 @@ function App() {
                   <Route path="/" element={<Game />} />
                   <Route path="/profile" element={<ProfilePage />} />
                   <Route path="/leaderboard" element={<LeaderBoardPage />} />
-                  <Route path="/phorum" element={<PhorumMainPage />} />
-                  <Route path="/phorum/thread" element={<PhorumThreadPage />} />
-                  <Route path="/phorum/thread/:id" element={<PhorumThreadPage />} />
+                  <Route path="/forum" element={<ForumMainPage />} />
+                  <Route path="/forum/thread" element={<ForumThreadPage />} />
+                  <Route path="/forum/thread/:id" element={<ForumThreadPage />} />
                   <Route path="/game" element={<Game />} />
                   <Route path="/howto" element={<HowToPlay />} />
                   <Route path="/profile/change-password" element={<ProfileChangePasswordPage />} />

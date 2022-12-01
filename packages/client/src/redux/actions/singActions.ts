@@ -52,6 +52,7 @@ export const logout = createAsyncThunk('auth/logout', async (data, thunkAPI) => 
   try {
     const res = await postLogout();
     if (res?.ok) {
+      localStorage.clear();
       return thunkAPI.fulfillWithValue(true);
     }
     throw new Error('Не разлогинить пользователя');

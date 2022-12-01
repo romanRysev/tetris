@@ -266,7 +266,7 @@ export const Game: React.FC = () => {
           </ul>
           <ul className="game-menu__submenu">
             <li>
-              <Link className="game-menu__link" to="/phorum">
+              <Link className="game-menu__link" to="/forum">
                 Форум
               </Link>
             </li>

@@ -1,5 +1,5 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { topicsIncoming } from '../../components/Phorum/PhorumThreadList/PhorumThreadList';
+import { topicsIncoming } from '../../components/Forum/ForumThreadList/ForumThreadList';
 import { changeLastReply, ITopicProps, makeNewPost, makeNewTopic } from '../../utils/backEndApi';
 
 export const getTopics = createAsyncThunk(
@@ -37,8 +37,6 @@ export const newTopic = createAsyncThunk('forum/topic', async (data: ITopicProps
         }
       }
     }
-    const err = await res?.json();
-    throw new Error(err.reason);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }

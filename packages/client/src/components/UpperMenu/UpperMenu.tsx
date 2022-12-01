@@ -20,7 +20,7 @@ const menuLinks: MenuItemProps[] = [
   },
   {
     text: 'Форум',
-    link: '/phorum',
+    link: '/forum',
   },
   {
     text: 'Доска почета',

@@ -9,7 +9,6 @@ export async function createTheme(props: ITheme) {
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
 export async function updateThemeByUserID(userID: number, data: IThemeUpdate) {
-  console.log(data);
   return Theme.update(data, { where: { userID } })
 }
 

@@ -67,8 +67,6 @@ export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
           await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
         }
       }
-    } else {
-      throw new Error('не прошло');
     }
     const err = await res?.json();
     throw new Error(err.reason);
