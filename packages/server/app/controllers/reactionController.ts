@@ -20,7 +20,7 @@ export const reactionDislike = async (req: Request, res: Response) => {
 
 // получить реакции поста
 export const getReactionsByPostID = async (req: Request, res: Response) => {
-  const { postID } = req.query
+  const { postID } = req.params
   await processResult(() => {
     return reactionFuncs.getReactionsForPost(Number(postID))
   }, res, 'Some error occurred while fetching reactions.');

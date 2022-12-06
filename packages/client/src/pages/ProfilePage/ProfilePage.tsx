@@ -8,23 +8,23 @@ import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
 
 import './ProfilePage.scss';
+import { sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
 
 export const ProfilePage = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const {
-    login,
-    email,
-    phone,
-    firstName,
-    secondName: lastName,
-    displayName,
-  } = useAppSelector((state) => state.auth.user);
+  const userProfile = useAppSelector((state) => state.auth.user);
+  const userTheme = useAppSelector((state) => state.theme);
+  const { login, email, phone, firstName, secondName: lastName, displayName } = userProfile;
 
   const onLogout = async () => {
     const res = await dispatch(logout());
     if (res.meta.requestStatus === 'fulfilled') {
+      const { soundOn, musicOn, musicLevel, soundLevel, active } = userTheme;
+      const { id } = userProfile;
+      await sendUserToDB(userProfile);
+      await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
       navigate('/login');
     }
   };

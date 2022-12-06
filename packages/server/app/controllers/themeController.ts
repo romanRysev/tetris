@@ -54,13 +54,13 @@ export const update = async (req: Request, res: Response) => {
   const { userID } = req.params
   await processResult(() => {
     return updateThemeByUserID(Number(userID), { ...req.body })
-  }, res, 'Some error occurred while getting the Theme.');
+  }, res, 'Some error occurred while updating the Theme.');
 }
 
 export const deleteOne = async (req: Request, res: Response) => {
-  const { id } = req.params
+  const { userID } = req.params
   await processResult(() => {
-    return deleteThemeById(Number(id))
+    return deleteThemeById(Number(userID))
   }, res, 'Some error occurred while getting the Theme.');
 }
 

@@ -10,6 +10,15 @@ export interface ITheme {
   musicLevel: string
 }
 
+export interface IThemeUpdate {
+  themeActive?: string
+  userID?: number
+  soundOn?: boolean
+  musicOn?: boolean
+  soundLevel?: string
+  musicLevel?: string
+}
+
 export const themeModel: ModelAttributes<Model, ITheme> = {
   themeActive: {
     type: DataType.STRING,

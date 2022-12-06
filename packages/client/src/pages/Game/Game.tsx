@@ -8,7 +8,14 @@ import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { logout } from '../../redux/actions/singActions';
-import { setDayOrNight, setGameTheme } from '../../redux/actions/themeActions';
+import {
+  putTheme,
+  setGameTheme,
+  setMusicVol,
+  setSoundVol,
+  toggleMusicOnOff,
+  toggleSoundOnOff,
+} from '../../redux/actions/themeActions';
 import classNames from 'classnames';
 import { ThemesNames, themesOptions } from '../../themes/themes';
 import { GameControls } from '../../components/GameControls/GameControls';
@@ -16,6 +23,7 @@ import { maxMobileWidth } from './constant';
 import menu from '../../assets/menu.svg';
 import { BackgroundBlur } from '../../components/BackgroundBlur/BackgroundBlur';
 import { Button } from '../../components/Button/Button';
+import { sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
 
 export const Game: React.FC = () => {
   const [IsGameStarted, setIsGameStarted] = useState(false);
@@ -31,6 +39,11 @@ export const Game: React.FC = () => {
   const userAvatar = makeUserAvatarFromUser(userProfile);
   const isAuthorized = useAppSelector((state) => state.auth.isAuthorized);
   const theme = useAppSelector((state) => state.theme.active);
+  const userTheme = useAppSelector((state) => state.theme);
+  const isSoundOn = useAppSelector((state) => state.theme.soundOn);
+  const isMusicOn = useAppSelector((state) => state.theme.musicOn);
+  const initMusicLevel = useAppSelector((state) => state.theme.musicLevel);
+  const initSoundLevel = useAppSelector((state) => state.theme.musicLevel);
   const [isLevelsActive, setLevelsActive] = useState(false);
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -52,6 +65,10 @@ export const Game: React.FC = () => {
   const handleLogout = async () => {
     const res = await dispatch(logout());
     if (res.meta.requestStatus === 'fulfilled') {
+      const { soundOn, musicOn, musicLevel, soundLevel } = userTheme;
+      const { id } = userProfile;
+      await sendUserToDB(userProfile);
+      await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id });
       navigate('/login');
     }
   };
@@ -108,18 +125,16 @@ export const Game: React.FC = () => {
   const eqMusicRef = useRef<HTMLInputElement>(null);
   const eqSoundsRef = useRef<HTMLInputElement>(null);
 
-  const [isMusicOn, setMusicOn] = useState(true);
-  const [isSoundOn, setSoundOn] = useState(true);
-  const [musicLevel, setMusicLevel] = useState('0.5');
-  const [soundLevel, setSoundLevel] = useState('0.5');
+  const [musicLevel, setMusicLevel] = useState(initMusicLevel);
+  const [soundLevel, setSoundLevel] = useState(initSoundLevel);
 
-  const toggleMusic = useCallback(() => {
-    setMusicOn(!isMusicOn);
-  }, [isMusicOn]);
+  const toggleMusic = useCallback(async () => {
+    return await dispatch(toggleMusicOnOff(!isMusicOn));
+  }, [dispatch, isMusicOn]);
 
-  const toggleSound = useCallback(() => {
-    setSoundOn(!isSoundOn);
-  }, [isSoundOn]);
+  const toggleSound = useCallback(async () => {
+    return await dispatch(toggleSoundOnOff(!isSoundOn));
+  }, [dispatch, isSoundOn]);
 
   const handleSoundVolume = useCallback(() => {
     const vol = eqSoundsRef.current?.value || '0.5';
@@ -162,13 +177,10 @@ export const Game: React.FC = () => {
   const handleNightTheme = async () => {
     if (theme === 'classic') {
       await dispatch(setGameTheme('dark'));
-      await dispatch(setDayOrNight('dark'));
     } else if (theme === 'dark') {
       await dispatch(setGameTheme('classic'));
-      await dispatch(setDayOrNight('light'));
     } else if (!theme) {
       await dispatch(setGameTheme('dark'));
-      await dispatch(setDayOrNight('dark'));
     }
   };
 
@@ -183,7 +195,29 @@ export const Game: React.FC = () => {
         context.fillRect(0, 0, context.canvas.width, context.canvas.height);
       }
     }
-  }, [IsGameStarted, theme, addThemeToClassName, eqMusicRef, eqSoundsRef]);
+    return () => {
+      const { soundOn, musicOn, musicLevel, soundLevel, isFetched } = userTheme;
+      const { id } = userProfile;
+      if (isFetched != 0) {
+        (async () => {
+          await dispatch(setMusicVol(musicLevel));
+          await dispatch(setSoundVol(soundLevel)); // тут апдейт ннада
+          await dispatch(putTheme({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id }));
+        })();
+      }
+    };
+  }, [
+    userProfile,
+    userTheme,
+    IsGameStarted,
+    theme,
+    addThemeToClassName,
+    eqMusicRef,
+    eqSoundsRef,
+    dispatch,
+    musicLevel,
+    soundLevel,
+  ]);
 
   return (
     <div className={classNames('game', `game${addThemeToClassName}`)}>
@@ -232,7 +266,7 @@ export const Game: React.FC = () => {
           </ul>
           <ul className="game-menu__submenu">
             <li>
-              <Link className="game-menu__link" to="/phorum">
+              <Link className="game-menu__link" to="/forum">
                 Форум
               </Link>
             </li>

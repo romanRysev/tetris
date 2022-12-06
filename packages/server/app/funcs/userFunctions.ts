@@ -5,22 +5,39 @@ import type { IUser } from './../models/user'
 export async function createUser(
   firstName: string,
   secondName: string,
-  userID: number,
   displayName: string,
   login: string,
   email: string,
   phone: string,
-  avatar: string
+  avatar: string,
+  id: number
 ) {
-  return User.create({
-    firstName,
-    secondName,
-    userID,
-    displayName,
-    login,
-    email,
-    phone,
-    avatar,
+  return User.findOrCreate({
+    where: { id },
+    defaults: {
+      firstName,
+      secondName,
+      displayName,
+      login,
+      email,
+      phone,
+      avatar,
+      id,
+    },
+  }).then(() => {
+    User.update(
+      {
+        firstName,
+        secondName,
+        displayName,
+        login,
+        email,
+        phone,
+        avatar,
+        id,
+      },
+      { where: { id } }
+    )
   })
 }
 
@@ -47,6 +64,11 @@ export async function getUsersByFirstName(firstName: string) {
 // Поиск пользователей по никнейму
 export async function getUsersByDisplayName(displayName: string) {
   return User.findAll({ where: { displayName } })
+}
+
+// Поиск по userID
+export async function getUsersByUserID(userID: number) {
+  return User.findAll({ where: { userID } })
 }
 
 // Получение всех пользователей

@@ -1,13 +1,14 @@
 import { Theme } from './../config/db.config'
-import type { ITheme } from './../models/themes'
+import type { ITheme, IThemeUpdate } from './../models/themes'
 
 // Создание записи
 export async function createTheme(props: ITheme) {
-  return Theme.create({ ...props })
+  const { userID } = props;
+  return Theme.findOrCreate({where: { userID }, defaults: {...props}}).then(() => Theme.update({ ...props }, {where: { userID }}));
 }
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
-export async function updateThemeByUserID(userID: number, data: ITheme) {
+export async function updateThemeByUserID(userID: number, data: IThemeUpdate) {
   return Theme.update(data, { where: { userID } })
 }
 

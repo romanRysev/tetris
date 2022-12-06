@@ -1,30 +1,31 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { ThemesNames } from '../../themes/themes';
 import {
-  setDayOrNight,
+  putTheme,
   setGameTheme,
   setMusicVol,
   setSoundVol,
+  setTheme,
   toggleMusicOnOff,
   toggleSoundOnOff,
 } from '../actions/themeActions';
 
-interface IThemeSlice {
-  global: 'light' | 'dark';
+export interface IThemeSlice {
   active: ThemesNames;
   soundOn: boolean;
   musicOn: boolean;
   soundLevel: string;
   musicLevel: string;
+  isFetched: number;
 }
 
-const themeInitState: IThemeSlice = {
-  global: 'light',
+export const themeInitState: IThemeSlice = {
   active: 'classic',
   soundOn: true,
   musicOn: true,
   soundLevel: '0.5',
   musicLevel: '0.5',
+  isFetched: 0,
 };
 
 export const themeSlice = createSlice({
@@ -34,9 +35,6 @@ export const themeSlice = createSlice({
   extraReducers: {
     [setGameTheme.fulfilled.type]: (state, action) => {
       state.active = action.meta.arg;
-    },
-    [setDayOrNight.fulfilled.type]: (state, action) => {
-      state.global = action.meta.arg;
     },
     [toggleMusicOnOff.fulfilled.type]: (state, action) => {
       state.musicOn = action.meta.arg;
@@ -49,6 +47,18 @@ export const themeSlice = createSlice({
     },
     [setSoundVol.fulfilled.type]: (state, action) => {
       state.soundLevel = action.meta.arg;
+    },
+    [setTheme.fulfilled.type]: (state, action) => {
+      const { soundOn, musicOn, musicLevel, soundLevel, themeActive } = action.payload;
+      state.active = themeActive;
+      state.soundOn = soundOn;
+      state.musicOn = musicOn;
+      state.soundLevel = soundLevel;
+      state.musicLevel = musicLevel;
+      state.isFetched = Date.now();
+    },
+    [putTheme.fulfilled.type]: (state, action) => {
+      state.isFetched = Date.now();
     },
   },
 });

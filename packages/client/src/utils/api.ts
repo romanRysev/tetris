@@ -1,6 +1,7 @@
 import { LoginForm } from '../pages/Login/Login';
 import { RegisterForm } from '../pages/Register/Register';
 import { APIurls } from './constants';
+import { realFetch } from './realFetch';
 
 const headers = {
   post: { 'Content-Type': 'application/json' },
@@ -68,14 +69,14 @@ export const postLoginRequest = async (data: LoginForm) =>
   });
 
 export const getProfileRequest = async () =>
-  await fetch(APIurls.GETUSER, {
+  await realFetch(APIurls.GETUSER, {
     method: 'GET',
     headers: { ...headers.get },
     credentials: 'include',
   });
 
 export const setAvatarRequest = async (data: FormData) =>
-  await fetch(APIurls.CHANGEAVATAR, {
+  await realFetch(APIurls.CHANGEAVATAR, {
     method: 'PUT',
     headers: { accept: 'application/xml' },
     credentials: 'include',
@@ -83,7 +84,7 @@ export const setAvatarRequest = async (data: FormData) =>
   });
 
 export const setProfileInfoRequest = async (data: IChangeInfo) =>
-  await fetch(APIurls.CHANGEPROFILE, {
+  await realFetch(APIurls.CHANGEPROFILE, {
     method: 'PUT',
     headers: headers.put,
     credentials: 'include',
@@ -91,7 +92,7 @@ export const setProfileInfoRequest = async (data: IChangeInfo) =>
   });
 
 export const setProfilePasswordRequest = async (data: IChangePassword) =>
-  await fetch(APIurls.CHANGEPASS, {
+  await realFetch(APIurls.CHANGEPASS, {
     method: 'PUT',
     headers: headers.put,
     credentials: 'include',
@@ -99,7 +100,7 @@ export const setProfilePasswordRequest = async (data: IChangePassword) =>
   });
 
 export const addToLeaderBoard = async (data: AddLeader) =>
-  await fetch(APIurls.LEADERBOARD, {
+  await realFetch(APIurls.LEADERBOARD, {
     method: 'POST',
     headers: headers.post,
     credentials: 'include',
@@ -107,7 +108,7 @@ export const addToLeaderBoard = async (data: AddLeader) =>
   });
 
 export const getLeaderBoard = async (data: GetLeaders) =>
-  await fetch(`${APIurls.LEADERBOARD}/CodinskTest`, {
+  await realFetch(`${APIurls.LEADERBOARD}/CodinskTest`, {
     method: 'POST',
     headers: headers.post,
     credentials: 'include',

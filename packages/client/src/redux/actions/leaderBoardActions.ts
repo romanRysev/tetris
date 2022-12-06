@@ -2,20 +2,18 @@ import { createAsyncThunk } from '@reduxjs/toolkit';
 import { AddLeader, getLeaderBoard, GetLeaders, addToLeaderBoard } from '../../utils/api';
 import { RootState } from '../store';
 
+// тут и ниже убрала блок try-catch, потому что на статус повешена возможность unauthorised
 export const setLeaderBoard = createAsyncThunk(
   'leaders',
   async (data: GetLeaders, thunkAPI) => {
     try {
       const res = await getLeaderBoard(data);
-      if ((res as Response)?.status === 401) {
+      return thunkAPI.fulfillWithValue({ ...res });
+    } catch (error) {
+      if ((error as Record<string, string>).reason?.includes('not valid')) {
         return thunkAPI.rejectWithValue('unauthorized');
       }
-      const leaders = await res?.json();
-      return res?.ok
-        ? thunkAPI.fulfillWithValue({ ...leaders })
-        : thunkAPI.rejectWithValue('Не удалось получить данные');
-    } catch (e) {
-      return thunkAPI.rejectWithValue('Не удалось получить данные');
+      return thunkAPI.rejectWithValue(error);
     }
   },
   {
@@ -33,11 +31,11 @@ export const setLeaderBoard = createAsyncThunk(
 export const sendResultsToLeaderBoard = createAsyncThunk('leaders', async (data: AddLeader, thunkAPI) => {
   try {
     const res = await addToLeaderBoard(data);
-    if (res.status == 401) {
+    thunkAPI.fulfillWithValue(res);
+  } catch (error) {
+    if ((error as Record<string, string>).reason?.includes('not valid')) {
       return thunkAPI.rejectWithValue('unauthorized');
     }
-    return res.ok ? thunkAPI.fulfillWithValue(res) : thunkAPI.rejectWithValue('Не удалось отправить данные');
-  } catch (e) {
-    return thunkAPI.rejectWithValue('Не удалось отправить данные');
+    return thunkAPI.rejectWithValue(error);
   }
 });

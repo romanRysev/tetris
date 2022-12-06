@@ -1,8 +1,9 @@
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { UserChars } from '../../redux/reducers/userSlice';
-import { defaulAvatar, filePrefix } from '../../utils/constants';
+import { filePrefix } from '../../utils/constants';
 import { UserAvatar } from '../UserAvatar/UserAvatar';
+import defaultAvatar from './../../assets/avatar.svg';
 
 import './UserInfo.scss';
 
@@ -18,7 +19,7 @@ export type UserProps = {
 };
 
 export const UserInfo: FC<UserChars> = ({ firstName, secondName, displayName, avatar }) => {
-  const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaulAvatar;
+  const avatarUrl = avatar ? `${filePrefix}${avatar}` : defaultAvatar;
   const name = displayName || `${firstName} ${secondName}`;
   const navigate = useNavigate();
   const handleProfile = useCallback(() => {

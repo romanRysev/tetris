@@ -3,9 +3,6 @@ import { createUserRow, deleteAll, deleteOne, findOne, findUserByNickName, getAl
 
 const router = express.Router();
 
-// получить всех пользователей 
-router.get('/', getAll);
-
 // получить пользователя по id 
 router.get('/:id', findOne);
 
@@ -15,13 +12,16 @@ router.post('/find', findUserByNickName);
 // удалить пользователя по id
 router.delete('/:id', deleteOne);
 
-//удалить всех пользователей 
-router.delete('/', deleteAll);
-
 // обновить пользователя по id 
 router.put('/:id', update);
 
 // создать пользователя 
-router.post('/', createUserRow);
+router.put('/', createUserRow);
+
+//удалить всех пользователей 
+router.delete('/', deleteAll);
+
+// получить всех пользователей 
+router.get('/', getAll);
 
 export default router;

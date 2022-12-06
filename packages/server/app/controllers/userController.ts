@@ -18,9 +18,8 @@ export const createUserRow = async (req: Request, res: Response) => {
     })
     return
   }
-  const userID = id;
   await processResult(() => {
-    return createUser(firstName, secondName, Number(userID), displayName, login, email, phone, avatar  )
+    return createUser(firstName, secondName, displayName, login, email, phone, avatar, Number(id)  )
   }, res, 'Some error occurred while creating the User.');
 
 }

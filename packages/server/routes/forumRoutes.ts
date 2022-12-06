@@ -9,7 +9,7 @@ const router = express.Router();
 router.get('/all', topicController.getTopicList);
 
 // получить реакции поста
-router.get('/reaction', reactionController.getReactionsByPostID);
+router.get('/reaction/:postID', reactionController.getReactionsByPostID);
 
 // получить лайки поста
 router.get('/like', reactionController.getLikesByPostID);
