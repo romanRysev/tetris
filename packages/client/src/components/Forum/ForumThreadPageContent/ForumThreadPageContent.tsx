@@ -16,14 +16,13 @@ export const ForumThreadPageContent: FC = () => {
 
   const [postsRaw, setPostsRaw] = useState({ count: 0, rows: [] });
   useEffect(() => {
-    (async () => {
-      const res = await getPostsForTopic(threadId);
+    getPostsForTopic(threadId).then((res) => {
       setPostsRaw(res);
       if (isNewPost) {
         endRef.current?.scrollIntoView({ behavior: 'smooth' });
         setIsNewPost(false);
       }
-    })();
+    });
   }, [threadId, isNewPost]);
 
   const getNewPost = useCallback(() => {
