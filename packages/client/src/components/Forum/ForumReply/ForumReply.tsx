@@ -1,6 +1,6 @@
 import React, { FC, FormEvent, useCallback, useRef, useState } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
-import { makeNewPost } from '../../../utils/backEndApi';
+import { changeLastReply, makeNewPost } from '../../../utils/backEndApi';
 import { Button } from '../../Button/Button';
 import './ForumReply.scss';
 
@@ -35,11 +35,13 @@ export const ForumReply: FC<ReplyProps> = ({
       e.preventDefault();
       const message = textAreaElem.current?.value.replace(/<[^>]+(>|$)/g, ' ') || '';
 
-      await makeNewPost({
+      const post = await makeNewPost({
         authorID: userProfile.id,
         topicID,
         message: message,
       });
+      const { id } = post;
+      await changeLastReply(id, topicID);
 
       localStorage.removeItem(`${topicID}-saved-message`);
       formRef.current?.reset();

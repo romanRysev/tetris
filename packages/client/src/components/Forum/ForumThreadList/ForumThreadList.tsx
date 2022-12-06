@@ -25,8 +25,19 @@ export interface topicsIncoming {
       avatar: string;
     };
     id: number;
+    createdAt: string;
   }[];
 }
+
+const getDataFromLastReply = (allData: topicsIncoming, id?: number) => {
+  if (!id) {
+    return { date: '', name: '' };
+  }
+  const post = allData.Posts.find((id) => id === id);
+  const date = post?.createdAt;
+  const name = post?.User.displayName || `${post?.User.firstName} ${post?.User.secondName}`;
+  return { date, name };
+};
 
 export const ForumThreadList: FC<topicsIncoming[]> = (list: Record<number, topicsIncoming>) => {
   const postList = Object.values(list);
@@ -39,8 +50,8 @@ export const ForumThreadList: FC<topicsIncoming[]> = (list: Record<number, topic
           author={item.User.firstName}
           startDate={item.createdAt.slice(0, 10)}
           replies={item.Posts ? item.Posts.length.toString() : '0'}
-          lastReplyUser={item.User.firstName}
-          lastReplyDate={item.createdAt.slice(0, 10)}
+          lastReplyUser={getDataFromLastReply(item, item.lastReply).name}
+          lastReplyDate={getDataFromLastReply(item, item.lastReply).date?.slice(0, 10) || ''}
           threadID={item.id}
           key={'thread' + index}
         />

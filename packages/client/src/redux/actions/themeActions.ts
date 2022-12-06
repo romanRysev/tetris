@@ -54,22 +54,16 @@ export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
   try {
     const userProfile: UserChars = store.getState().auth.user;
     const { id } = userProfile;
-    const res = await sendUserToDB(userProfile);
-    if (res?.ok) {
-      const userTheme = await getTheme(id);
-      if (userTheme?.ok) {
-        const isTheme = await userTheme.json();
-        if (isTheme != null) {
-          return thunkAPI.fulfillWithValue(isTheme);
-        } else {
-          const initTheme = store.getState().theme;
-          const { soundOn, musicOn, musicLevel, soundLevel, active } = initTheme;
-          await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
-        }
-      }
+    await sendUserToDB(userProfile);
+    const userTheme = await getTheme(id);
+    const isTheme = await userTheme.json();
+    if (isTheme != null) {
+      return thunkAPI.fulfillWithValue(isTheme);
+    } else {
+      const initTheme = store.getState().theme;
+      const { soundOn, musicOn, musicLevel, soundLevel, active } = initTheme;
+      await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: active, userID: id });
     }
-    const err = await res?.json();
-    throw new Error(err.reason);
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }
@@ -79,10 +73,8 @@ export const putTheme = createAsyncThunk(
   'theme/put',
   async (data: IThemeProps, thunkAPI) => {
     try {
-      const res = await sendThemeToDB({ ...data });
-      if (res?.ok) {
-        return thunkAPI.fulfillWithValue(data);
-      }
+      await sendThemeToDB({ ...data });
+      return thunkAPI.fulfillWithValue(data);
     } catch (e) {
       return thunkAPI.rejectWithValue('Не удалось отправить тему на сервер');
     }

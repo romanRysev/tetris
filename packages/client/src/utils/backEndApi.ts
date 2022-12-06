@@ -1,5 +1,6 @@
 import { backEndUrls } from './constants';
 import { UserChars } from './../redux/reducers/userSlice';
+import { realFetch } from './realFetch';
 
 const headers = {
   post: { 'Content-Type': 'application/json' },
@@ -56,80 +57,80 @@ export interface IReactionProps {
 }
 
 export const getUserFromDB = async (id: number) =>
-  await fetch(`${host}${backEndUrls.USER}/${id}`, {
+  await realFetch(`${host}${backEndUrls.USER}/${id}`, {
     method: 'GET',
     headers: headers.get,
   });
 
 export const sendUserToDB = async (data: UserChars) =>
-  await fetch(`${host}${backEndUrls.USER}`, {
+  await realFetch(`${host}${backEndUrls.USER}`, {
     method: 'PUT',
     headers: headers.post,
     body: JSON.stringify(data),
   });
 
 export const getTheme = async (userID: number) =>
-  await fetch(`${host}${backEndUrls.THEME}/${userID}`, {
+  await realFetch(`${host}${backEndUrls.THEME}/${userID}`, {
     method: 'GET',
     headers: headers.get,
   });
 
 export const sendThemeToDB = async (data: IThemeProps) =>
-  await fetch(`${host}${backEndUrls.THEME}`, {
+  await realFetch(`${host}${backEndUrls.THEME}`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
   });
 
 export const updateTheme = async (data: IThemeUdpateProps, userID: number) =>
-  await fetch(`${host}${backEndUrls.THEME}/${userID}`, {
+  await realFetch(`${host}${backEndUrls.THEME}/${userID}`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
   });
 
 export const getTopicList = async (data = '') =>
-  await fetch(`${host}${backEndUrls.FORUM}${data}`, {
+  await realFetch(`${host}${backEndUrls.FORUM}${data}`, {
     method: 'GET',
     headers: headers.url,
   });
 
 export const makeNewTopic = async (data: ITopicProps) =>
-  await fetch(`${host}${backEndUrls.FORUM}`, {
+  await realFetch(`${host}${backEndUrls.FORUM}`, {
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
   });
 
-export const changeLastReply = async (lastReply: number, topicID: number) =>
-  await fetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
+export const changeLastReply = async (lastReply: number, id: number) =>
+  await realFetch(`${host}${backEndUrls.FORUM}/${id}`, {
     method: 'PUT',
     headers: headers.put,
-    body: JSON.stringify({ lastReply, topicID }),
+    body: JSON.stringify({ lastReply, id }),
   });
 
 export const getPostsForTopic = async (topicID: number) =>
-  await fetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
+  await realFetch(`${host}${backEndUrls.FORUM}/${topicID}`, {
     method: 'GET',
     headers: headers.get,
   });
 
 export const makeNewPost = async (data: IPostProps) =>
-  await fetch(`${host}${backEndUrls.FORUM}/${Number(data.topicID)}`, {
+  await realFetch(`${host}${backEndUrls.FORUM}/${Number(data.topicID)}`, {
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),
   });
 
 export const reactWithLike = async (data: IReactionProps) =>
-  await fetch(`${host}${backEndUrls.FORUM}/like`, {
+  await realFetch(`${host}${backEndUrls.FORUM}/like`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
   });
 
 export const reactWithDislike = async (data: IReactionProps) =>
-  await fetch(`${host}${backEndUrls.FORUM}/dislike`, {
+  await realFetch(`${host}${backEndUrls.FORUM}/dislike`, {
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),

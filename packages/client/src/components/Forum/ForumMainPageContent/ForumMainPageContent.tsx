@@ -1,7 +1,7 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
-import { getTopics, newTopic } from '../../../redux/actions/forumActions';
+import { getTopics } from '../../../redux/actions/forumActions';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
-import { getTopicList } from '../../../utils/backEndApi';
+import { changeLastReply, getTopicList, makeNewPost, makeNewTopic } from '../../../utils/backEndApi';
 import { Popup } from '../../Popup/Popup';
 import { ForumMainListHeader } from '../ForumMainListHeader/ForumMainListHeader';
 import { ForumThreadList } from '../ForumThreadList/ForumThreadList';
@@ -25,18 +25,30 @@ export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Фор
 
   const handleNewThread = useCallback(async () => {
     const title = inputElem.current?.value || 'Новая тема';
-    const message = textAreaElem.current?.value || '';
+    const message = textAreaElem.current?.value || undefined;
     const authorID = userProfile.id;
-    await dispatch(newTopic({ title, authorID, message }));
+    try {
+      const topic = await makeNewTopic({ title, authorID, message });
+      if (message) {
+        const post = await makeNewPost({
+          authorID: topic.authorID,
+          topicID: topic.id,
+          message: message,
+        });
+        await changeLastReply(post.id, topic.id);
+      }
+    } catch (error) {
+      console.log(error);
+    }
     setFetched(false);
     setIsNew(false);
-  }, [dispatch, userProfile.id]);
+  }, [userProfile.id]);
 
   useEffect(() => {
     if (!isFetched) {
       (async () => {
         const res = await getTopicList();
-        await dispatch(getTopics(await res.json()));
+        await dispatch(getTopics(res));
       })();
       setFetched(true);
     }
@@ -51,7 +63,7 @@ export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Фор
         </div>{' '}
       </div>
       <ForumMainListHeader />
-      {topics.rows.length > 0 && <ForumThreadList {...topics.rows} />}
+      {topics.rows.length && <ForumThreadList {...topics.rows} />}
 
       {!!isNew && (
         <Popup

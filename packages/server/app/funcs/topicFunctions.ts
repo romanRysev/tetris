@@ -77,7 +77,7 @@ export async function getTopicsWithCount(props: groupTopic) {
       },
       {
         model: Post,
-        attributes: ['message', 'id'],
+        attributes: ['message', 'id', 'createdAt'],
         include: [
           {
             model: User,

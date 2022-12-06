@@ -10,7 +10,6 @@ export const ForumThreadPageContent: FC = () => {
   const [isNewPost, setIsNewPost] = useState(false);
   const topics = useAppSelector((state) => state.forum.topics);
   const location = useLocation();
-  console.log(location);
   const threadId = Number(location.hash.slice(1));
   const title = topics.rows.find((row) => row.id === threadId)?.title;
   const endRef = useRef<null | HTMLDivElement>(null);
@@ -19,7 +18,7 @@ export const ForumThreadPageContent: FC = () => {
   useEffect(() => {
     (async () => {
       const res = await getPostsForTopic(threadId);
-      setPostsRaw(await res.json());
+      setPostsRaw(res);
       if (isNewPost) {
         endRef.current?.scrollIntoView({ behavior: 'smooth' });
         setIsNewPost(false);

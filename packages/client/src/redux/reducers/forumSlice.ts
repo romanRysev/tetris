@@ -25,6 +25,7 @@ interface ITopicRows {
     message: string;
     id: number;
     User: { displayName: string; firstName: string; secondName: string; avatar: string };
+    createdAt: string;
   }[];
   Reactions: IReactions[];
 }
@@ -35,6 +36,7 @@ interface IForumSlice {
     rows: ITopicRows[];
   };
   isTopicsFetched: number | undefined;
+  topicActual: number;
 }
 
 const forumInitState: IForumSlice = {
@@ -43,6 +45,7 @@ const forumInitState: IForumSlice = {
     rows: [],
   },
   isTopicsFetched: undefined,
+  topicActual: 0,
 };
 
 export const forumSlice = createSlice({
