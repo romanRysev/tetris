@@ -4,6 +4,7 @@ import { useAppSelector } from '../../../redux/hooks';
 import defaultAvatar from './../../../assets/avatar.svg';
 import { ForumPost } from '../ForumPost/ForumPost';
 import './ForumPostList.scss';
+import { makePostTree } from '../../../utils/makePostTree';
 
 export interface IForumPostsRaw {
   id: number;
@@ -31,6 +32,7 @@ export interface IForumPostsRaw {
 export const ForumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[]) => {
   const userProfile = useAppSelector((state) => state.auth.user);
   const list = Object.values(postList);
+  const tree = makePostTree(list);
   const countReaction = (
     reaction: 'like' | 'dislike',
     item: {
@@ -59,9 +61,9 @@ export const ForumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[]) 
 
   return (
     <ul className="forum-post-list">
-      {list.map((item, index) => (
+      {tree.map((item, index) => (
         <ForumPost
-          userAvatar={`${filePrefix}${item.User.avatar}` || defaultAvatar}
+          userAvatar={item.User.avatar ? `${filePrefix}${item.User.avatar}` : defaultAvatar}
           userName={item.User.displayName || `${item.User.firstName} ${item.User.secondName}`}
           text={item.message}
           postDate={item.createdAt.slice(0, 10)}
@@ -71,6 +73,7 @@ export const ForumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[]) 
           like={countMyReactions(item.Reactions).like}
           dislike={countMyReactions(item.Reactions).dislike}
           key={'post' + index}
+          level={item.level}
         />
       ))}
     </ul>

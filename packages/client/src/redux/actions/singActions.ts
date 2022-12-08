@@ -41,3 +41,11 @@ export const logout = createAsyncThunk('auth/logout', async (data, thunkAPI) => 
     return thunkAPI.rejectWithValue(e);
   }
 });
+
+export const unAuthorised = createAsyncThunk('auth/authorized', async (data: boolean, thunkAPI) => {
+  try {
+    return thunkAPI.fulfillWithValue(false);
+  } catch (error) {
+    return thunkAPI.rejectWithValue('Что-то не работает, ' + error);
+  }
+});

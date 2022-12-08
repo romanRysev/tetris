@@ -4,8 +4,23 @@
   background-color: var(--color-light-gray);
   border-bottom: 1px solid var(--white);
 
+  &_level2 {
+    padding-left: 30px;
+  }
+
+  &_level3 {
+    padding-left: 60px;
+  }
+
+  &_level4 {
+    padding-left: 90px;
+  }
+
+  &_level5 {
+    padding-left: 120px;
+  }
+
   &__userinfo {
-    border-right: 1px solid var(--white);
     text-align: center;
     padding: 10px;
   }
@@ -13,6 +28,7 @@
   &__avatar {
     max-width: 100px;
     max-height: 100px;
+    border-radius: 50%;
     cursor: pointer;
   }
 
@@ -37,6 +53,12 @@
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    height: 30px;
+  }
+
+  &__open-response {
+    cursor: pointer;
+    color: var(--color-links);
   }
 
   &__reactions {

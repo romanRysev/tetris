@@ -4,10 +4,10 @@ import * as postFuncs from '../funcs/postFunctions'
 
 // создать пост - POST
 export const createNewPost = async (req: Request, res: Response) => {
-  const { authorID, message, parentID } = req.body
+  const { authorID, message, parentID, firstLevel, hide } = req.body
   const { topicID } = req.params
   await processResult(() => {
-    return postFuncs.createPost({ authorID, topicID: Number(topicID), message, parentID })
+    return postFuncs.createPost({ authorID, topicID: Number(topicID), message, parentID, firstLevel, hide })
   }, res, 'Some error occurred while creating the post.');
 }
 

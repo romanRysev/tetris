@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
-import { login, logout, register, checkLogin } from '../actions/singActions';
+import { login, logout, register, checkLogin, unAuthorised } from '../actions/singActions';
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
 import { setLeaderBoard } from '../actions/leaderBoardActions';
 import { ILeader } from '../../utils/api';
@@ -133,6 +133,9 @@ export const authSlice = createSlice({
       if (action.payload == 'unauthorized') {
         state.isAuthorized = false;
       }
+    },
+    [unAuthorised.fulfilled.type]: (state, action) => {
+      state.isAuthorized = false;
     },
   },
 });

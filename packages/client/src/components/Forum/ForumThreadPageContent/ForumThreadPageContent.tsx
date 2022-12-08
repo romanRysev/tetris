@@ -31,6 +31,10 @@ export const ForumThreadPageContent: FC = () => {
 
   // почему-то перестали работать переносы строк
 
+  // console.log(makePostTree(postsRaw.rows));
+
+  // воткнуть в постлист ту же датаап и потом в пост передать
+
   return (
     <div className="forum-thread-page-content">
       <h3 className="forum-thread-page-content__header">{title}</h3>
