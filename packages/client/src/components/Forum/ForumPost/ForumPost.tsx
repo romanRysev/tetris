@@ -20,6 +20,7 @@ export type ForumPostProps = {
   like?: boolean;
   dislike?: boolean;
   level?: number;
+  getDataUp: () => void;
 };
 
 export const ForumPost: FC<ForumPostProps> = ({
@@ -34,6 +35,7 @@ export const ForumPost: FC<ForumPostProps> = ({
   like,
   dislike,
   level,
+  getDataUp,
 }) => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
@@ -108,6 +110,7 @@ export const ForumPost: FC<ForumPostProps> = ({
             parentID: id,
           });
           setOpenedResponse(false);
+          getDataUp();
         } catch (error) {
           if ((error as Record<string, string>).reason?.includes('not valid')) {
             dispatch(unAuthorised(false));
@@ -115,7 +118,7 @@ export const ForumPost: FC<ForumPostProps> = ({
         }
       }
     },
-    [id, topicID, userProfile.id, dispatch],
+    [id, topicID, userProfile.id, dispatch, getDataUp],
   );
 
   return (
@@ -156,13 +159,18 @@ export const ForumPost: FC<ForumPostProps> = ({
             </div>
           </div>
         </div>
-        {isOpenedResponse && (
-          <form className="forum-post__response-form" onSubmit={handleResponse}>
-            <textarea ref={responseRef}></textarea>
-            <Button type="submit">Отправить</Button>
-          </form>
-        )}
       </div>
+      {isOpenedResponse && (
+        <>
+          <div className="placeholder"></div>
+          <form className="forum-post__response-form" onSubmit={handleResponse}>
+            <textarea ref={responseRef} className="forum-post__response-textarea"></textarea>
+            <Button type="submit" className="forum-post__response-button">
+              Отправить
+            </Button>
+          </form>
+        </>
+      )}
     </li>
   );
 };

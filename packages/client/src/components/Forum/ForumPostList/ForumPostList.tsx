@@ -29,7 +29,13 @@ export interface IForumPostsRaw {
   }[];
 }
 
-export const ForumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[]) => {
+export type ForumPostListProps = {
+  postList: IForumPostsRaw[];
+  getDataUP: () => void;
+};
+
+export const ForumPostList: FC<ForumPostListProps> = (props) => {
+  const { postList, getDataUP } = props;
   const userProfile = useAppSelector((state) => state.auth.user);
   const list = Object.values(postList);
   const tree = makePostTree(list);
@@ -74,6 +80,7 @@ export const ForumPostList: FC<IForumPostsRaw[]> = (postList: IForumPostsRaw[]) 
           dislike={countMyReactions(item.Reactions).dislike}
           key={'post' + index}
           level={item.level}
+          getDataUp={getDataUP}
         />
       ))}
     </ul>

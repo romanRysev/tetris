@@ -61,6 +61,31 @@
     color: var(--color-links);
   }
 
+  &__response-form {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    padding: 10px;
+  }
+
+  &__response-textarea {
+    width: 300px;
+    min-height: 100px;
+    color: var(--color-messages);
+    border: 1px solid var(--color-lightgray);
+    background-color: var(--color-light-gray);
+    margin-bottom: 10px;
+
+    &::placeholder {
+      font-style: italic;
+      color: var(--color-controls-off);
+    }
+  }
+
+  &__response-button {
+    max-width: 300px;
+  }
+
   &__reactions {
     display: flex;
     flex-direction: row;

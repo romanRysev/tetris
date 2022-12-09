@@ -8,6 +8,7 @@ import './ForumThreadPageContent.scss';
 
 export const ForumThreadPageContent: FC = () => {
   const [isNewPost, setIsNewPost] = useState(false);
+  const [isNewLeaf, setIsNewLeaf] = useState(false);
   const topics = useAppSelector((state) => state.forum.topics);
   const location = useLocation();
   const threadId = Number(location.hash.slice(1));
@@ -22,24 +23,27 @@ export const ForumThreadPageContent: FC = () => {
         endRef.current?.scrollIntoView({ behavior: 'smooth' });
         setIsNewPost(false);
       }
+      if (isNewLeaf) {
+        setIsNewLeaf(false);
+      }
     });
-  }, [threadId, isNewPost]);
+  }, [threadId, isNewPost, isNewLeaf]);
 
   const getNewPost = useCallback(() => {
     setIsNewPost(true);
   }, []);
 
+  const getNewLeaf = useCallback(() => {
+    setIsNewLeaf(true);
+  }, []);
+
   // почему-то перестали работать переносы строк
-
-  // console.log(makePostTree(postsRaw.rows));
-
-  // воткнуть в постлист ту же датаап и потом в пост передать
 
   return (
     <div className="forum-thread-page-content">
       <h3 className="forum-thread-page-content__header">{title}</h3>
       <div className="forum-thread-page-content__thread">
-        {postsRaw.count > 0 && <ForumPostList {...postsRaw.rows} />}
+        {postsRaw.count > 0 && <ForumPostList getDataUP={getNewLeaf} postList={postsRaw.rows} />}
         <div ref={endRef} />
       </div>
       <ForumReply topicID={threadId} getDataUP={getNewPost} />
