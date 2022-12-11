@@ -26,4 +26,5 @@ export enum backEndUrls {
   USER = '/api/user',
   FORUM = '/api/forum',
   THEME = '/api/theme',
+  LEADERS = '/api/leaderboard',
 }

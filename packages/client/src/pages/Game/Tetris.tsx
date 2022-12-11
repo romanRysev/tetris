@@ -1,12 +1,13 @@
 import React, { Component, ReactNode } from 'react';
 import { UserChars } from '../../redux/reducers/userSlice';
-import { AddLeader, addToLeaderBoard } from '../../utils/api';
+// import { AddLeader, addToLeaderBoard } from '../../utils/api';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { fillGameCanvas, gray, Sequence, sequence, TetrominoMatrix, tetrominos } from './constant';
 import { colors } from '../../themes/classic/classic-theme';
 import { man, shark, water } from '../../themes/shark/shark-theme';
 import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from '../../themes/themes';
 import { setThemeColors } from '../../utils/setThemeColors';
+import { AddLeader, addToLeaderBoard } from '../../utils/backEndApi';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -606,20 +607,29 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   // отправка результатов в апи
+  // private async sendResults() {
+  //   const date = new Date();
+  //   const res: AddLeader = {
+  //     data: {
+  //       score: this.score,
+  //       user: {
+  //         avatar: this.userAvatar,
+  //         userName: this.userName,
+  //         id: this.userID,
+  //       },
+  //       date: date.toLocaleDateString('ru'),
+  //     },
+  //     ratingFieldName: 'score',
+  //     teamName: 'CodinskTest',
+  //   };
+  //   return await addToLeaderBoard(res);
+  // }
+
   private async sendResults() {
-    const date = new Date();
+    // const date = new Date();
     const res: AddLeader = {
-      data: {
-        score: this.score,
-        user: {
-          avatar: this.userAvatar,
-          userName: this.userName,
-          id: this.userID,
-        },
-        date: date.toLocaleDateString('ru'),
-      },
-      ratingFieldName: 'score',
-      teamName: 'CodinskTest',
+      score: this.score,
+      userID: this.userID,
     };
     return await addToLeaderBoard(res);
   }

@@ -44,6 +44,7 @@ export const findAll = async (req: Request, res: Response) => {
 }
 
 export const findOne = async (req: Request, res: Response) => {
+  console.log('111111111');
   const { userID } = req.params
   await processResult(() => {
     return getThemeById(Number(userID))

@@ -2,6 +2,7 @@
   display: grid;
   grid-template-columns: 6fr 2fr 4fr;
   border-bottom: 1px solid var(--color-midgray);
+  background-color: var(--color-light-gray);
 }
 
 .thread {

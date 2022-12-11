@@ -5,7 +5,7 @@
   position: absolute;
   top: 0;
   left: 0;
-  width: 64px;
+  width: var(--back-button-width);
   height: 100%;
 
   &__img {

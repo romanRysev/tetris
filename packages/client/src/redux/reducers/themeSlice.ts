@@ -3,6 +3,7 @@ import { ThemesNames } from '../../themes/themes';
 import {
   putTheme,
   setGameTheme,
+  setGuestTheme,
   setMusicVol,
   setSoundVol,
   setTheme,
@@ -59,6 +60,9 @@ export const themeSlice = createSlice({
     },
     [putTheme.fulfilled.type]: (state, action) => {
       state.isFetched = Date.now();
+    },
+    [setGuestTheme.fulfilled.type]: (state, action) => {
+      state.active = action.meta.arg;
     },
   },
 });

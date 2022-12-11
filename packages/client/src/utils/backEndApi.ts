@@ -56,6 +56,30 @@ export interface IReactionProps {
   dislike?: boolean;
 }
 
+export interface ILeader {
+  score: number;
+  User: {
+    firstName: string;
+    secondName: string;
+    displayName: string;
+    avatar: string;
+  };
+  userID: number;
+  createdAt: string;
+  updatedAt: string;
+  id: number;
+}
+
+export interface AddLeader {
+  userID: number;
+  score: number;
+}
+
+export interface GetLeaders {
+  offset: number;
+  limit: number;
+}
+
 export const getUserFromDB = async (id: number) =>
   await realFetch(`${host}${backEndUrls.USER}/${id}`, {
     method: 'GET',
@@ -134,4 +158,20 @@ export const reactWithDislike = async (data: IReactionProps) =>
     method: 'PUT',
     headers: headers.put,
     body: JSON.stringify(data),
+  });
+
+export const addToLeaderBoard = async (data: AddLeader) =>
+  await realFetch(`${host}${backEndUrls.LEADERS}`, {
+    method: 'PUT',
+    headers: headers.put,
+    // credentials: 'include',
+    body: JSON.stringify({ ...data }),
+  });
+
+export const getLeaderBoard = async (data: GetLeaders) =>
+  await realFetch(`${host}${backEndUrls.LEADERS}`, {
+    method: 'POST',
+    headers: headers.post,
+    // credentials: 'include',
+    body: JSON.stringify({ ...data }),
   });

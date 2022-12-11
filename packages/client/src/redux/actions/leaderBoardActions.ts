@@ -1,5 +1,6 @@
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { AddLeader, getLeaderBoard, GetLeaders, addToLeaderBoard } from '../../utils/api';
+import { AddLeader, addToLeaderBoard, getLeaderBoard, GetLeaders } from '../../utils/backEndApi';
+// import { AddLeader, getLeaderBoard, GetLeaders, addToLeaderBoard } from '../../utils/api';
 import { RootState } from '../store';
 
 // тут и ниже убрала блок try-catch, потому что на статус повешена возможность unauthorised

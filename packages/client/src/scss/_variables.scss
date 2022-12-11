@@ -55,6 +55,8 @@ $brightness-dark: 70%;
 $color-bg-hamburger-light: rgba(255, 255, 255, 0);
 $color-bg-hamburger-dark: rgba(255, 255, 255, .6);
 
+$back-button-width: 64px;
+
 $codinsk: (
   'color-messages': $color-messages,
   'color-links': $color-links,
@@ -99,6 +101,7 @@ $codinsk: (
   'brightness-dark': $brightness-dark,
   'color-bg-hamburger-light': $color-bg-hamburger-light,
   'color-bg-hamburger-dark': $color-bg-hamburger-dark,
+  'back-button-width': $back-button-width,
 ) !default;
 
 // Color system

@@ -11,6 +11,7 @@ import { loginRule, passwordRule, validation } from '../../helpers/validator';
 import classNames from 'classnames';
 import { Link } from '../../components/Link/Link';
 import { setTheme } from '../../redux/actions/themeActions';
+import { UpperMenuGuest } from '../../components/UpperMenu/_guest/UpperMenuGuest';
 
 export type LoginForm = {
   login: string;
@@ -56,41 +57,44 @@ const Login = () => {
   const checkError = errorLogin ? true : !!errorPassword;
 
   return (
-    <div className="login">
-      <div className="login__content">
-        <form className="login__form" onSubmit={onSubmit}>
-          <p className="login__title">Вход</p>
-          <Input
-            label="Логин"
-            type="text"
-            name="login"
-            onChange={onFieldChange}
-            onBlur={checkLogins}
-            errorText={errorLogin}
-          />
-          <Input
-            label="Пароль"
-            type="password"
-            name="password"
-            onChange={onFieldChange}
-            onBlur={checkPassword}
-            errorText={errorPassword}
-          />
-          <div className="login__buttons">
-            <p className="login__form-error">{formError}</p>
-            <Button
-              className={classNames('login__button', { login__button_disabled: checkError })}
-              disabled={checkError}
-            >
-              Авторизоваться
-            </Button>
-            <Link to="/register">
-              <Button backgroundOpacity={true}>Нет аккаунта?</Button>
-            </Link>
-          </div>
-        </form>
+    <>
+      <UpperMenuGuest />
+      <div className="login">
+        <div className="login__content">
+          <form className="login__form" onSubmit={onSubmit}>
+            <p className="login__title">Вход</p>
+            <Input
+              label="Логин"
+              type="text"
+              name="login"
+              onChange={onFieldChange}
+              onBlur={checkLogins}
+              errorText={errorLogin}
+            />
+            <Input
+              label="Пароль"
+              type="password"
+              name="password"
+              onChange={onFieldChange}
+              onBlur={checkPassword}
+              errorText={errorPassword}
+            />
+            <div className="login__buttons">
+              <p className="login__form-error">{formError}</p>
+              <Button
+                className={classNames('login__button', { login__button_disabled: checkError })}
+                disabled={checkError}
+              >
+                Авторизоваться
+              </Button>
+              <Link to="/register">
+                <Button backgroundOpacity={true}>Нет аккаунта?</Button>
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

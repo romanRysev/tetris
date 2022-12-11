@@ -10,7 +10,7 @@ router.get('/:userID', leaderController.getLeader);
 router.delete('/:userID', leaderController.deleteLeader);
 
 // получить вeсь лидерборд
-router.get('/', leaderController.getLeaderBoard);
+router.post('/', leaderController.getLeaderBoard);
 
 // создать/обновить запись
 router.put('/', leaderController.createOrUpdateLeader);
