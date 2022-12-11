@@ -43,7 +43,7 @@ export const Game: React.FC = () => {
   const isSoundOn = useAppSelector((state) => state.theme.soundOn);
   const isMusicOn = useAppSelector((state) => state.theme.musicOn);
   const initMusicLevel = useAppSelector((state) => state.theme.musicLevel);
-  const initSoundLevel = useAppSelector((state) => state.theme.musicLevel);
+  const initSoundLevel = useAppSelector((state) => state.theme.soundLevel);
   const [isLevelsActive, setLevelsActive] = useState(false);
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
@@ -61,17 +61,6 @@ export const Game: React.FC = () => {
       setIsMobile(document.documentElement.clientWidth <= maxMobileWidth);
     });
   }, []);
-
-  const handleLogout = async () => {
-    const res = await dispatch(logout());
-    if (res.meta.requestStatus === 'fulfilled') {
-      const { soundOn, musicOn, musicLevel, soundLevel } = userTheme;
-      const { id } = userProfile;
-      await sendUserToDB(userProfile);
-      await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id });
-      navigate('/login');
-    }
-  };
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
@@ -153,6 +142,17 @@ export const Game: React.FC = () => {
   const handleHideLevels = useCallback(() => {
     setLevelsActive(false);
   }, []);
+
+  const handleLogout = async () => {
+    const res = await dispatch(logout());
+    if (res.meta.requestStatus === 'fulfilled') {
+      const { soundOn, musicOn } = userTheme;
+      const { id } = userProfile;
+      await sendUserToDB(userProfile);
+      await sendThemeToDB({ soundOn, musicOn, musicLevel, soundLevel, themeActive: theme, userID: id });
+      navigate('/login');
+    }
+  };
 
   const handleMenuOpen = useCallback(() => {
     setShowMobileMenu(true);

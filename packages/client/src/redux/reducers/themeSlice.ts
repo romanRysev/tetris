@@ -18,6 +18,7 @@ export interface IThemeSlice {
   soundLevel: string;
   musicLevel: string;
   isFetched: number;
+  isSet: boolean;
 }
 
 export const themeInitState: IThemeSlice = {
@@ -27,6 +28,7 @@ export const themeInitState: IThemeSlice = {
   soundLevel: '0.5',
   musicLevel: '0.5',
   isFetched: 0,
+  isSet: false,
 };
 
 export const themeSlice = createSlice({
@@ -63,6 +65,7 @@ export const themeSlice = createSlice({
     },
     [setGuestTheme.fulfilled.type]: (state, action) => {
       state.active = action.meta.arg;
+      state.isSet = true;
     },
   },
 });

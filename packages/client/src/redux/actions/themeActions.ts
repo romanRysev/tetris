@@ -59,14 +59,20 @@ export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: str
 });
 
 export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
-  console.log('1111');
+  const state = store.getState();
+  const isSet = state.theme.isSet;
+  const themeActive = state.theme.active;
+
   try {
-    const userProfile: UserChars = store.getState().auth.user;
+    const userProfile: UserChars = state.auth.user;
     const { id } = userProfile;
     await sendUserToDB(userProfile);
-    const userTheme = await getTheme(id);
-    // const isTheme = await userTheme.json();
+    let userTheme = await getTheme(id);
     if (userTheme != null) {
+      if (isSet) {
+        await updateTheme({ themeActive }, id);
+        userTheme = await getTheme(id);
+      }
       return thunkAPI.fulfillWithValue(userTheme);
     } else {
       const initTheme = store.getState().theme;

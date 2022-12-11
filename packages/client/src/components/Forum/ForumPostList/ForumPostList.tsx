@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
-import { filePrefix } from '../../../consts/prefix';
 import { useAppSelector } from '../../../redux/hooks';
 import defaultAvatar from './../../../assets/avatar.svg';
 import { ForumPost } from '../ForumPost/ForumPost';
 import './ForumPostList.scss';
 import { makePostTree } from '../../../utils/makePostTree';
+import { filePrefix } from '../../../utils/constants';
 
 export interface IForumPostsRaw {
   id: number;

@@ -1,6 +1,5 @@
 import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import './UpperMenuGuest.scss';
-// import { sendThemeToDB, sendUserToDB } from '../../utils/backEndApi';
 import { ThemesNames, themesOptions } from '../../../themes/themes';
 import { setGuestTheme } from '../../../redux/actions/themeActions';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
@@ -16,7 +15,6 @@ export const UpperMenuGuest: FC = () => {
     const val = selectRef.current?.value;
     const req: ThemesNames = val ? themesOptions[val] : 'classic';
     selectRef.current?.blur();
-    // setThemeActive(req);
     return await dispatch(setGuestTheme(req));
   }, [dispatch]);
 

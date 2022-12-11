@@ -10,8 +10,6 @@ const headers = {
 };
 
 // чтобы от нас запускалось
-// дальше закомментированы credentials,
-// потому как у меня такое чувство, что потом их надо будет включить
 const host = 'http://localhost:3001';
 
 export interface IThemeProps {
@@ -87,7 +85,7 @@ export const getUserFromDB = async (id: number) =>
   });
 
 export const sendUserToDB = async (data: UserChars) =>
-  await realFetch(`${host}${backEndUrls.USER}`, {
+  await fetch(`${host}${backEndUrls.USER}`, {
     method: 'PUT',
     headers: headers.post,
     body: JSON.stringify(data),
@@ -164,7 +162,6 @@ export const addToLeaderBoard = async (data: AddLeader) =>
   await realFetch(`${host}${backEndUrls.LEADERS}`, {
     method: 'PUT',
     headers: headers.put,
-    // credentials: 'include',
     body: JSON.stringify({ ...data }),
   });
 
@@ -172,6 +169,5 @@ export const getLeaderBoard = async (data: GetLeaders) =>
   await realFetch(`${host}${backEndUrls.LEADERS}`, {
     method: 'POST',
     headers: headers.post,
-    // credentials: 'include',
     body: JSON.stringify({ ...data }),
   });

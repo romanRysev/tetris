@@ -1,6 +1,5 @@
 import { DataType, Model } from 'sequelize-typescript'
 import type { ModelAttributes } from 'sequelize/types'
-// import { formatNamedParameters } from 'sequelize/types/utils'
 
 export interface ITopic {
   title: string

@@ -5,7 +5,6 @@ import { login, logout, register, checkLogin, unAuthorised } from '../actions/si
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
 import { setLeaderBoard } from '../actions/leaderBoardActions';
 import { ILeader } from '../../utils/backEndApi';
-// import { ILeader } from '../../utils/api';
 interface IUserSlice {
   user: UserChars;
   isAuthorized: boolean;
@@ -24,13 +23,6 @@ export interface UserChars {
   phone: string;
   avatar: string;
 }
-
-// export interface ILeadersSlice {
-//   leaderList: Record<'data', ILeader>[] | [];
-//   date: number | undefined;
-//   isAuthorized: boolean;
-// }
-
 export interface ILeadersSlice {
   leaderList: ILeader[] | [];
   date: number | undefined;
@@ -153,7 +145,6 @@ export const leadersSlice = createSlice({
   reducers: {},
   extraReducers: {
     [setLeaderBoard.fulfilled.type]: (state, action) => {
-      console.log(action);
       state.leaderList = action.payload.rows;
       state.date = Date.now();
       state.isAuthorized = true;
