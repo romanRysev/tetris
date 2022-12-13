@@ -1,14 +1,20 @@
 import { IForumPostsRaw } from '../components/Forum/ForumPostList/ForumPostList';
 
+interface ForumTree extends IForumPostsRaw {
+  level?: number;
+}
+
 export const makePostTree = (arr: IForumPostsRaw[]) => {
-  const tmp: IForumPostsRaw[] = Object.values(arr);
+  const tmp: ForumTree[] = Object.values(arr);
   const res = [];
   for (let i = 0; i < tmp.length; i++) {
     if (tmp[i].firstLevel) {
-      res.push(Object.assign(tmp[i], { level: 1 }));
+      tmp[i].level = 1;
+      res.push(tmp[i]);
       for (let k = 0; k < tmp.length; k++) {
         if (tmp[k].parentID && tmp[k].parentID && tmp[k].parentID === tmp[i].id) {
-          res.push(Object.assign(tmp[k], { level: 2 }));
+          tmp[k].level = 2;
+          res.push(tmp[k]);
           tmp.splice(k, 1);
           k--;
         }
@@ -23,13 +29,13 @@ export const makePostTree = (arr: IForumPostsRaw[]) => {
   return res;
 };
 
-const levelDown = (tmp: any[], level: number, res: any[]) => {
+const levelDown = (tmp: ForumTree[], level: number, res: ForumTree[]) => {
   if (level == 5) {
     for (let i = 0; i < tmp.length; i++) {
       Object.assign(tmp[i], { level: 5 });
       const id = tmp[i].parentID;
       for (let k = 0; k < res.length; k++) {
-        if ((res[k].id = id)) {
+        if (res[k].id === id) {
           res.splice(k + 1, 0, tmp[i]);
           tmp.splice(i, 1);
           i--;
@@ -41,7 +47,8 @@ const levelDown = (tmp: any[], level: number, res: any[]) => {
     if (res[i].level == level - 1) {
       for (let k = tmp.length - 1; k >= 0; k--) {
         if (tmp[k].parentID && tmp[k].parentID === res[i].id) {
-          res.splice(i + 1, 0, Object.assign(tmp[k], { level: level }));
+          tmp[k].level = level;
+          res.splice(i + 1, 0, tmp[k]);
           tmp.splice(k, 1);
         }
       }
