@@ -1,7 +1,6 @@
 .forum-post {
   display: grid;
   grid-template-columns: 1fr 5fr;
-  background-color: var(--color-light-gray);
   border-bottom: 1px solid var(--white);
 
   &_level2 {
