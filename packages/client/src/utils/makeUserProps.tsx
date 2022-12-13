@@ -1,6 +1,6 @@
-import { filePrefix } from '../consts/prefix';
 import { UserChars } from '../redux/reducers/userSlice';
 import defaultAvatar from './../assets/avatar.svg';
+import { filePrefix } from './constants';
 
 export function makeUserAvatarFromUser(user: UserChars) {
   const { avatar } = user;

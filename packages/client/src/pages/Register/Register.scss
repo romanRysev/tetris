@@ -3,6 +3,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
+
 }
 
 .register__content {
@@ -10,6 +11,7 @@
   border-radius: 12px;
   padding: 30px;
   width: 340px;
+  background-color: var(--color-light-gray);
 }
 
 .register__form {

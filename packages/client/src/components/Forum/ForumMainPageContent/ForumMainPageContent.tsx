@@ -44,6 +44,10 @@ export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Фор
     setIsNew(false);
   }, [userProfile.id]);
 
+  const toggleNewThreadForm = useCallback(() => {
+    setIsNew(!isNew);
+  }, [isNew]);
+
   useEffect(() => {
     if (!isFetched) {
       (async () => {
@@ -58,7 +62,7 @@ export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Фор
     <div className="forum-main-page-content">
       <h3 className="forum-main-page-content__header">{title}</h3>
       <div className="new-thread">
-        <div className="new-thread__link" onClick={() => (isNew ? setIsNew(false) : setIsNew(true))}>
+        <div className="new-thread__link" onClick={toggleNewThreadForm}>
           Новая тема
         </div>{' '}
       </div>

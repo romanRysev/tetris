@@ -2,19 +2,24 @@
   display: block;
   width: 100%;
   background-color: var(--color-light-gray);
-  padding-left: var(--back-button-width);
 
-  &__nav {
-    display: inline-block;
+  &_guest {
+    text-align: center;
+    height: 50px;
   }
 
-  &__list {
-    display: inline-block;
-    list-style: none;
+  &__h3 {
+    line-height: 3rem;
   }
 
   &__theme {
     font-weight: bold;
+    
+    &_guest {
+      position: absolute;
+      top: 5px;
+      right: 20px;
+    }
   }
 
   &__select {

@@ -5,6 +5,7 @@ import { userModel } from '../models/user'
 import { topicModel } from '../models/topic'
 import { postModel } from '../models/post'
 import { likesModel } from '../models/likes'
+import { leaderModel } from '../models/leader'
 
 const { POSTGRES_USER, POSTGRES_PASSWORD, POSTGRES_DB, POSTGRES_PORT } =
   process.env
@@ -31,6 +32,8 @@ export const Topic = sequelize.define('Topic', topicModel, {})
 export const Post = sequelize.define('Post', postModel, {})
 
 export const Reaction = sequelize.define('Reaction', likesModel, {})
+
+export const Leader = sequelize.define('Leader', leaderModel, {})
 
 // отношения
 User.hasMany(Topic, {
@@ -73,6 +76,13 @@ Post.hasMany(Reaction, {
 })
 Reaction.belongsTo(Post, {
   foreignKey: 'postID',
+})
+
+User.hasOne(Leader, {
+  foreignKey: 'userID',
+})
+Leader.belongsTo(User, {
+  foreignKey: 'userID',
 })
 
 export async function dbConnect() {

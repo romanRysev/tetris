@@ -1,10 +1,8 @@
 import React, { FC, useEffect } from 'react';
 import { setLeaderBoard } from '../../redux/actions/leaderBoardActions';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { GetLeaders } from '../../utils/backEndApi';
-import { filePrefix } from '../../utils/constants';
+import { GetLeaders } from '../../utils/api';
 import { LeaderItem } from '../LeaderItem/LeaderItem';
-import defaultAvatar from './../../assets/avatar.svg';
 
 import './LeaderBoard.scss';
 
@@ -18,7 +16,8 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
 
   useEffect(() => {
     const req: GetLeaders = {
-      offset: 0,
+      ratingFieldName: 'score',
+      cursor: 0,
       limit: 10,
     };
 
@@ -38,9 +37,9 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
             .slice(0, 3)
             .map((leader, index) => (
               <LeaderItem
-                avatar={leader.User.avatar ? `${filePrefix}${leader.User.avatar}` : defaultAvatar}
-                userName={leader.User.displayName || `${leader.User.firstName} ${leader.User.secondName}`}
-                score={leader.score}
+                avatar={leader.data.user.avatar}
+                userName={leader.data.user.userName}
+                score={leader.data.score}
                 key={'top' + index}
               />
             ))}
@@ -52,9 +51,9 @@ export const LeaderBoard: FC<LeaderBoardProps> = ({ title = 'Доска поче
             .slice(3, 10)
             .map((leader, index) => (
               <LeaderItem
-                avatar={leader.User.avatar ? `${filePrefix}${leader.User.avatar}` : defaultAvatar}
-                userName={leader.User.displayName || `${leader.User.firstName} ${leader.User.secondName}`}
-                score={leader.score}
+                avatar={leader.data.user.avatar}
+                userName={leader.data.user.userName}
+                score={leader.data.score}
                 key={'leader' + index}
               />
             ))}

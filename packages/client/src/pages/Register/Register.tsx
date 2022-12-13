@@ -18,6 +18,7 @@ import { Input } from '../../components/Input/Input';
 import { Button } from '../../components/Button/Button';
 import classNames from 'classnames';
 import { setTheme } from '../../redux/actions/themeActions';
+import { UpperMenuGuest } from '../../components/UpperMenu/_guest/UpperMenuGuest';
 
 export type RegisterForm = {
   login: string;
@@ -121,80 +122,83 @@ const Register = () => {
   );
 
   return (
-    <div className="register">
-      <div className="register__content">
-        <form className="register__form" onSubmit={onSubmit}>
-          <p className="register__title">Регистрация</p>
-          <Input
-            label="Почта*"
-            type="text"
-            name="email"
-            onChange={onFieldChange}
-            onBlur={checkEmail}
-            errorText={errorEmail}
-          />
-          <Input
-            label="Логин*"
-            type="text"
-            name="login"
-            onChange={onFieldChange}
-            onBlur={checkLogins}
-            errorText={errorLogin}
-          />
-          <Input
-            label="Имя*"
-            type="text"
-            name="first_name"
-            onChange={onFieldChange}
-            onBlur={checkFirstName}
-            errorText={errorFirstName}
-          />
-          <Input
-            label="Фамилия*"
-            type="text"
-            name="second_name"
-            onChange={onFieldChange}
-            onBlur={checkSecondName}
-            errorText={errorSecondName}
-          />
-          <Input
-            label="Телефон*"
-            type="text"
-            name="phone"
-            onChange={onFieldChange}
-            onBlur={checkPhone}
-            errorText={errorPhone}
-          />
-          <Input
-            label="Пароль*"
-            type="password"
-            name="password"
-            onChange={onFieldChange}
-            onBlur={checkPassword}
-            errorText={errorPassword}
-          />
-          <Input
-            label="Пароль еще раз*"
-            type="password"
-            name="second_password"
-            onChange={onSecondPasswordChange}
-            onBlur={checkSecondPassword}
-            errorText={errorSecondPassword}
-          />
-          <p className="register__form-error">{passwordsCompareError}</p>
-          <p className="register__form-error">{formError}</p>
-          <Button
-            className={classNames('register__button', { register__button_disabled: checkError })}
-            disabled={checkError}
-          >
-            Зарегистрироваться
-          </Button>
-        </form>
-        <Link to="/login">
-          <Button backgroundOpacity={true}>Войти</Button>
-        </Link>
+    <>
+      <UpperMenuGuest />
+      <div className="register">
+        <div className="register__content">
+          <form className="register__form" onSubmit={onSubmit}>
+            <p className="register__title">Регистрация</p>
+            <Input
+              label="Почта*"
+              type="text"
+              name="email"
+              onChange={onFieldChange}
+              onBlur={checkEmail}
+              errorText={errorEmail}
+            />
+            <Input
+              label="Логин*"
+              type="text"
+              name="login"
+              onChange={onFieldChange}
+              onBlur={checkLogins}
+              errorText={errorLogin}
+            />
+            <Input
+              label="Имя*"
+              type="text"
+              name="first_name"
+              onChange={onFieldChange}
+              onBlur={checkFirstName}
+              errorText={errorFirstName}
+            />
+            <Input
+              label="Фамилия*"
+              type="text"
+              name="second_name"
+              onChange={onFieldChange}
+              onBlur={checkSecondName}
+              errorText={errorSecondName}
+            />
+            <Input
+              label="Телефон*"
+              type="text"
+              name="phone"
+              onChange={onFieldChange}
+              onBlur={checkPhone}
+              errorText={errorPhone}
+            />
+            <Input
+              label="Пароль*"
+              type="password"
+              name="password"
+              onChange={onFieldChange}
+              onBlur={checkPassword}
+              errorText={errorPassword}
+            />
+            <Input
+              label="Пароль еще раз*"
+              type="password"
+              name="second_password"
+              onChange={onSecondPasswordChange}
+              onBlur={checkSecondPassword}
+              errorText={errorSecondPassword}
+            />
+            <p className="register__form-error">{passwordsCompareError}</p>
+            <p className="register__form-error">{formError}</p>
+            <Button
+              className={classNames('register__button', { register__button_disabled: checkError })}
+              disabled={checkError}
+            >
+              Зарегистрироваться
+            </Button>
+          </form>
+          <Link to="/login">
+            <Button backgroundOpacity={true}>Войти</Button>
+          </Link>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

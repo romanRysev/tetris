@@ -7,9 +7,10 @@ import { AvatarLg } from '../AvatarLg/AvatarLg';
 import { BackgroundBlur } from '../BackgroundBlur/BackgroundBlur';
 import { Popup } from '../Popup/Popup';
 import { setAvatar } from '../../redux/actions/profileActions';
-import { filePrefix } from '../../consts/prefix';
 
 import './ProfileLayout.scss';
+import { UpperMenu } from '../UpperMenu/UpperMenu';
+import { filePrefix } from '../../utils/constants';
 
 interface ProfileLayoutProps extends PropsWithChildren {
   navBackPath?: string;
@@ -87,6 +88,7 @@ export const ProfileLayout: FC<ProfileLayoutProps> = ({ children, navBackPath = 
 
   return (
     <div className={classNames('profile-layout', className)}>
+      <UpperMenu />
       <BackButton to={navBackPath} />
       <AvatarLg
         avatarPath={avatar ? avatarPath : ''}

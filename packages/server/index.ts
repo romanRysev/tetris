@@ -10,6 +10,7 @@ import { startApp } from './app/config/db.config'
 import userRouter from './routes/userRoutes'
 import themeRouter from './routes/themeRoutes'
 import forumRouter from './routes/forumRoutes'
+import leaderRouter from './routes/leaderRoutes'
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -26,6 +27,7 @@ app.use(bodyParser.json())
 app.use('/api/user', userRouter)
 app.use('/api/theme', themeRouter)
 app.use('/api/forum', forumRouter)
+app.use('/api/leaderboard', leaderRouter)
 
 startApp()
 

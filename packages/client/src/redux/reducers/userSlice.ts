@@ -1,10 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { UserProps } from '../../components/UserInfo/UserInfo';
 import { dummyUser } from '../../consts/dummyData';
-import { login, logout, register, checkLogin } from '../actions/singActions';
+import { login, logout, register, checkLogin, unAuthorised } from '../actions/singActions';
 import { setAvatar, setProfileInfo } from '../actions/profileActions';
 import { setLeaderBoard } from '../actions/leaderBoardActions';
-import { ILeader } from '../../utils/api';
+import { ILeader } from '../../utils/backEndApi';
 interface IUserSlice {
   user: UserChars;
   isAuthorized: boolean;
@@ -23,9 +23,8 @@ export interface UserChars {
   phone: string;
   avatar: string;
 }
-
 export interface ILeadersSlice {
-  leaderList: Record<'data', ILeader>[] | [];
+  leaderList: ILeader[] | [];
   date: number | undefined;
   isAuthorized: boolean;
 }
@@ -134,6 +133,9 @@ export const authSlice = createSlice({
         state.isAuthorized = false;
       }
     },
+    [unAuthorised.fulfilled.type]: (state, action) => {
+      state.isAuthorized = false;
+    },
   },
 });
 
@@ -143,7 +145,7 @@ export const leadersSlice = createSlice({
   reducers: {},
   extraReducers: {
     [setLeaderBoard.fulfilled.type]: (state, action) => {
-      state.leaderList = action.payload;
+      state.leaderList = action.payload.rows;
       state.date = Date.now();
       state.isAuthorized = true;
     },

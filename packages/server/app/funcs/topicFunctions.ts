@@ -70,6 +70,7 @@ export async function getTopicsWithCount(props: groupTopic) {
   return Topic.findAndCountAll({
     offset: offset || 0,
     limit: limit || 20,
+    order: [['lastReply', 'DESC']],
     include: [
       {
         model: User,

@@ -1,10 +1,12 @@
 import classNames from 'classnames';
-import React, { FC, useCallback, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppSelector } from '../../../redux/hooks';
-import { reactWithDislike, reactWithLike } from '../../../utils/backEndApi';
+import React, { FC, FormEvent, useCallback, useRef, useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
+import { makeNewPost, reactWithDislike, reactWithLike } from '../../../utils/backEndApi';
 import './ForumPost.scss';
 import defaultAvatar from './../../../assets/avatar.svg';
+import { Button } from './../../Button/Button';
+import { unAuthorised } from '../../../redux/actions/singActions';
 
 export type ForumPostProps = {
   userName: string;
@@ -17,6 +19,8 @@ export type ForumPostProps = {
   dislikes?: number;
   like?: boolean;
   dislike?: boolean;
+  level?: number;
+  getDataUp: () => void;
 };
 
 export const ForumPost: FC<ForumPostProps> = ({
@@ -30,14 +34,20 @@ export const ForumPost: FC<ForumPostProps> = ({
   dislikes,
   like,
   dislike,
+  level,
+  getDataUp,
 }) => {
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const userProfile = useAppSelector((state) => state.auth.user);
 
   const [myLike, setMyLike] = useState(like);
   const [likesCount, setLikesCount] = useState(likes || 0);
   const [myDislike, setMyDislike] = useState(dislike);
   const [dislikesCount, setDislikesCount] = useState(dislikes || 0);
+
+  const location = useLocation();
+  const topicID = location.hash.slice(1);
 
   const handleLike = useCallback(async () => {
     if (myLike === true) {
@@ -79,8 +89,40 @@ export const ForumPost: FC<ForumPostProps> = ({
     }
   }, [id, myDislike, userProfile.id, dislikesCount]);
 
+  const [isOpenedResponse, setOpenedResponse] = useState(false);
+  const responseRef = useRef<HTMLTextAreaElement>(null);
+
+  const toggleResponse = useCallback(() => {
+    setOpenedResponse(!isOpenedResponse);
+  }, [isOpenedResponse]);
+
+  const handleResponse = useCallback(
+    async (e: FormEvent) => {
+      e.preventDefault();
+      const message = responseRef.current?.value;
+      if (message) {
+        try {
+          await makeNewPost({
+            authorID: userProfile.id,
+            topicID: Number(topicID),
+            message: message,
+            firstLevel: false,
+            parentID: id,
+          });
+          setOpenedResponse(false);
+          getDataUp();
+        } catch (error) {
+          if ((error as Record<string, string>).reason?.includes('not valid')) {
+            dispatch(unAuthorised(false));
+          }
+        }
+      }
+    },
+    [id, topicID, userProfile.id, dispatch, getDataUp],
+  );
+
   return (
-    <li className={classNames('forum-post', className)} id={'#' + id}>
+    <li className={classNames('forum-post', `forum-post_level${level}`, className)} id={'#' + id}>
       <div className="forum-post__userinfo">
         <figure>
           <img className="forum-post__avatar" src={userAvatar} alt={userName} onClick={() => navigate('/profile')} />
@@ -108,9 +150,27 @@ export const ForumPost: FC<ForumPostProps> = ({
               <div className="reaction-count">{dislikesCount}</div>
             </div>
           </div>
-          <time className="forum-post__date">{postDate}</time>
+          <div>
+            <time className="forum-post__date">{postDate}</time>
+            <div className="forum-post__response">
+              <div className="forum-post__open-response" onClick={toggleResponse}>
+                Ответить
+              </div>
+            </div>
+          </div>
         </div>
       </div>
+      {isOpenedResponse && (
+        <>
+          <div className="placeholder"></div>
+          <form className="forum-post__response-form" onSubmit={handleResponse}>
+            <textarea ref={responseRef} className="forum-post__response-textarea"></textarea>
+            <Button type="submit" className="forum-post__response-button">
+              Отправить
+            </Button>
+          </form>
+        </>
+      )}
     </li>
   );
 };

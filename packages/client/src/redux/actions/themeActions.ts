@@ -14,6 +14,14 @@ export const setGameTheme = createAsyncThunk('theme/active', async (data: Themes
   }
 });
 
+export const setGuestTheme = createAsyncThunk('theme/active', async (data: ThemesNames, thunkAPI) => {
+  try {
+    thunkAPI.fulfillWithValue(data);
+  } catch (e) {
+    return thunkAPI.rejectWithValue('Не удалось поменять тему');
+  }
+});
+
 export const toggleMusicOnOff = createAsyncThunk('theme/musicOn', async (data: boolean, thunkAPI) => {
   try {
     const userProfile: UserChars = store.getState().auth.user;
@@ -51,14 +59,21 @@ export const setSoundVol = createAsyncThunk('theme/soundLevel', async (data: str
 });
 
 export const setTheme = createAsyncThunk('theme', async (_, thunkAPI) => {
+  const state = store.getState();
+  const isSet = state.theme.isSet;
+  const themeActive = state.theme.active;
+
   try {
-    const userProfile: UserChars = store.getState().auth.user;
+    const userProfile: UserChars = state.auth.user;
     const { id } = userProfile;
     await sendUserToDB(userProfile);
-    const userTheme = await getTheme(id);
-    const isTheme = await userTheme.json();
-    if (isTheme != null) {
-      return thunkAPI.fulfillWithValue(isTheme);
+    let userTheme = await getTheme(id);
+    if (userTheme != null) {
+      if (isSet) {
+        await updateTheme({ themeActive }, id);
+        userTheme = await getTheme(id);
+      }
+      return thunkAPI.fulfillWithValue(userTheme);
     } else {
       const initTheme = store.getState().theme;
       const { soundOn, musicOn, musicLevel, soundLevel, active } = initTheme;
