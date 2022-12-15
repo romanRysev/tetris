@@ -23,6 +23,11 @@ export interface IChangePassword {
   newPassword: string;
 }
 
+export interface OAuthLoginData {
+  code: string;
+  redirect_uri: string;
+}
+
 export const postLogout = async () =>
   await fetch(APIurls.LOGOUT, {
     method: 'POST',
@@ -51,6 +56,20 @@ export const getProfileRequest = async () =>
     method: 'GET',
     headers: { ...headers.get },
     credentials: 'include',
+  });
+
+export const getServiceId = async (url: string) =>
+  await fetch(`${APIurls.SERVICEID}?redirect_uri=${url}`, {
+    method: 'GET',
+    headers: headers.get,
+  });
+
+export const oAuthLogin = async (data: OAuthLoginData) =>
+  await fetch(APIurls.OAUTHLOGIN, {
+    method: 'POST',
+    headers: headers.post,
+    credentials: 'include',
+    body: JSON.stringify(data),
   });
 
 export const setAvatarRequest = async (data: FormData) =>

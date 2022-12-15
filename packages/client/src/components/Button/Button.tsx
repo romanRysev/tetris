@@ -5,7 +5,7 @@ import './Button.scss';
 
 type Props = React.PropsWithChildren<{
   className?: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent) => void | Promise<void>;
   disabled?: boolean;
   backgroundOpacity?: boolean;
   type?: 'button' | 'reset' | 'submit';

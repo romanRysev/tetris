@@ -6,6 +6,9 @@ import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute';
 import { useAppDispatch, useAppSelector } from './redux/hooks';
 import { checkLogin } from './redux/actions/singActions';
 import { Spinner } from './components/Spinner/Spinner';
+import { oAuthLogin } from './utils/api';
+import { REDIRECT_URI } from './utils/constants';
+
 import classNames from 'classnames';
 import { themes } from './themes/themes';
 import { setCSSProperties } from './utils/setCSSProperties';
@@ -32,6 +35,11 @@ function App() {
 
   useEffect(() => {
     (async () => {
+      const code = new URLSearchParams(window.location.search).get('code');
+      if (code) {
+        await oAuthLogin({ code, redirect_uri: REDIRECT_URI });
+        window.history.replaceState({}, document.title, '/');
+      }
       await dispatch(checkLogin());
       setIsLoaded(true);
     })();

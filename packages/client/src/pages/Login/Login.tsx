@@ -12,6 +12,8 @@ import classNames from 'classnames';
 import { Link } from '../../components/Link/Link';
 import { setTheme } from '../../redux/actions/themeActions';
 import { UpperMenuGuest } from '../../components/UpperMenu/_guest/UpperMenuGuest';
+import { getServiceId } from '../../utils/api';
+import { REDIRECT_URI } from '../../utils/constants';
 
 export type LoginForm = {
   login: string;
@@ -54,6 +56,16 @@ const Login = () => {
     setErrorPassword(validation(e.target.value, [passwordRule]).errorMessages[0] ?? '');
   };
 
+  const onYandexClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    const res = await getServiceId(REDIRECT_URI);
+    const id = await res.json();
+    window.open(
+      `https://oauth.yandex.ru/authorize?response_type=code&client_id=${id.service_id}&redirect_uri=${REDIRECT_URI}`,
+      '_self',
+    );
+  };
+
   const checkError = errorLogin ? true : !!errorPassword;
 
   return (
@@ -87,6 +99,7 @@ const Login = () => {
               >
                 Авторизоваться
               </Button>
+              <Button onClick={onYandexClick}>Войти через Яндекс</Button>
               <Link to="/register">
                 <Button backgroundOpacity={true}>Нет аккаунта?</Button>
               </Link>

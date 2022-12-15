@@ -3,6 +3,8 @@ export const filePrefix = 'https://ya-praktikum.tech/api/v2/resources';
 
 export const defaulAvatar = 'https://www.fillmurray.com/g/100/100';
 
+export const REDIRECT_URI = 'http://codinsk.ya-praktikum.tech';
+
 export enum APIurls {
   BASE = 'https://ya-praktikum.tech/api/v2',
   LOGIN = 'https://ya-praktikum.tech/api/v2/auth/signin',
@@ -20,6 +22,8 @@ export enum APIurls {
   CHANGEAVATAR = 'https://ya-praktikum.tech/api/v2/user/profile/avatar',
   SEEKUSER = 'https://ya-praktikum.tech/api/v2/user/search',
   LEADERBOARD = 'https://ya-praktikum.tech/api/v2/leaderboard',
+  SERVICEID = 'https://ya-praktikum.tech/api/v2/oauth/yandex/service-id',
+  OAUTHLOGIN = 'https://ya-praktikum.tech/api/v2/oauth/yandex',
 }
 
 export enum backEndUrls {

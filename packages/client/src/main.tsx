@@ -6,9 +6,7 @@ import { store } from './redux/store';
 
 hydrateRoot(
   document.getElementById('root') as HTMLElement,
-  <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
-  </React.StrictMode>,
+  <Provider store={store}>
+    <App />
+  </Provider>,
 );
