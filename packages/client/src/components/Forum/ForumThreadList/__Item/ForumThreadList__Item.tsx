@@ -1,6 +1,5 @@
 import React, { FC, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ForumThreadListPageCounter } from '../__PageCounter/ForumThreadList__PageCounter';
 
 import './ForumThreadList__Item.scss';
 
@@ -8,7 +7,7 @@ export interface ThreadListItemProps {
   thread: string;
   author: string;
   startDate: string;
-  pageCount: number;
+  pageCount?: number;
   replies: string;
   lastReplyUser: string;
   lastReplyDate: string;
@@ -16,7 +15,7 @@ export interface ThreadListItemProps {
 }
 
 export const ForumThreadListItem: FC<ThreadListItemProps> = (props) => {
-  const { thread, pageCount, replies, lastReplyUser, lastReplyDate, author, startDate, threadID } = props;
+  const { thread, replies, lastReplyUser, lastReplyDate, author, startDate, threadID } = props;
   const navigate = useNavigate();
   const handleThreadClick = useCallback(async () => {
     navigate(`/forum/thread/#${threadID}`);
@@ -28,7 +27,6 @@ export const ForumThreadListItem: FC<ThreadListItemProps> = (props) => {
         <span className="thread__text" onClick={handleThreadClick} title={`/forum/thread/${threadID}`}>
           {thread}
         </span>{' '}
-        <ForumThreadListPageCounter pages={pageCount} />
         <div className="thread__info">
           {author} {startDate}
         </div>

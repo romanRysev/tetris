@@ -46,7 +46,6 @@ export const ForumThreadList: FC<topicsIncoming[]> = (list: Record<number, topic
       {postList.map((item, index) => (
         <ForumThreadListItem
           thread={item.title}
-          pageCount={item.Posts ? item.Posts.length / 10 : 1}
           author={item.User.firstName}
           startDate={item.createdAt.slice(0, 10)}
           replies={item.Posts ? item.Posts.length.toString() : '0'}
