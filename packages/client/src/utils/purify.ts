@@ -7,3 +7,7 @@ export const purify = (text: string) => {
 export const stripTags = (text: string) => {
   return DOMPurify.sanitize(text, { ALLOWED_TAGS: [] });
 };
+
+export const makeLineBreaks = (text: string) => {
+  return text.replace(/\r\n?|\n/g, '<br />');
+};

@@ -36,8 +36,6 @@ export const ForumReply: FC<ReplyProps> = ({
       e.preventDefault();
       const val = textAreaElem.current?.value || '';
       const message = purify(val);
-      // console.log(message);
-      // const message = textAreaElem.current?.value.replace(/<[^>]+(>|$)/g, ' ') || '';
 
       const post = await makeNewPost({
         authorID: userProfile.id,

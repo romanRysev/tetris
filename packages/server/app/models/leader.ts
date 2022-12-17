@@ -11,9 +11,15 @@ export interface ILeader {
     score: {
         type: DataType.INTEGER,
         allowNull: false,
+        validate: {
+            isDecimal: true,
+        },
     },
     userID: {
         type: DataType.INTEGER,
         allowNull: false,
+        validate: {
+            isDecimal: true,
+        },
     },
 }

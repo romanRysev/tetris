@@ -4,12 +4,12 @@ import type { ITheme, IThemeUpdate } from './../models/themes'
 // Создание записи
 export async function createTheme(props: ITheme) {
   const { userID } = props;
-  return Theme.findOrCreate({where: { userID }, defaults: {...props}}).then(() => Theme.update({ ...props }, {where: { userID }}));
+  return Theme.findOrCreate({where: { userID }, defaults: {...props}, validate: true}).then(() => Theme.update({ ...props }, {where: { userID }, validate: true}));
 }
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
 export async function updateThemeByUserID(userID: number, data: IThemeUpdate) {
-  return Theme.update(data, { where: { userID } })
+  return Theme.update(data, { where: { userID }, validate: true })
 }
 
 // Удаление записи по ID

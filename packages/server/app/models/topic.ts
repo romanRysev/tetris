@@ -12,10 +12,16 @@ export const topicModel: ModelAttributes<Model, ITopic> = {
   title: {
     type: DataType.STRING,
     allowNull: false,
+    validate: {
+      not: /<[^>]+(>|$)/g,
+    }
   },
   authorID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
   closed: {
     type: DataType.BOOLEAN,

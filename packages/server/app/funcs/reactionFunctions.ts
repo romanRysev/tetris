@@ -10,7 +10,7 @@ type ReactionProps = {
 // поставить / снять лайк на пост
 export async function toggleLike(props: ReactionProps) {
   const { authorID, postID, like } = props
-  return Reaction.findOrCreate({ where: { authorID, postID } }).then(() => {
+  return Reaction.findOrCreate({ where: { authorID, postID }, validate: true }).then(() => {
     Reaction.update({ like }, { where: { authorID, postID } })
   })
 }
@@ -18,7 +18,7 @@ export async function toggleLike(props: ReactionProps) {
 // поставить / снять дизлайк на пост
 export async function toggleDislike(props: ReactionProps) {
   const { authorID, postID, dislike } = props
-  return Reaction.findOrCreate({ where: { authorID, postID } }).then(() => {
+  return Reaction.findOrCreate({ where: { authorID, postID }, validate: true }).then(() => {
     Reaction.update({ dislike }, { where: { authorID, postID } })
   })
 }

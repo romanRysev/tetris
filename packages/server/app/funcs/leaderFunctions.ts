@@ -18,16 +18,16 @@ export async function createLeader(props: ILeader) {
   return Leader.findOrCreate({where: {userID}, defaults: { 
     userID,
     score: 0,
-   }})
+   }, validate: true})
   .then(() => {
-    Leader.update({...props}, {where: {userID, score: {[Op.lt]: score}}, fields: ['score']});
+    Leader.update({...props}, {where: {userID, score: {[Op.lt]: score}}, fields: ['score'], validate: true});
   })
 }
 
 // Обновление записи, если счет больше
 export async function updateLeader(props: ILeader) {
   const { userID, score } = props;
-  return Leader.update({...props}, {where: {userID, score: {[Op.lt]: score}}, fields: ['score']});
+  return Leader.update({...props}, {where: {userID, score: {[Op.lt]: score}}, fields: ['score'], validate: true});
 }
 
 // Получить запись по userID

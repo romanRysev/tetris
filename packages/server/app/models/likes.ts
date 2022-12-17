@@ -12,10 +12,16 @@ export const likesModel: ModelAttributes<Model, ILike> = {
   authorID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
   postID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
   like: {
     type: DataType.BOOLEAN,
