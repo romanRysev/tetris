@@ -1,7 +1,13 @@
+@import "../src/scss/index";
+
 .table {
   width: 100%;
   padding: 0 100px;
   font-size: 15px;
+
+  @media (max-width: 600px) {
+    padding: 0 40px;
+  }
 
   &__row {
     display: flex;
@@ -17,6 +23,7 @@
     padding: 10px 0;
     width: 50%;
     color: var(--color-messages);
+    text-align: left;
   }
 
   &__cell:nth-child(even) {

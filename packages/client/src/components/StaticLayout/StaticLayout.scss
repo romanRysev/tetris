@@ -1,5 +1,10 @@
+@import "../src/scss/index";
+
 .main {
   width: 100%;
   text-align: center;
   padding-left: 64px;
+  @media (max-width: $mobile-screen-max-width) {
+    padding-left: 0;
+  }
 }

@@ -1,8 +1,15 @@
+@import "../src/scss/index";
+
 .leaderboard-item {
   display: block;
   width: 670px;
   height: 66px;
   text-align: justify;
+
+  @media (max-width: $mobile-screen-max-width) {
+    max-width: 100vw;
+    margin: 0 10px;
+  }
 
   &__avatar {
     margin: 8px;
@@ -19,7 +26,12 @@
     width: 470px;
     font-size: 20px;
     cursor: pointer;
-  
+
+    @media (max-width: $mobile-screen-max-width) {
+      font-size: 18px;
+      max-width: calc(100vw - 200px);
+    }
+
     &_theme_dark {
       color: var(--color-text-dark_theme);
     }
@@ -31,7 +43,11 @@
     width: 100px;
     text-align: end;
     font-size: 20px;
-    
+
+    @media (max-width: $mobile-screen-max-width) {
+      font-size: 18px;
+    }
+
     &_theme_dark {
       color: var(--color-text-dark_theme);
     }

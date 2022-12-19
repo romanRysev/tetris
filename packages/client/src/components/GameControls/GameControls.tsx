@@ -5,6 +5,7 @@ import arrowUp from '../../assets/control-arrow-up.svg';
 import arrow from '../../assets/control-arrow-drop.svg';
 import arrowDown from '../../assets/control-arrow-down.svg';
 import arrowRight from '../../assets/control-arrow-right.svg';
+import pause from '../../assets/pause.svg';
 
 import './GameControls.scss';
 
@@ -29,6 +30,10 @@ export const GameControls: FC = () => {
     document.dispatchEvent(new KeyboardEvent('keydown', { code: 'ArrowRight' }));
   }, []);
 
+  const handleClickPause = useCallback(() => {
+    document.dispatchEvent(new KeyboardEvent('keydown', { code: 'KeyP' }));
+  }, []);
+
   return (
     <div className="game-controls">
       <button
@@ -41,9 +46,6 @@ export const GameControls: FC = () => {
         <button className="game-controls__button game-controls__button_horizontal" onClick={handleClickTop}>
           <img className="button__img" src={arrowUp} alt="Вверх" />
         </button>
-        <button className="game-controls__button game-controls__button_horizontal" onClick={handleClickSpace}>
-          <img className="button__img" src={arrow} alt="Пробел" />
-        </button>
         <button className="game-controls__button game-controls__button_horizontal" onClick={handleClickDown}>
           <img className="button__img" src={arrowDown} alt="Вниз" />
         </button>
@@ -54,6 +56,14 @@ export const GameControls: FC = () => {
       >
         <img className="button__img" src={arrowRight} alt="Вправо" />
       </button>
+      <span className="game-controls__button-wrapper">
+        <button className="game-controls__button game-controls__button_square" onClick={handleClickSpace}>
+          <img className="button__img" src={arrow} alt="Пробел" />
+        </button>
+        <button className="game-controls__button game-controls__button_square" onClick={handleClickPause}>
+          <img className="button__img" src={pause} alt="Пробел" />
+        </button>
+      </span>
     </div>
   );
 };

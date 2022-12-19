@@ -80,7 +80,7 @@ export const UpperMenu: FC = () => {
           {menuLinks.map((item, index) => (
             <UpperMenuItem text={item.text} link={item.link} key={index} />
           ))}
-          <span className="upper-menu__theme">
+          <li className="upper-menu__theme">
             Тема:{' '}
             <select
               value={defaultSelectValue()}
@@ -94,7 +94,7 @@ export const UpperMenu: FC = () => {
                 </option>
               ))}
             </select>
-          </span>
+          </li>
           <UpperMenuItem text="Выйти" onClick={handleLogout} className="upper-menu__item-logout" key="logout" />
         </ul>
       </nav>
