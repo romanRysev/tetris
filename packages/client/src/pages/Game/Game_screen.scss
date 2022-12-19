@@ -1,4 +1,4 @@
-@import "Game";
+@import "../src/scss/index";
 
 .game-screen {
   width: 300px;
@@ -7,7 +7,7 @@
   justify-content: center;
 
   @media (max-width: $mobile-screen-max-width) {
-    height: calc(100vh - 220px);
+    height: calc(100vh - 250px);
     max-height: 600px;
     margin: 10px auto;
     flex-grow: 1;

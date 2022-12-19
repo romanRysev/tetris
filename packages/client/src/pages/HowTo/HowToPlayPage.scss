@@ -1,3 +1,5 @@
+@import "../src/scss/index";
+
 .rules {
     color: var(--color-messages);
 
@@ -7,5 +9,15 @@
         padding: 10px;
         max-height: 623px;
         overflow-y: auto;
+
+        @media (max-width: $mobile-screen-max-width) {
+            margin: 0;
+            padding: 10px 30px;
+            max-height: calc(100vh - 200px);
+        }
+    }
+
+    &__header {
+        margin: 20px 0;
     }
 }

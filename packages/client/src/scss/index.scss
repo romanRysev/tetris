@@ -8,6 +8,8 @@
 @import 'reboot';
 @import 'fonts';
 
+$mobile-screen-max-width: 768px;
+
 #root {
   max-width: 1280px;
   margin-left: auto;

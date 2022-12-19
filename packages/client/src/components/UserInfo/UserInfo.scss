@@ -6,7 +6,7 @@
     width: 30px;
     margin-right: 20px;
     background-color: var(--color-midgray);
-  
+
     &_theme_dark {
       box-shadow: 0px 0px 10px rgba(255, 255, 255, 0.25);
     }
@@ -16,7 +16,8 @@
     display: inline-block;
     vertical-align: middle;
     color: var(--color-messages);
-    width: 150px;
+    max-width: 150px;
     cursor: pointer;
+    text-align: left;
   }
 }

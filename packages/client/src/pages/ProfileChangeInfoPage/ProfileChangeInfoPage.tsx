@@ -9,6 +9,7 @@ import { Input } from '../../components/Input/Input';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
 import { setProfileInfo } from '../../redux/actions/profileActions';
 import { loginRule, requiredRule, validation } from '../../helpers/validator';
+import { StaticLayout } from '../../components/StaticLayout/StaticLayout';
 
 import './ProfileChangeInfoPage.scss';
 
@@ -60,103 +61,105 @@ export const ProfileChangeInfoPage = () => {
   );
 
   return (
-    <ProfileLayout navBackPath="/profile" className="profile-change-info-page">
-      <form onSubmit={handleButtonSubmit}>
-        <Table className="profile-change-info-page__table">
-          <TableRow>
-            <TableCell> Почта </TableCell>
-            <TableCell>
-              <Input
-                value={email}
-                className="profile-change-info-page__input"
-                onChange={(e) => setEmail(e.target.value)}
-                onBlur={() =>
-                  setErrorEmail(validation(email, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
-                }
-                errorText={errorEmail}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell> Логин </TableCell>
-            <TableCell>
-              <Input
-                value={login}
-                className="profile-change-info-page__input"
-                onChange={(e) => setLogin(e.target.value)}
-                onBlur={() =>
-                  setErrorLogin(validation(login, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
-                }
-                errorText={errorLogin}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell> Имя </TableCell>
-            <TableCell>
-              <Input
-                value={firstName}
-                className="profile-change-info-page__input"
-                onChange={(e) => setFirstName(e.target.value)}
-                onBlur={() =>
-                  setErrorFirstName(validation(firstName, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
-                }
-                errorText={errorFirstName}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell> Фамилия </TableCell>
-            <TableCell>
-              <Input
-                value={secondName}
-                className="profile-change-info-page__input"
-                onChange={(e) => setSecondName(e.target.value)}
-                onBlur={() =>
-                  setErrorSecondName(validation(secondName, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
-                }
-                errorText={errorSecondName}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell> Имя в чате </TableCell>
-            <TableCell>
-              <Input
-                value={displayName}
-                className="profile-change-info-page__input"
-                onChange={(e) => setDisplayName(e.target.value)}
-                errorText={errorFirstName}
-              />
-            </TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell> Телефон </TableCell>
-            <TableCell>
-              <Input
-                value={phone}
-                className="profile-change-info-page__input"
-                onChange={(e) => setPhone(e.target.value)}
-                onBlur={() =>
-                  setErrorPhone(validation(phone, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
-                }
-                errorText={errorPhone}
-              />
-            </TableCell>
-          </TableRow>
-        </Table>
-        <p className="profile-change-info-page__error-message">{errorMessage && 'Не удалось сохранить изменения'}</p>
-        <Button
-          type="submit"
-          className={classNames('profile-change-info-page__button', {
-            'profile-change-info-page__button_disabled': isInvalid,
-          })}
-          disabled={isInvalid}
-        >
-          Сохранить
-        </Button>
-      </form>
-    </ProfileLayout>
+    <StaticLayout>
+      <ProfileLayout navBackPath="/profile" className="profile-change-info-page">
+        <form onSubmit={handleButtonSubmit}>
+          <Table className="profile-change-info-page__table">
+            <TableRow>
+              <TableCell> Почта </TableCell>
+              <TableCell>
+                <Input
+                  value={email}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setEmail(e.target.value)}
+                  onBlur={() =>
+                    setErrorEmail(validation(email, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
+                  }
+                  errorText={errorEmail}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> Логин </TableCell>
+              <TableCell>
+                <Input
+                  value={login}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setLogin(e.target.value)}
+                  onBlur={() =>
+                    setErrorLogin(validation(login, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
+                  }
+                  errorText={errorLogin}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> Имя </TableCell>
+              <TableCell>
+                <Input
+                  value={firstName}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setFirstName(e.target.value)}
+                  onBlur={() =>
+                    setErrorFirstName(validation(firstName, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
+                  }
+                  errorText={errorFirstName}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> Фамилия </TableCell>
+              <TableCell>
+                <Input
+                  value={secondName}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setSecondName(e.target.value)}
+                  onBlur={() =>
+                    setErrorSecondName(validation(secondName, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
+                  }
+                  errorText={errorSecondName}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> Имя в чате </TableCell>
+              <TableCell>
+                <Input
+                  value={displayName}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  errorText={errorFirstName}
+                />
+              </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> Телефон </TableCell>
+              <TableCell>
+                <Input
+                  value={phone}
+                  className="profile-change-info-page__input"
+                  onChange={(e) => setPhone(e.target.value)}
+                  onBlur={() =>
+                    setErrorPhone(validation(phone, [loginRule, requiredRule]).errorMessages.join('\n') ?? '')
+                  }
+                  errorText={errorPhone}
+                />
+              </TableCell>
+            </TableRow>
+          </Table>
+          <p className="profile-change-info-page__error-message">{errorMessage && 'Не удалось сохранить изменения'}</p>
+          <Button
+            type="submit"
+            className={classNames('profile-change-info-page__button', {
+              'profile-change-info-page__button_disabled': isInvalid,
+            })}
+            disabled={isInvalid}
+          >
+            Сохранить
+          </Button>
+        </form>
+      </ProfileLayout>
+    </StaticLayout>
   );
 };
 

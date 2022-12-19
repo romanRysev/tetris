@@ -1,3 +1,5 @@
+@import "../src/scss/index";
+
 .back-button {
   display: flex;
   background: var(--color-light-gray);
@@ -7,11 +9,32 @@
   left: 0;
   width: var(--back-button-width);
   height: 100%;
+  text-decoration: none;
+
+  @media (max-width: $mobile-screen-max-width) {
+    background: none;
+    border: none;
+    position: absolute;
+    height: 50px;
+    width: 100px;
+  }
 
   &__img {
     display: block;
     margin: auto;
     width: 28px;
     height: 28px;
+    @media (max-width: $mobile-screen-max-width) {
+      display: none;
+    }
+  }
+
+  &__img_mob {
+    display: none;
+    @media (max-width: $mobile-screen-max-width) {
+      display: block;
+      margin: 10px 20px;
+      height: 20px;
+    }
   }
 }
