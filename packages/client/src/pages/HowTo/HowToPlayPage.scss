@@ -1,11 +1,20 @@
 .rules {
     color: var(--color-messages);
+    font-size: larger;
 
     &__text {
-        margin-left: 64px;
+        max-width: 800px;
+        margin-left: auto;
+        margin-right:auto;
         text-align: left;
         padding: 10px;
         max-height: 623px;
         overflow-y: auto;
+    }
+
+    &__table {
+        margin-top: 10px;
+        margin-bottom: 15px;
+        min-width: 80%;
     }
 }
