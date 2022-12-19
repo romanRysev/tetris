@@ -28,6 +28,7 @@ services:
       - "${SERVER_PORT}:${SERVER_PORT}"
     environment:
       SERVER_PORT: ${SERVER_PORT}
+    command: ./utils/wait-for.sh postgres:${POSTGRES_PORT} -- node /app/index.js
 
   postgres:
     container_name: prakticum-postgres
