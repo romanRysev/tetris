@@ -19,8 +19,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           passphrase: ${{ secrets.SERVER_PHRASE }}
           script: |
-            cd $GITHUB_WORKSPACE
-            pwd
+            git pull
             ls -a
             sudo docker compose build --no-cache
             sudo docker compose up
