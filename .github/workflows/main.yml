@@ -19,7 +19,7 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           passphrase: ${{ secrets.SERVER_PHRASE }}
           script: |
-            git pull
-            ls -a
+            cd tetris
+            git pull origin main
             sudo docker compose build --no-cache
             sudo docker compose up
