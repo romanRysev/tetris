@@ -44,7 +44,7 @@ const Login = () => {
       await dispatch(setTheme());
       navigate('/game');
     } else {
-      setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);
+      setFormError(`Ошибка входа. ${JSON.stringify(res.payload)}`);
     }
   };
 
