@@ -16,8 +16,7 @@ export const register = createAsyncThunk('auth/register', async (data: RegisterF
 export const login = createAsyncThunk('auth/login', async (data: LoginForm, thunkAPI) => {
   try {
     await postLoginRequest(data);
-    const profileRes = await getProfileRequest();
-    return thunkAPI.fulfillWithValue(profileRes);
+    return thunkAPI.fulfillWithValue({});
   } catch (e) {
     return thunkAPI.rejectWithValue(e);
   }

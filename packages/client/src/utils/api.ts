@@ -1,7 +1,7 @@
 import { LoginForm } from '../pages/Login/Login';
 import { RegisterForm } from '../pages/Register/Register';
 import { APIurls } from './constants';
-import { realFetch } from './realFetch';
+import { okFetch, realFetch } from './realFetch';
 
 const headers = {
   post: { 'Content-Type': 'application/json' },
@@ -44,7 +44,7 @@ export const postRegisterRequest = async (data: RegisterForm) =>
   });
 
 export const postLoginRequest = async (data: LoginForm) =>
-  await fetch(APIurls.LOGIN, {
+  await okFetch(APIurls.LOGIN, {
     method: 'POST',
     headers: headers.post,
     body: JSON.stringify(data),

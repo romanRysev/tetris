@@ -39,12 +39,13 @@ const Login = () => {
   const onSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const res = await dispatch(login(form));
+    console.log(res);
     if (res.meta.requestStatus === 'fulfilled') {
       await dispatch(checkLogin());
       await dispatch(setTheme());
       navigate('/game');
     } else {
-      setFormError(`Ошибка входа. ${(res.payload as Error)?.message}`);
+      setFormError(`Ошибка входа. ${JSON.stringify(res.payload)}`);
     }
   };
 

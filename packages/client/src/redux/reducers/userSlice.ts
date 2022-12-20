@@ -77,7 +77,7 @@ export const authSlice = createSlice({
       state.isAuthorized = false;
       state.isFetching = false;
     },
-    [login.fulfilled.type]: (state, action) => {
+    [login.fulfilled.type]: (state) => {
       state.fetchingFailed = false;
       state.isAuthorized = true;
       state.isFetching = false;
