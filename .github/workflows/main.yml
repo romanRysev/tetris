@@ -17,5 +17,6 @@ jobs:
           key: ${{ secrets.SERVER_KEY }}
           passphrase: ${{ secrets.SERVER_PHRASE }}
           script: |
+            ls -a
             sudo docker compose build --no-cache
             sudo docker compose up
