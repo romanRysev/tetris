@@ -1,6 +1,7 @@
 import React, { FC, FormEvent, useCallback, useRef, useState } from 'react';
 import { useAppSelector } from '../../../redux/hooks';
 import { changeLastReply, makeNewPost } from '../../../utils/backEndApi';
+import { purify } from '../../../utils/purify';
 import { Button } from '../../Button/Button';
 import './ForumReply.scss';
 
@@ -33,7 +34,8 @@ export const ForumReply: FC<ReplyProps> = ({
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const message = textAreaElem.current?.value.replace(/<[^>]+(>|$)/g, ' ') || '';
+      const val = textAreaElem.current?.value || '';
+      const message = purify(val);
 
       const post = await makeNewPost({
         authorID: userProfile.id,

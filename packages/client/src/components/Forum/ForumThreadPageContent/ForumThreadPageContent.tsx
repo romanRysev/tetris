@@ -37,8 +37,6 @@ export const ForumThreadPageContent: FC = () => {
     setIsNewLeaf(true);
   }, []);
 
-  // почему-то перестали работать переносы строк
-
   return (
     <div className="forum-thread-page-content">
       <h3 className="forum-thread-page-content__header">{title}</h3>

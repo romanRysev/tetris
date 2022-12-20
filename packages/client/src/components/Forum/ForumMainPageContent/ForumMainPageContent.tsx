@@ -2,6 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from 'react';
 import { getTopics } from '../../../redux/actions/forumActions';
 import { useAppDispatch, useAppSelector } from '../../../redux/hooks';
 import { changeLastReply, getTopicList, makeNewPost, makeNewTopic } from '../../../utils/backEndApi';
+import { purify, stripTags } from '../../../utils/purify';
 import { Popup } from '../../Popup/Popup';
 import { ForumMainListHeader } from '../ForumMainListHeader/ForumMainListHeader';
 import { ForumThreadList } from '../ForumThreadList/ForumThreadList';
@@ -12,7 +13,6 @@ type ForumThreadListProps = {
 };
 
 export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Форум' }) => {
-  // TODO прикрутить валидацию
   const [isNew, setIsNew] = useState(false);
   const [isFetched, setFetched] = useState(false);
   const inputElem = useRef<HTMLInputElement>(null);
@@ -24,8 +24,10 @@ export const ForumMainPageContent: FC<ForumThreadListProps> = ({ title = 'Фор
   const dispatch = useAppDispatch();
 
   const handleNewThread = useCallback(async () => {
-    const title = inputElem.current?.value || 'Новая тема';
-    const message = textAreaElem.current?.value || undefined;
+    const titleRaw = inputElem.current?.value || 'Новая тема';
+    const title = stripTags(titleRaw);
+    const messageRaw = textAreaElem.current?.value || undefined;
+    const message = messageRaw ? purify(messageRaw) : undefined;
     const authorID = userProfile.id;
     try {
       const topic = await makeNewTopic({ title, authorID, message });

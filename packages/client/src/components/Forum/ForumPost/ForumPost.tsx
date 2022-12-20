@@ -7,6 +7,8 @@ import './ForumPost.scss';
 import defaultAvatar from './../../../assets/avatar.svg';
 import { Button } from './../../Button/Button';
 import { unAuthorised } from '../../../redux/actions/singActions';
+import parse from 'html-react-parser';
+import { makeLineBreaks, purify } from '../../../utils/purify';
 
 export type ForumPostProps = {
   userName: string;
@@ -105,7 +107,7 @@ export const ForumPost: FC<ForumPostProps> = ({
           await makeNewPost({
             authorID: userProfile.id,
             topicID: Number(topicID),
-            message: message,
+            message: purify(message),
             firstLevel: false,
             parentID: id,
           });
@@ -121,6 +123,10 @@ export const ForumPost: FC<ForumPostProps> = ({
     [id, topicID, userProfile.id, dispatch, getDataUp],
   );
 
+  const msgWithLineBreaks = makeLineBreaks(text);
+  const pureMessage = purify(msgWithLineBreaks);
+  const cleantHTML = parse(pureMessage);
+
   return (
     <li className={classNames('forum-post', `forum-post_level${level}`, className)} id={'#' + id}>
       <div className="forum-post__userinfo">
@@ -132,7 +138,7 @@ export const ForumPost: FC<ForumPostProps> = ({
         </figure>
       </div>
       <div className="forum-post__text-wrapper">
-        <div className="forum-post__text">{text}</div>
+        <div className="forum-post__text">{cleantHTML}</div>
         <div className="forum-post__info">
           <div className="forum-post__reactions">
             <div className="forum-post__likes">

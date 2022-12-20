@@ -10,18 +10,11 @@ export type LeaderProps = {
   score: number;
 };
 
-export const LeaderItem: FC<LeaderProps> = ({
-  avatar,
-  userName,
-  onClick = () => console.log('ТУТ БУДЕТ ССЫЛКА НА ПРОФИЛЬ'),
-  score,
-}) => {
+export const LeaderItem: FC<LeaderProps> = ({ avatar, userName, score }) => {
   return (
     <li className={classNames('leaderboard-item', top && 'leaderboard-item_top')}>
-      <UserAvatar username={userName} avatarPath={avatar} onClick={onClick} className="leaderboard-item__avatar" />
-      <div className="leaderboard-item__name" onClick={onClick}>
-        {userName}
-      </div>
+      <UserAvatar username={userName} avatarPath={avatar} className="leaderboard-item__avatar" />
+      <div className="leaderboard-item__name">{userName}</div>
       <div className="leaderboard-item__score">{score}</div>
     </li>
   );

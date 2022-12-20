@@ -3,12 +3,12 @@ import { Post, Reaction, User } from '../config/db.config'
 
 // Создание записи
 export async function createPost(props: IPost) {
-  return Post.create({ ...props })
+  return Post.create({ ...props }, {validate: true})
 }
 
 // Обновление записи по userID/id пользователя - здесь везде лучше userID
 export async function updatePostByID(id: number, data: IPost) {
-  return Post.update(data, { where: { id } })
+  return Post.update(data, { where: { id }, validate: true })
 }
 
 // Удаление записи по ID
@@ -23,7 +23,7 @@ export async function getPostById(id: number) {
 
 // Cкрытие записи
 export async function hidePostById(id: number) {
-  return Post.update({ hide: true }, { where: { id } })
+  return Post.update({ hide: true }, { where: { id }, fields: ['hide'] })
 }
 
 // поиск по автору

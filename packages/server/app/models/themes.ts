@@ -23,10 +23,18 @@ export const themeModel: ModelAttributes<Model, ITheme> = {
   themeActive: {
     type: DataType.STRING,
     allowNull: false,
+    validate: {
+      isIn: [
+        [ 'classic', 'shark', 'dark', 'newYear']
+      ]
+    },
   },
   userID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
 
   soundOn: {

@@ -18,10 +18,16 @@ export const postModel: ModelAttributes<Model, IPost> = {
   authorID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
   topicID: {
     type: DataType.INTEGER,
     allowNull: false,
+    validate: {
+      isDecimal: true,
+    },
   },
   parentID: {
     type: DataType.INTEGER,

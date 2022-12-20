@@ -2,21 +2,22 @@
   display: grid;
   grid-template-columns: 1fr 5fr;
   border-bottom: 1px solid var(--white);
+  --padding-post: calc(100vw/30);
 
   &_level2 {
-    padding-left: 30px;
+    padding-left: var(--padding-post);
   }
 
   &_level3 {
-    padding-left: 60px;
+    padding-left: calc(var(--padding-post)*2);
   }
 
   &_level4 {
-    padding-left: 90px;
+    padding-left: calc(var(--padding-post)*3);
   }
 
   &_level5 {
-    padding-left: 120px;
+    padding-left: calc(var(--padding-post)*4);
   }
 
   &__userinfo {
