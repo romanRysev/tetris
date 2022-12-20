@@ -9,10 +9,9 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v2
         with:
           fetch-depth: 0
-          working-directory: tetris
       - uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.SERVER_HOST }}
@@ -21,6 +20,5 @@ jobs:
           passphrase: ${{ secrets.SERVER_PHRASE }}
           script: |
             ls -a
-            cd tetris
             sudo docker compose build --no-cache
             sudo docker compose up
