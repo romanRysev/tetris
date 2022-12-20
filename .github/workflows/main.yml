@@ -20,7 +20,7 @@ jobs:
           passphrase: ${{ secrets.SERVER_PHRASE }}
           script: |
             cd tetris
-            git pull origin main
+            git pull origin deploy
             yarn bootstrap -y
             node init.js
             sudo docker compose build --no-cache
