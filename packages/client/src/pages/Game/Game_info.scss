@@ -29,6 +29,12 @@
         background-color: transparent;
       }
     }
+    &_theme_newYear {
+      background-color: rgba(241, 229, 229, 0.2);
+      @media (max-width: $mobile-screen-max-width) {
+        background-color: transparent;
+      }
+    }
   }
 
   &__user-info {
@@ -76,6 +82,9 @@
       width: 100%;
       background-color: rgba(255, 255, 255, 0.4);
     }
+    &_theme_newYear {
+      font-size: 1.5rem;
+    }
   }
 
   &__menu {
@@ -122,6 +131,10 @@
   &__p {
     @media (max-width: $mobile-screen-max-width) {
       margin: 7px 10px;
+    }
+    &_theme_newYear {
+      font-size: 1rem;
+      background-color: rgba(255, 255, 255, 0.4);
     }
 
     &_theme_shark {

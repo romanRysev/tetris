@@ -7,6 +7,7 @@ import { man, shark, water } from '../../themes/shark/shark-theme';
 import { themes, musicTrackTime, ThemeSounds, ThemeFlags, ThemesNames, SoundControls } from '../../themes/themes';
 import { setThemeColors } from '../../utils/setThemeColors';
 import { AddLeader, addToLeaderBoard } from '../../utils/backEndApi';
+import { startSanta } from './santa';
 
 type TetrisProps = {
   canvas: HTMLCanvasElement;
@@ -63,6 +64,7 @@ export class Tetris extends Component<TetrisProps> {
     fall?: HTMLAudioElement;
     line?: HTMLAudioElement;
     position?: HTMLAudioElement;
+    steps?: HTMLAudioElement;
   } = {};
   private musicVolume = '1';
   private soundVolume = '1';
@@ -78,7 +80,12 @@ export class Tetris extends Component<TetrisProps> {
   private userName: string;
   private userAvatar: string;
   private userID: number;
-
+  private santaCoords = {
+    index0: 0,
+    direction0: 0,
+    x0: 350,
+    y0: 20,
+  };
   // shark theme
   private manPic = 0;
   private sharkCoords = {
@@ -109,7 +116,6 @@ export class Tetris extends Component<TetrisProps> {
     this.userAvatar = makeUserAvatarFromUser(userProfile);
     this.userID = userProfile.id;
     this.theme = theme;
-
     /* вынесла в отдельный метод, но в конструкторе оставила так,
     иначе ругается, что переменные не инициализируются */
     this.preloadMusic(this.themes[this.theme].music).then(() => {
@@ -322,6 +328,7 @@ export class Tetris extends Component<TetrisProps> {
   }
 
   private drawWorld() {
+    this.onKeypress();
     this.ctx.beginPath();
     for (let x = 0; x < this.width + 1; x++) {
       this.ctx.moveTo(this.cellSize * x, 0);
@@ -337,7 +344,18 @@ export class Tetris extends Component<TetrisProps> {
     this.ctx.fillStyle = fillGameCanvas;
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
   }
-
+  private drawSanta() {
+    this.removeKeypress();
+    const steps = this.themeSounds.steps as HTMLAudioElement;
+    startSanta(
+      this.canvas,
+      this.santaCoords.index0,
+      this.santaCoords.direction0,
+      this.santaCoords.x0,
+      this.santaCoords.y0,
+      steps,
+    );
+  }
   // BEGIN для акул
 
   private drawWater(end: number) {
@@ -412,7 +430,6 @@ export class Tetris extends Component<TetrisProps> {
       }, 200);
     }
   }
-
   // END для акул
 
   private init() {
@@ -525,7 +542,9 @@ export class Tetris extends Component<TetrisProps> {
         }
       }
     }
-    for (let row = this.playfield.length - 1; row >= 0; ) {
+    /* eslint-disable */
+    for (let row = this.playfield.length - 1; row >= 0;) {
+      /* eslint-enable */
       // убираем линию
       if (this.playfield[row].every((cell) => !!cell)) {
         this.themeSounds.line?.play();
@@ -564,13 +583,14 @@ export class Tetris extends Component<TetrisProps> {
     this.themeSounds.end?.play();
     this.waterLevel = this.canvas.height - 15;
     this.drawEnd();
-
     this.themeMusic.pause();
     this.themeMusic.removeEventListener('ended', () => this.themeMusic.play());
     this.sendResults();
     this.gameOver = true;
     this.gameStarted = false;
-    this.sendEnd();
+    if (this.theme != 'newYear') {
+      this.sendEnd();
+    }
   }
 
   // отрисовка окончания игры
@@ -584,6 +604,9 @@ export class Tetris extends Component<TetrisProps> {
           this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
         }
       }
+    }
+    if (this.theme === 'newYear') {
+      this.drawSanta();
     }
     if (this.theme === 'shark') {
       this.waterLevel -= 20;
@@ -632,7 +655,6 @@ export class Tetris extends Component<TetrisProps> {
     if (this.gameOver || this.paused) {
       return;
     }
-
     // отрисовываем поле
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.drawWorld();
@@ -643,8 +665,15 @@ export class Tetris extends Component<TetrisProps> {
         if (this.playfield[row][col]) {
           filled++;
           const name = this.playfield[row][col];
-          this.ctx.fillStyle = name ? this.colors[name] : 'white';
-          this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
+          if (this.theme === 'newYear') {
+            const imageObj = new Image();
+            imageObj.src =
+              'https://png.pngtree.com/png-vector/20201026/ourlarge/pngtree-red-gift-box-with-golden-ribbon-present-illustration-vector-png-image_2377680.jpg';
+            this.ctx.drawImage(imageObj, col * this.cellSize, row * this.cellSize, this.cellSize, this.cellSize);
+          } else {
+            this.ctx.fillStyle = name ? this.colors[name] : 'white';
+            this.ctx.fillRect(col * this.cellSize, row * this.cellSize, this.cellSize - 1, this.cellSize - 1);
+          }
         }
       }
       if (filled > 0) {
@@ -668,13 +697,26 @@ export class Tetris extends Component<TetrisProps> {
             let margin = 1.5;
             if (this.nextTetromino.name === 'I') margin = 1;
             else if (this.nextTetromino.name === 'O') margin = 2;
-            this.ctxFigure.fillStyle = this.colors[this.nextTetromino.name];
-            this.ctxFigure.fillRect(
-              (j + margin) * (this.cellSize / 1.5),
-              (i + margin) * (this.cellSize / 1.5),
-              this.cellSize / 1.5 - 1,
-              this.cellSize / 1.5 - 1,
-            );
+            if (this.theme === 'newYear') {
+              const imageObj = new Image();
+              imageObj.src =
+                'https://png.pngtree.com/png-vector/20201026/ourlarge/pngtree-red-gift-box-with-golden-ribbon-present-illustration-vector-png-image_2377680.jpg';
+              this.ctxFigure.drawImage(
+                imageObj,
+                ((j + margin) * this.cellSize) / 1.5,
+                (i + margin) * (this.cellSize / 1.5),
+                this.cellSize / 1.5 - 1,
+                this.cellSize / 1.5 - 1,
+              );
+            } else {
+              this.ctxFigure.fillStyle = this.colors[this.nextTetromino.name];
+              this.ctxFigure.fillRect(
+                (j + margin) * (this.cellSize / 1.5),
+                (i + margin) * (this.cellSize / 1.5),
+                this.cellSize / 1.5 - 1,
+                this.cellSize / 1.5 - 1,
+              );
+            }
           }
         }
       }
@@ -696,12 +738,25 @@ export class Tetris extends Component<TetrisProps> {
       for (let row = 0; row < this.currentTetromino.matrix.length; row++) {
         for (let col = 0; col < this.currentTetromino.matrix[row].length; col++) {
           if (this.currentTetromino.matrix[row][col]) {
-            this.ctx.fillRect(
-              (this.currentTetromino.col + col) * this.cellSize,
-              (this.currentTetromino.row + row) * this.cellSize,
-              this.cellSize - 1,
-              this.cellSize - 1,
-            );
+            if (this.theme === 'newYear') {
+              const imageObj = new Image();
+              imageObj.src =
+                'https://png.pngtree.com/png-vector/20201026/ourlarge/pngtree-red-gift-box-with-golden-ribbon-present-illustration-vector-png-image_2377680.jpg';
+              this.ctx.drawImage(
+                imageObj,
+                (this.currentTetromino.col + col) * this.cellSize,
+                (this.currentTetromino.row + row) * this.cellSize,
+                this.cellSize,
+                this.cellSize,
+              );
+            } else {
+              this.ctx.fillRect(
+                (this.currentTetromino.col + col) * this.cellSize,
+                (this.currentTetromino.row + row) * this.cellSize,
+                this.cellSize - 1,
+                this.cellSize - 1,
+              );
+            }
           }
         }
       }
