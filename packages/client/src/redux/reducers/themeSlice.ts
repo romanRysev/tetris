@@ -22,7 +22,7 @@ export interface IThemeSlice {
 }
 
 export const themeInitState: IThemeSlice = {
-  active: 'classic',
+  active: 'newYear',
   soundOn: true,
   musicOn: true,
   soundLevel: '0.5',

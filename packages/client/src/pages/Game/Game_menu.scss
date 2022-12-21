@@ -50,6 +50,12 @@
     }
     background-color: rgba(255, 255, 255, 0.2);
   }
+  &_theme_newYear {
+    @media (max-width: $mobile-screen-max-width) {
+      background-color: rgb(228, 97, 97);
+    }
+    background-color: rgba(239, 233, 233, 0.2);
+  }
 }
 
 .select-theme {
