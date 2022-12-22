@@ -60,7 +60,6 @@ const Login = () => {
     e.preventDefault();
     const res = await getServiceId(REDIRECT_URI);
     const id = await res.json();
-    await dispatch(setTheme());
     window.open(
       `https://oauth.yandex.ru/authorize?response_type=code&client_id=${id.service_id}&redirect_uri=${REDIRECT_URI}`,
       '_self',
