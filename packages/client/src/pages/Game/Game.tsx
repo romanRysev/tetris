@@ -7,13 +7,12 @@ import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { checkLogin, logout } from '../../redux/actions/singActions';
+import { logout } from '../../redux/actions/singActions';
 import {
   putTheme,
   setGameTheme,
   setMusicVol,
   setSoundVol,
-  setTheme,
   toggleMusicOnOff,
   toggleSoundOnOff,
 } from '../../redux/actions/themeActions';
@@ -49,7 +48,6 @@ export const Game: React.FC = () => {
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isPause, setIsPause] = useState(false);
-  const [isSentUser, setSentUser] = useState(false);
 
   const menuElem = useRef<HTMLInputElement>(null);
   // под тему
@@ -63,17 +61,6 @@ export const Game: React.FC = () => {
       setIsMobile(document.documentElement.clientWidth <= maxMobileWidth);
     });
   }, []);
-
-  useEffect(() => {
-    if (!isSentUser) {
-      setSentUser(true);
-      (async () => {
-        await dispatch(checkLogin()).then(async () => {
-          await dispatch(setTheme());
-        });
-      })();
-    }
-  }, [dispatch, isSentUser]);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
