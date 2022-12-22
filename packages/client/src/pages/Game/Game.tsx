@@ -7,7 +7,7 @@ import { Tetris } from './Tetris';
 import { Link, useNavigate } from 'react-router-dom';
 import { makeUserAvatarFromUser, makeUserNameFromUser } from '../../utils/makeUserProps';
 import { useAppDispatch, useAppSelector } from '../../redux/hooks';
-import { checkLogin, logout } from '../../redux/actions/singActions';
+import { logout } from '../../redux/actions/singActions';
 import {
   putTheme,
   setGameTheme,
@@ -67,11 +67,9 @@ export const Game: React.FC = () => {
   useEffect(() => {
     if (!isSentUser) {
       setSentUser(true);
-      (async () => {
-        await dispatch(checkLogin()).then(async () => {
-          await dispatch(setTheme());
-        });
-      })();
+      setTimeout(() => {
+        dispatch(setTheme());
+      }, 2000);
     }
   }, [dispatch, isSentUser]);
 
