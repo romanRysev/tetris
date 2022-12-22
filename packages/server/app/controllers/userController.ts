@@ -12,9 +12,9 @@ import {
 
 export const createUserRow = async (req: Request, res: Response) => {
   const { firstName, secondName, id , displayName, login, email, phone, avatar } = req.body
-  if (!firstName || !secondName || !id || !login || !email || !phone) {
+  if (!id || !login) {
     res.status(400).send({
-      message: 'firstName, secondName, id, login, email, phone can not be empty!',
+      message: 'id and login fields can not be empty!',
     })
     return
   }
