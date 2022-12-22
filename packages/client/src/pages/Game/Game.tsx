@@ -13,6 +13,7 @@ import {
   setGameTheme,
   setMusicVol,
   setSoundVol,
+  setTheme,
   toggleMusicOnOff,
   toggleSoundOnOff,
 } from '../../redux/actions/themeActions';
@@ -48,6 +49,7 @@ export const Game: React.FC = () => {
   const [isMobile, setIsMobile] = useState(document.documentElement.clientWidth <= maxMobileWidth);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
   const [isPause, setIsPause] = useState(false);
+  const [isSentUser, setSentUser] = useState(false);
 
   const menuElem = useRef<HTMLInputElement>(null);
   // под тему
@@ -61,6 +63,15 @@ export const Game: React.FC = () => {
       setIsMobile(document.documentElement.clientWidth <= maxMobileWidth);
     });
   }, []);
+
+  useEffect(() => {
+    if (!isSentUser) {
+      setSentUser(true);
+      setTimeout(() => {
+        dispatch(setTheme());
+      }, 2000);
+    }
+  }, [dispatch, isSentUser]);
 
   const getData = useCallback((score: number, level: number, lineCount: number) => {
     setScore(score);
